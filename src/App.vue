@@ -52,18 +52,19 @@ const activeRouteName = computed(() => route.name);
               About
             </button>
           </RouterLink>
-          <RouterLink to="/api" custom v-slot="{ navigate }">
+
+          <a href="https://api.publicdomain.co.in/offers/api" target="_blank">
             <button
               type="button"
               class="rounded-full px-4 py-2 transition hover:bg-primary-50 hover:text-primary"
               :class="{
                 'bg-primary-50 text-primary': activeRouteName === 'api',
               }"
-              @click="navigate"
+              @click="openAPi"
             >
               API
             </button>
-          </RouterLink>
+          </a>
         </nav>
       </div>
     </header>

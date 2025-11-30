@@ -1,8 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-const API_URL = "https://api.jsonbin.io/v3/b/692bdd54ae596e708f79af9d/latest";
-const API_KEY = "$2a$10$xRngXRe4FPWGJY7TyvzERO3idRIuDna0.GjNr0Aal8ZnTmFd7rHRK";
+const API_URL = "https://api.publicdomain.co.in/offers/website";
 
 export const useOffersStore = defineStore("offers", {
   state: () => ({
@@ -18,15 +17,10 @@ export const useOffersStore = defineStore("offers", {
       this.error = "";
 
       try {
-        const response = await axios.get(API_URL, {
-          headers: {
-            "X-Access-Key": API_KEY,
-          },
-        });
+        const response = await axios.get(API_URL);
 
         const payload = response.data;
-        const remoteOffers =
-          payload?.record?.offers ?? payload?.record ?? payload?.offers ?? [];
+        const remoteOffers = payload ?? [];
 
         this.offers = Array.isArray(remoteOffers) ? remoteOffers : [];
       } catch (err) {
