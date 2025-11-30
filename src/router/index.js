@@ -1,0 +1,16 @@
+import { createRouter, createWebHistory } from "vue-router";
+import OffersView from "../views/OffersView.vue";
+import AboutView from "../views/AboutView.vue";
+import ApiView from "../views/ApiView.vue";
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: "/", redirect: "/offers" },
+    { path: "/offers", name: "offers", component: OffersView },
+    { path: "/about", name: "about", component: AboutView },
+    { path: "/api", name: "api", component: ApiView },
+  ],
+});
+
+export default router;
