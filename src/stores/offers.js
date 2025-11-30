@@ -20,7 +20,7 @@ export const useOffersStore = defineStore("offers", {
       try {
         const response = await axios.get(API_URL, {
           headers: {
-            "X-Master-Key": API_KEY,
+            "X-Access-Key": API_KEY,
           },
         });
 
@@ -31,7 +31,9 @@ export const useOffersStore = defineStore("offers", {
         this.offers = Array.isArray(remoteOffers) ? remoteOffers : [];
       } catch (err) {
         this.error =
-          err instanceof Error ? err.message : "Unexpected error fetching offers.";
+          err instanceof Error
+            ? err.message
+            : "Unexpected error fetching offers.";
         this.offers = [];
       } finally {
         this.loading = false;

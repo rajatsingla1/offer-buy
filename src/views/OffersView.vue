@@ -15,8 +15,12 @@ onMounted(() => {
 <template>
   <div>
     <section class="card relative overflow-hidden p-8">
-      <div class="absolute right-10 top-10 h-24 w-24 rounded-full bg-primary-100 blur-3xl"></div>
-      <div class="absolute -bottom-6 left-6 h-20 w-20 rounded-full bg-primary-50 blur-2xl"></div>
+      <div
+        class="absolute right-10 top-10 h-24 w-24 rounded-full bg-primary-100 blur-3xl"
+      ></div>
+      <div
+        class="absolute -bottom-6 left-6 h-20 w-20 rounded-full bg-primary-50 blur-2xl"
+      ></div>
       <div class="flex flex-col gap-4">
         <p
           class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100"
@@ -29,52 +33,22 @@ onMounted(() => {
             Premium offers on Credits
           </h1>
           <p class="max-w-3xl text-lg text-slate-600">
-            Review curated opportunities with clear pricing and quantities.
-            Each offer is ready to buy with a single click.
+            Review curated opportunities with clear pricing and quantities. Each
+            offer is ready to buy with a single click.
           </p>
         </div>
       </div>
     </section>
 
     <section class="mt-10 space-y-4">
-      <div class="card p-6">
-        <div class="flex items-center justify-between gap-4">
-          <div>
-            <h2 class="text-xl font-semibold text-ink">Latest offers</h2>
-            <p class="text-sm text-slate-600">
-              Pulled directly from the JSONBin API with live pricing.
-            </p>
-          </div>
-          <button type="button" class="button-primary" @click="fetchOffers">
-            Refresh
-          </button>
-        </div>
-        <div v-if="loading" class="mt-6 inline-flex items-center gap-2 text-sm text-slate-600">
-          <span
-            class="h-4 w-4 animate-spin rounded-full border-2 border-primary/30 border-t-primary"
-            aria-hidden="true"
-          ></span>
-          Fetching offers...
-        </div>
-        <div
-          v-else-if="error"
-          class="mt-6 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-100"
-        >
-          {{ error }}
-        </div>
-        <div v-else-if="offers.length === 0" class="mt-6 text-sm text-slate-600">
-          No offers are available right now. Try refreshing in a moment.
-        </div>
-      </div>
-
       <section class="card overflow-hidden">
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-primary-100">
             <thead class="table-header">
               <tr>
                 <th scope="col" class="px-6 py-3 text-left">Id</th>
-                <th scope="col" class="px-6 py-3 text-left">Year</th>
-                <th scope="col" class="px-6 py-3 text-left">Quantity</th>
+                <th scope="col" class="px-6 py-3 text-left">Vintage</th>
+                <th scope="col" class="px-6 py-3 text-left">Credits</th>
                 <th scope="col" class="px-6 py-3 text-left">Price</th>
                 <th scope="col" class="px-6 py-3 text-left">Total value</th>
                 <th scope="col" class="px-6 py-3 text-right">Action</th>
@@ -88,21 +62,29 @@ onMounted(() => {
               >
                 <td class="table-cell">
                   <div class="text-sm font-semibold text-ink">
-                    {{ offer.id }}
+                    {{ offer.orderId }}
                   </div>
                   <p class="mt-1 text-xs text-slate-600">
-                    Serial ID {{ offer.serialId }}
+                    Serial ID {{ offer.serial }}
                   </p>
                 </td>
-                <td class="table-cell">{{ offer.year }}</td>
+                <td class="table-cell">{{ offer.vintage }}</td>
                 <td class="table-cell">
-                  {{ offer.quantity?.toLocaleString?.() ?? offer.quantity }}
+                  {{
+                    offer.creditsToOffer?.toLocaleString?.() ??
+                    offer.creditsToOffer
+                  }}
                 </td>
                 <td class="table-cell">
-                  ${{ offer.price?.toLocaleString?.() ?? offer.price }}
+                  ${{ Number(offer.pricePerCredit).toFixed(2) }}
                 </td>
                 <td class="table-cell font-semibold text-primary">
-                  ${{ offer.total?.toLocaleString?.() ?? offer.total }}
+                  ${{
+                    (
+                      Number(offer.creditsToOffer) *
+                      Number(offer.pricePerCredit)
+                    ).toFixed(2)
+                  }}
                 </td>
                 <td class="table-cell text-right">
                   <button type="button" class="button-primary">Buy</button>

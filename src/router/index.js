@@ -6,8 +6,7 @@ import ApiView from "../views/ApiView.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", redirect: "/offers" },
-    { path: "/offers", name: "offers", component: OffersView },
+    { path: "/", name: "offers", component: OffersView },
     { path: "/about", name: "about", component: AboutView },
     { path: "/api", name: "api", component: ApiView },
   ],
