@@ -5,8 +5,6 @@
       <p class="mt-4 text-slate-700">
         AlliedOffsets connects buyers to premium credit opportunities with
         transparent pricing, trustworthy provenance, and streamlined checkout.
-        Our marketplace highlights live availability so teams can move quickly
-        with confidence.
       </p>
     </div>
   </div>

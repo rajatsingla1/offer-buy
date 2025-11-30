@@ -33,8 +33,7 @@ onMounted(() => {
             Premium offers on Credits
           </h1>
           <p class="max-w-3xl text-lg text-slate-600">
-            Review curated opportunities with clear pricing and quantities. Each
-            offer is ready to buy with a single click.
+            Review curated opportunities with clear pricing and quantities.
           </p>
         </div>
       </div>
