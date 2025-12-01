@@ -18,20 +18,9 @@ const activeRouteName = computed(() => route.name);
       >
         <div class="flex items-center gap-1">
           <RouterLink to="/" custom v-slot="{ navigate }">
-            <div
-              @click="navigate"
-              class="flex h-11 cursor-pointer w-11 items-center justify-center rounded-2xl text-lg font-bold text-white shadow-soft"
-            >
-              <img
-                src="https://www.alliedoffsets.com/wp-content/uploads/2022/07/faviconalllied.png"
-                height="25"
-                width="25"
-                alt="AlliedOffsets logo"
-              />
-            </div>
             <div @click="navigate" class="cursor-pointer">
               <div class="text-lg font-semibold text-primary">
-                AlliedOffsets
+                Carbon Market Alliance
               </div>
             </div>
           </RouterLink>
