@@ -1,30 +1,11 @@
-<script setup>
-import { onMounted } from "vue";
-import { storeToRefs } from "pinia";
-import { useOffersStore } from "../stores/offers";
-
-const offersStore = useOffersStore();
-const { offers, loading, error } = storeToRefs(offersStore);
-const { fetchOffers } = offersStore;
-
-onMounted(() => {
-  fetchOffers();
-});
-</script>
-
 <template>
-  <div>
+  <div class="mb-40">
     <section class="card relative overflow-hidden p-8">
-      <div
-        class="absolute right-10 top-10 h-24 w-24 rounded-full bg-primary-100 blur-3xl"
-      ></div>
-      <div
-        class="absolute -bottom-6 left-6 h-20 w-20 rounded-full bg-primary-50 blur-2xl"
-      ></div>
+      <div class="absolute right-10 top-10 h-24 w-24 rounded-full bg-primary-100 blur-3xl"></div>
+      <div class="absolute -bottom-6 left-6 h-20 w-20 rounded-full bg-primary-50 blur-2xl"></div>
       <div class="flex flex-col gap-4">
         <p
-          class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100"
-        >
+          class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100">
           <span class="h-2 w-2 rounded-full bg-primary"></span>
           Live offers
         </p>
@@ -54,11 +35,7 @@ onMounted(() => {
               </tr>
             </thead>
             <tbody class="divide-y divide-primary-50 bg-white">
-              <tr
-                v-for="offer in offers"
-                :key="offer.id"
-                class="hover:bg-primary-50/40"
-              >
+              <tr v-for="offer in offers" :key="offer.id" class="hover:bg-primary-50/40">
                 <td class="table-cell">
                   <div class="text-sm font-semibold text-ink">
                     {{ offer.orderId }}
@@ -93,6 +70,30 @@ onMounted(() => {
           </table>
         </div>
       </section>
+
     </section>
+    <div class=" text-slate-600 mt-10 ">
+      <RouterLink to="/subscribe"> <span class="underline cursor-pointer" ">Click
+        here</span></RouterLink> if you would like email alerts for new prices/projects or periodic email
+    </div>
+    <div class=" text-slate-600 mt-4 "><a href=" mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Project
+          Developer" target="_blank"><span class=" underline cursor-pointer" ">Click
+        here</span></a> if you are a project developer and want to list credits on this site (plus other distribution
+      channels including API, and emails)</div>
+
   </div>
 </template>
+<script setup>
+import { RouterLink } from "vue-router";
+import { onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useOffersStore } from "../stores/offers";
+
+const offersStore = useOffersStore();
+const { offers, loading, error } = storeToRefs(offersStore);
+const { fetchOffers } = offersStore;
+
+onMounted(() => {
+  fetchOffers();
+});
+</script>
