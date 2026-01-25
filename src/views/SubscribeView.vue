@@ -54,12 +54,20 @@
                 class="w-80 bg-primary hover:bg-primary-600 text-white font-semibold py-3 px-6 rounded-lg focus:ring-2 focus:ring-primary">
                 Subscribe
             </button>
+
+            <Button type="submit" label="Subscribe" />
         </form>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useSubscribedUserStore } from '../stores/subscribedUser.ts'
+import Button from "primevue/button"
+const subscribedUserStore = useSubscribedUserStore()
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
 
 const formData = ref({
     email: '',
@@ -68,7 +76,18 @@ const formData = ref({
 })
 
 const handleSubmit = () => {
-    console.log('Form submitted:', formData.value)
+    toast.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Subscription created successfully',
+        life: 3000
+
+    })
+    // subscribedUserStore.createSubscribedUser({
+    //     email: formData.value.email,
+    //     instantUpdates: formData.value.receiveInstantEmail,
+    //     schedulePreference: formData.value.emailFrequency
+    // })
     // TODO: Implement actual subscription logic
 }
 </script>

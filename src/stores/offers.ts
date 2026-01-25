@@ -1,9 +1,8 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import apiClient from "../utils/apiClient.ts";
 
-// const BaseUrl = "https://api.publicdomain.co.in";
-const BaseUrl = "http://localhost:8000";
-const API_URL = `${BaseUrl}/offers/website`;
+const API_URL = `${apiClient.root.defaults.baseURL}/offers/website`;
 
 export const useOffersStore = defineStore("offers", {
   state: () => ({
