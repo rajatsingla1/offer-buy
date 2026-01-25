@@ -122,11 +122,13 @@ import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useOffersStore } from "../stores/offers";
+import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
 
+const toast = useToast();
 const offersStore = useOffersStore();
 const { offers } = storeToRefs(offersStore);
 
@@ -165,8 +167,48 @@ function resetBuyForm() {
   buyForm.value = { credits: null, price: null, email: "" };
 }
 
+function isValidEmail(email) {
+  if (!email || typeof email !== "string") return false;
+  const s = email.trim();
+  return s.includes("@") && s.includes(".") && s.indexOf("@") < s.lastIndexOf(".");
+}
+
+function validateBuyForm() {
+  const errors = [];
+  const credits = Number(buyForm.value.credits);
+  const price = Number(buyForm.value.price);
+  const available = Number(selectedOffer.value?.creditsToOffer);
+
+  if (!Number.isFinite(credits) || credits <= 1) {
+    errors.push("Credits must be greater than 1.");
+  } else if (Number.isFinite(available) && credits > available) {
+    errors.push(`Credits cannot exceed ${available.toLocaleString()} available.`);
+  }
+
+  if (!Number.isFinite(price) || price <= 1) {
+    errors.push("Price must be greater than $1.");
+  }
+
+  if (!isValidEmail(buyForm.value.email)) {
+    errors.push("Please enter a valid email.");
+  }
+
+  return errors;
+}
+
 function handleBuyConfirm() {
-  const total = (Number(buyForm.value.credits) ?? 0) * (Number(buyForm.value.price) ?? 0);
+  const errors = validateBuyForm();
+  if (errors.length) {
+    toast.add({
+      severity: "error",
+      summary: "Validation failed",
+      detail: errors.join(" "),
+      life: 5000,
+    });
+    return;
+  }
+
+  const total = Number(buyForm.value.credits) * Number(buyForm.value.price);
   const payload = {
     offerId: selectedOffer.value?.id,
     orderId: selectedOffer.value?.orderId,
@@ -175,7 +217,7 @@ function handleBuyConfirm() {
     credits: buyForm.value.credits,
     pricePerCredit: buyForm.value.price,
     total,
-    email: buyForm.value.email,
+    email: buyForm.value.email.trim(),
   };
   console.log("Buy confirm payload:", payload);
   buyDialogVisible.value = false;
