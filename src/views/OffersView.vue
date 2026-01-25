@@ -102,7 +102,7 @@
         </div>
       </template>
       <template #footer>
-        <Button label="Confirm" @click="handleBuyConfirm" />
+        <Button label="Confirm" :loading="submitLoading" @click="handleBuyConfirm" />
       </template>
     </Dialog>
     <div class=" text-slate-600 mt-10 ">
@@ -134,6 +134,7 @@ const { offers } = storeToRefs(offersStore);
 
 const buyDialogVisible = ref(false);
 const selectedOffer = ref(null);
+const submitLoading = ref(false);
 const buyForm = ref({
   credits: null,
   price: null,
@@ -164,6 +165,7 @@ function openBuyDialog(offer) {
 
 function resetBuyForm() {
   selectedOffer.value = null;
+  submitLoading.value = false;
   buyForm.value = { credits: null, price: null, email: "" };
 }
 
@@ -208,20 +210,25 @@ async function handleBuyConfirm() {
     return;
   }
 
-  const total = Number(buyForm.value.credits) * Number(buyForm.value.price);
-  const payload = {
-    offerId: selectedOffer.value?.id,
-    orderId: selectedOffer.value?.orderId,
-    serial: selectedOffer.value?.serial,
-    vintage: selectedOffer.value?.vintage,
-    credits: buyForm.value.credits,
-    projectName: selectedOffer.value?.projectName,
-    pricePerCredit: buyForm.value.price,
-    total,
-    projectDeveloperEmail: selectedOffer.value?.email,
-    email: buyForm.value.email.trim(),
-  };
-  await offersStore.sendOfferBid(payload);
-  buyDialogVisible.value = false;
+  submitLoading.value = true;
+  try {
+    const total = Number(buyForm.value.credits) * Number(buyForm.value.price);
+    const payload = {
+      offerId: selectedOffer.value?.id,
+      orderId: selectedOffer.value?.orderId,
+      serial: selectedOffer.value?.serial,
+      vintage: selectedOffer.value?.vintage,
+      credits: buyForm.value.credits,
+      projectName: selectedOffer.value?.projectName,
+      pricePerCredit: buyForm.value.price,
+      total,
+      projectDeveloperEmail: selectedOffer.value?.email,
+      email: buyForm.value.email.trim(),
+    };
+    await offersStore.sendOfferBid(payload);
+    buyDialogVisible.value = false;
+  } finally {
+    submitLoading.value = false;
+  }
 }
 </script>
