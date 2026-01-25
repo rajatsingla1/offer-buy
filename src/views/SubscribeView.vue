@@ -69,18 +69,27 @@ const formData = ref({
     emailFrequency: 'daily' as 'daily' | 'weekly'
 })
 
-const handleSubmit = () => {
-    toast.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Subscription created successfully',
-        life: 3000
+const resetForm = () => {
+    formData.value.email = '';
+    formData.value.receiveInstantEmail = false;
+    formData.value.emailFrequency = 'daily';
+}
+
+const handleSubmit = async () => {
+    const response = await subscribedUserStore.createSubscribedUser({
+        email: formData.value.email,
+        instantUpdates: formData.value.receiveInstantEmail,
+        schedulePreference: formData.value.emailFrequency,
     });
-    // subscribedUserStore.createSubscribedUser({
-    //     email: formData.value.email,
-    //     instantUpdates: formData.value.receiveInstantEmail,
-    //     schedulePreference: formData.value.emailFrequency
-    // })
-    // TODO: Implement actual subscription logic
+
+    if (response) {
+        resetForm();
+        toast.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Subscription created successfully',
+            life: 3000
+        });
+    }
 }
 </script>
