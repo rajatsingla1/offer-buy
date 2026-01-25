@@ -61,7 +61,7 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       instantUpdates?: boolean;
       schedulePreference?: string;
       active?: boolean;
-      blacklistedProjectIds?: Record<string, boolean>;
+      blacklistedProjectIds?: string[];
     }
   ) => {
     try {

@@ -5,7 +5,40 @@
             Update your email alert preferences and product selections.
         </p>
 
-        <form @submit.prevent="handleSubmit" class="space-y-6">
+        <!-- Loading state -->
+        <div v-if="loading" class="flex justify-center items-center min-h-[240px]">
+            <ProgressSpinner style="width: 48px; height: 48px" strokeWidth="4" />
+        </div>
+
+        <!-- Show resubscribe button if inactive -->
+        <div v-else-if="!isActive" class="space-y-6">
+            <div>
+                <label for="email" class="block text-slate-700 mb-2">
+                    Email Address
+                </label>
+                <input 
+                    id="email" 
+                    :value="formData.email" 
+                    type="email" 
+                    disabled
+                    class="w-full max-w-xs px-4 py-2 border border-slate-300 rounded-lg bg-slate-100 text-slate-600 cursor-not-allowed" 
+                />
+            </div>
+            <div>
+                <p class="text-slate-600 mb-4">
+                    You are currently unsubscribed from email alerts.
+                </p>
+                <Button 
+                    type="button" 
+                    label="Subscribe to Emails" 
+                    @click="handleSubscribe"
+                    class="w-80"
+                />
+            </div>
+        </div>
+
+        <!-- Show full form if active -->
+        <form v-else @submit.prevent="handleSubmit" class="space-y-6">
             <!-- Email (uneditable) -->
             <div>
                 <label for="email" class="block text-slate-700 mb-2">
@@ -139,6 +172,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSubscribedUserStore } from '../stores/subscribedUser.ts'
 import Button from "primevue/button"
+import ProgressSpinner from "primevue/progressspinner"
 import { useToast } from 'primevue/usetoast'
 
 const route = useRoute()
@@ -151,6 +185,9 @@ const products = ref([
     { id: '2', projectId: 'CCC', vintage: '2019', noCredits: 5000, includeInEmail: true },
     { id: '3', projectId: 'DEFG', vintage: '2023', noCredits: 12500, includeInEmail: true },
 ])
+
+const isActive = ref(true)
+const loading = ref(true)
 
 const formData = ref({
     email: '',
@@ -167,22 +204,27 @@ const toggleProduct = (productId: string) => {
 
 const loadUserData = async () => {
     const uuid = route.params.uuid as string
-    if (uuid) {
-        await subscribedUserStore.getSubscribedUser(uuid)
-        const user = subscribedUserStore.subscribedUser as any
-        if (user) {
-            formData.value.email = user.email || ''
-            formData.value.receiveInstantEmail = user.instant_updates || false
-            formData.value.emailFrequency = (user.schedule_preference || 'daily') as 'daily' | 'weekly'
-            
-            // Load product selection from blacklisted_project_ids
-            // This is a simplified version - adjust based on your actual data structure
-            if (user.blacklisted_project_ids) {
-                products.value.forEach(product => {
-                    product.includeInEmail = !user.blacklisted_project_ids[product.projectId]
-                })
+    loading.value = true
+    try {
+        if (uuid) {
+            await subscribedUserStore.getSubscribedUser(uuid)
+            const user = subscribedUserStore.subscribedUser as any
+            if (user) {
+                formData.value.email = user.email || ''
+                isActive.value = user.active !== false
+                formData.value.receiveInstantEmail = user.instant_updates || false
+                formData.value.emailFrequency = (user.schedule_preference || 'daily') as 'daily' | 'weekly'
+
+                const blacklisted = user.blacklisted_project_ids
+                if (Array.isArray(blacklisted)) {
+                    products.value.forEach((p) => {
+                        p.includeInEmail = !blacklisted.includes(p.projectId)
+                    })
+                }
             }
         }
+    } finally {
+        loading.value = false
     }
 }
 
@@ -190,11 +232,9 @@ const handleSubmit = async () => {
     const uuid = route.params.uuid as string
     if (!uuid) return
 
-    // Build blacklisted_project_ids object
-    const blacklistedProjectIds: Record<string, boolean> = {}
-    products.value.forEach(product => {
-        blacklistedProjectIds[product.projectId] = !product.includeInEmail
-    })
+    const blacklistedProjectIds = products.value
+        .filter((p) => !p.includeInEmail)
+        .map((p) => p.projectId)
 
     const response = await subscribedUserStore.updateSubscribedUser(uuid, {
         instantUpdates: formData.value.receiveInstantEmail,
@@ -221,10 +261,30 @@ const handleUnsubscribeAll = async () => {
     })
 
     if (response) {
+        isActive.value = false
         toast.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Unsubscribed from all emails',
+            life: 3000
+        })
+    }
+}
+
+const handleSubscribe = async () => {
+    const uuid = route.params.uuid as string
+    if (!uuid) return
+
+    const response = await subscribedUserStore.updateSubscribedUser(uuid, {
+        active: true,
+    })
+
+    if (response) {
+        isActive.value = true
+        toast.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Subscribed to emails successfully',
             life: 3000
         })
     }
