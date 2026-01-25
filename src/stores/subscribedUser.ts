@@ -7,6 +7,20 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
   const subscribedUser = ref(null);
   const toast = useToast();
 
+  const getSubscribedUser = async (uuid: string) => {
+    try {
+      const response = await apiClient.root.get(`/subscribed-users/${uuid}`);
+      subscribedUser.value = response.data;
+    } catch (error) {
+      toast.add({
+        severity: "error",
+        summary: "Error",
+        detail: "Error getting subscribed user",
+        life: 3000,
+      });
+    }
+  };
+
   const createSubscribedUser = async ({
     email,
     name,
@@ -38,6 +52,7 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
 
   return {
     subscribedUser,
+    getSubscribedUser,
     createSubscribedUser,
   };
 });
