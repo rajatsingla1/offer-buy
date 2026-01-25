@@ -32,6 +32,7 @@
                     type="button" 
                     label="Subscribe to Emails" 
                     @click="handleSubscribe"
+                    :loading="subscribing"
                     class="w-80"
                 />
             </div>
@@ -103,18 +104,6 @@
                 </div>
             </div>
 
-            <!-- Unsubscribe all emails button -->
-            <div>
-                <Button 
-                    type="button" 
-                    label="Unsubscribe All Emails" 
-                    severity="secondary"
-                    outlined
-                    @click="handleUnsubscribeAll"
-                    class="w-80"
-                />
-            </div>
-
             <!-- Product Selection Section -->
             <div class="space-y-4 pt-6 border-t border-slate-200">
                 <h3 class="text-ink">Product Selection</h3>
@@ -161,7 +150,25 @@
 
             <!-- Submit button -->
             <div class="pt-4">
-                <Button class="w-80" type="submit" label="Save Changes" />
+                <Button 
+                    class="w-80" 
+                    type="submit" 
+                    label="Save Changes" 
+                    :loading="saving"
+                />
+            </div>
+
+            <!-- Unsubscribe all emails button -->
+            <div class="pt-4">
+                <Button 
+                    type="button" 
+                    label="Unsubscribe All Emails" 
+                    severity="secondary"
+                    outlined
+                    @click="handleUnsubscribeAll"
+                    :loading="unsubscribing"
+                    class="w-80"
+                />
             </div>
         </form>
     </div>
@@ -188,6 +195,9 @@ const products = ref([
 
 const isActive = ref(true)
 const loading = ref(true)
+const saving = ref(false)
+const unsubscribing = ref(false)
+const subscribing = ref(false)
 
 const formData = ref({
     email: '',
@@ -232,23 +242,28 @@ const handleSubmit = async () => {
     const uuid = route.params.uuid as string
     if (!uuid) return
 
-    const blacklistedProjectIds = products.value
-        .filter((p) => !p.includeInEmail)
-        .map((p) => p.projectId)
+    saving.value = true
+    try {
+        const blacklistedProjectIds = products.value
+            .filter((p) => !p.includeInEmail)
+            .map((p) => p.projectId)
 
-    const response = await subscribedUserStore.updateSubscribedUser(uuid, {
-        instantUpdates: formData.value.receiveInstantEmail,
-        schedulePreference: formData.value.emailFrequency,
-        blacklistedProjectIds,
-    })
-
-    if (response) {
-        toast.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Subscription updated successfully',
-            life: 3000
+        const response = await subscribedUserStore.updateSubscribedUser(uuid, {
+            instantUpdates: formData.value.receiveInstantEmail,
+            schedulePreference: formData.value.emailFrequency,
+            blacklistedProjectIds,
         })
+
+        if (response) {
+            toast.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Subscription updated successfully',
+                life: 3000
+            })
+        }
+    } finally {
+        saving.value = false
     }
 }
 
@@ -256,18 +271,23 @@ const handleUnsubscribeAll = async () => {
     const uuid = route.params.uuid as string
     if (!uuid) return
 
-    const response = await subscribedUserStore.updateSubscribedUser(uuid, {
-        active: false,
-    })
-
-    if (response) {
-        isActive.value = false
-        toast.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Unsubscribed from all emails',
-            life: 3000
+    unsubscribing.value = true
+    try {
+        const response = await subscribedUserStore.updateSubscribedUser(uuid, {
+            active: false,
         })
+
+        if (response) {
+            isActive.value = false
+            toast.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Unsubscribed from all emails',
+                life: 3000
+            })
+        }
+    } finally {
+        unsubscribing.value = false
     }
 }
 
@@ -275,18 +295,23 @@ const handleSubscribe = async () => {
     const uuid = route.params.uuid as string
     if (!uuid) return
 
-    const response = await subscribedUserStore.updateSubscribedUser(uuid, {
-        active: true,
-    })
-
-    if (response) {
-        isActive.value = true
-        toast.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Subscribed to emails successfully',
-            life: 3000
+    subscribing.value = true
+    try {
+        const response = await subscribedUserStore.updateSubscribedUser(uuid, {
+            active: true,
         })
+
+        if (response) {
+            isActive.value = true
+            toast.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Subscribed to emails successfully',
+                life: 3000
+            })
+        }
+    } finally {
+        subscribing.value = false
     }
 }
 
