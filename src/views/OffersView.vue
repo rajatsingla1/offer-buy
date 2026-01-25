@@ -63,7 +63,9 @@
                   }}
                 </td>
                 <td class="table-cell text-right">
-                  <button type="button" class="button-primary">Buy</button>
+                  <button type="button" class="button-primary" @click="openBuyDialog(offer)">
+                    Buy
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -72,23 +74,110 @@
       </section>
 
     </section>
+
+    <Dialog v-model:visible="buyDialogVisible" modal header="Bidding" :style="{ width: '28rem' }"
+      :dismissable-mask="true" class="buy-dialog" @hide="resetBuyForm">
+      <template v-if="selectedOffer">
+        <p class="text-slate-700 mb-4">
+          You are bidding to buy
+          <strong>{{ formatCredits(buyForm.credits) }} credits</strong>
+          of {{ selectedOffer.projectName }} vintage {{ selectedOffer.vintage }} at
+          <strong>${{ formatPrice(buyForm.price) }}</strong>.
+        </p>
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-2">
+            <label for="buy-credits" class="text-sm font-medium text-slate-700">Credits</label>
+            <InputNumber id="buy-credits" v-model="buyForm.credits" :min="0" :max-fraction-digits="0" class="w-full" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="buy-price" class="text-sm font-medium text-slate-700">Price per credit ($)</label>
+            <InputNumber id="buy-price" v-model="buyForm.price" :min="0" :min-fraction-digits="2"
+              :max-fraction-digits="2" mode="currency" currency="USD" locale="en-US" class="w-full" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="buy-email" class="text-sm font-medium text-slate-700">Email address</label>
+            <InputText id="buy-email" v-model="buyForm.email" type="email" placeholder="your.email@example.com"
+              class="w-full" />
+          </div>
+        </div>
+      </template>
+      <template #footer>
+        <Button label="Confirm" @click="handleBuyConfirm" />
+      </template>
+    </Dialog>
     <div class=" text-slate-600 mt-10 ">
-      <RouterLink to="/subscribe"> <span class="underline cursor-pointer" ">Click
-        here</span></RouterLink> if you would like email alerts for new prices/projects or periodic email
+      <RouterLink to="/subscribe"><span class="underline cursor-pointer">Click
+          here</span></RouterLink> if you would like email alerts for new prices/projects or periodic email
     </div>
-    <div class=" text-slate-600 mt-4 "><a href=" mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Project
-          Developer" target="_blank"><span class=" underline cursor-pointer" ">Click
-        here</span></a> if you are a project developer and want to list credits on this site (plus other distribution
+    <div class=" text-slate-600 mt-4 "><a
+        href="mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Project Developer" target="_blank"><span
+          class="underline cursor-pointer">Click
+          here</span></a> if you are a project developer and want to list credits on this site (plus other distribution
       channels including API, and emails)</div>
 
   </div>
 </template>
 <script setup>
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useOffersStore } from "../stores/offers";
+import Dialog from "primevue/dialog";
+import Button from "primevue/button";
+import InputNumber from "primevue/inputnumber";
+import InputText from "primevue/inputtext";
 
 const offersStore = useOffersStore();
 const { offers } = storeToRefs(offersStore);
 
+const buyDialogVisible = ref(false);
+const selectedOffer = ref(null);
+const buyForm = ref({
+  credits: null,
+  price: null,
+  email: "",
+});
+
+function formatCredits(val) {
+  if (val == null) return "—";
+  return Number(val).toLocaleString();
+}
+
+function formatPrice(val) {
+  if (val == null) return "—";
+  return Number(val).toFixed(2);
+}
+
+function openBuyDialog(offer) {
+  selectedOffer.value = offer;
+  const credits = Number(offer.creditsToOffer);
+  const price = Number(offer.pricePerCredit);
+  buyForm.value = {
+    credits: Number.isFinite(credits) ? credits : 0,
+    price: Number.isFinite(price) ? price : 0,
+    email: "",
+  };
+  buyDialogVisible.value = true;
+}
+
+function resetBuyForm() {
+  selectedOffer.value = null;
+  buyForm.value = { credits: null, price: null, email: "" };
+}
+
+function handleBuyConfirm() {
+  const total = (Number(buyForm.value.credits) ?? 0) * (Number(buyForm.value.price) ?? 0);
+  const payload = {
+    offerId: selectedOffer.value?.id,
+    orderId: selectedOffer.value?.orderId,
+    serial: selectedOffer.value?.serial,
+    vintage: selectedOffer.value?.vintage,
+    credits: buyForm.value.credits,
+    pricePerCredit: buyForm.value.price,
+    total,
+    email: buyForm.value.email,
+  };
+  console.log("Buy confirm payload:", payload);
+  buyDialogVisible.value = false;
+}
 </script>
