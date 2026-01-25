@@ -49,13 +49,7 @@
                     </div>
                 </div>
             </div>
-
-            <button type="submit"
-                class="w-80 bg-primary hover:bg-primary-600 text-white font-semibold py-3 px-6 rounded-lg focus:ring-2 focus:ring-primary">
-                Subscribe
-            </button>
-
-            <Button type="submit" label="Subscribe" />
+            <Button class="w-80" type="submit" label="Subscribe" />
         </form>
     </div>
 </template>
@@ -81,8 +75,7 @@ const handleSubmit = () => {
         summary: 'Success',
         detail: 'Subscription created successfully',
         life: 3000
-
-    })
+    });
     // subscribedUserStore.createSubscribedUser({
     //     email: formData.value.email,
     //     instantUpdates: formData.value.receiveInstantEmail,

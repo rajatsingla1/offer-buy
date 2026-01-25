@@ -45,8 +45,7 @@ const activeRouteName = computed(() => route.name);
 
     <main class="mx-auto max-w-6xl px-4 pb-16 pt-10">
       <RouterView />
-      <Toast position="bottom-center" group="bl" />
     </main>
-
+    <Toast position="bottom-center" />
   </div>
 </template>
