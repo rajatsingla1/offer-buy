@@ -50,9 +50,48 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
     }
   };
 
+  const updateSubscribedUser = async (
+    uuid: string,
+    {
+      instantUpdates,
+      schedulePreference,
+      active,
+      blacklistedProjectIds,
+    }: {
+      instantUpdates?: boolean;
+      schedulePreference?: string;
+      active?: boolean;
+      blacklistedProjectIds?: Record<string, boolean>;
+    }
+  ) => {
+    try {
+      const response = await apiClient.root.patch(
+        `/subscribed-users/${uuid}`,
+        {
+          instant_updates: instantUpdates,
+          schedule_preference: schedulePreference,
+          active,
+          blacklisted_project_ids: blacklistedProjectIds,
+        }
+      );
+      if (response.data) {
+        subscribedUser.value = response.data;
+      }
+      return response.data;
+    } catch (error) {
+      toast.add({
+        severity: "error",
+        summary: "Error",
+        detail: "Error updating subscribed user",
+        life: 3000,
+      });
+    }
+  };
+
   return {
     subscribedUser,
     getSubscribedUser,
     createSubscribedUser,
+    updateSubscribedUser,
   };
 });
