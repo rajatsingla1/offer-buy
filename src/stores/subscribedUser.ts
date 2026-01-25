@@ -62,18 +62,15 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       schedulePreference?: string;
       active?: boolean;
       blacklistedProjectIds?: string[];
-    }
+    },
   ) => {
     try {
-      const response = await apiClient.root.patch(
-        `/subscribed-users/${uuid}`,
-        {
-          instant_updates: instantUpdates,
-          schedule_preference: schedulePreference,
-          active,
-          blacklisted_project_ids: blacklistedProjectIds,
-        }
-      );
+      const response = await apiClient.root.patch(`/subscribed-users/${uuid}`, {
+        instant_updates: instantUpdates,
+        schedule_preference: schedulePreference,
+        active,
+        blacklisted_project_ids: blacklistedProjectIds,
+      });
       if (response.data) {
         subscribedUser.value = response.data;
       }
