@@ -196,7 +196,7 @@ function validateBuyForm() {
   return errors;
 }
 
-function handleBuyConfirm() {
+async function handleBuyConfirm() {
   const errors = validateBuyForm();
   if (errors.length) {
     toast.add({
@@ -215,11 +215,13 @@ function handleBuyConfirm() {
     serial: selectedOffer.value?.serial,
     vintage: selectedOffer.value?.vintage,
     credits: buyForm.value.credits,
+    projectName: selectedOffer.value?.projectName,
     pricePerCredit: buyForm.value.price,
     total,
+    projectDeveloperEmail: selectedOffer.value?.email,
     email: buyForm.value.email.trim(),
   };
-  console.log("Buy confirm payload:", payload);
+  await offersStore.sendOfferBid(payload);
   buyDialogVisible.value = false;
 }
 </script>

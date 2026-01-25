@@ -2,7 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import apiClient from "../utils/apiClient.ts";
 
-const API_URL = `${apiClient.root.defaults.baseURL}/offers/website`;
+const API_URL = `${apiClient.root.defaults.baseURL}`;
 
 export const useOffersStore = defineStore("offers", {
   state: () => ({
@@ -18,7 +18,7 @@ export const useOffersStore = defineStore("offers", {
       this.error = "";
 
       try {
-        const response = await axios.get(API_URL);
+        const response = await axios.get(`${API_URL}/offers/website`);
 
         const payload = response.data;
         const remoteOffers = payload ?? [];
@@ -32,6 +32,14 @@ export const useOffersStore = defineStore("offers", {
         this.offers = [];
       } finally {
         this.loading = false;
+      }
+    },
+    async sendOfferBid(bid: any) {
+      try {
+        const response = await axios.post(`${API_URL}/offers/bid`, bid);
+        return response.data;
+      } catch (err) {
+        console.error("Error sending offer bid", err.response?.data || err);
       }
     },
   },
