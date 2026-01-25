@@ -1,10 +1,17 @@
 <script setup>
 import { RouterLink, RouterView, useRoute } from "vue-router";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import Toast from 'primevue/toast';
+import { useOffersStore } from "@/stores/offers.ts";
 
+const offersStore = useOffersStore();
 const route = useRoute();
 const activeRouteName = computed(() => route.name);
+const { fetchOffers } = offersStore;
+
+onMounted(() => {
+  fetchOffers();
+});
 </script>
 
 <template>

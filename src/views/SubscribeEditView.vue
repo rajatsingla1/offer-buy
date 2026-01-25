@@ -131,23 +131,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSubscribedUserStore } from '../stores/subscribedUser.ts'
 import Button from "primevue/button"
 import ProgressSpinner from "primevue/progressspinner"
 import { useToast } from 'primevue/usetoast'
+import { useOffersStore } from '../stores/offers.ts'
 
 const route = useRoute()
 const subscribedUserStore = useSubscribedUserStore()
 const toast = useToast()
+const offersStore = useOffersStore()
 
-// Mock product data - replace with actual API call
-const products = ref([
-    { id: '1', projectId: 'ABC', vintage: '2022', noCredits: 1000, includeInEmail: true },
-    { id: '2', projectId: 'CCC', vintage: '2019', noCredits: 5000, includeInEmail: true },
-    { id: '3', projectId: 'DEFG', vintage: '2023', noCredits: 12500, includeInEmail: true },
-])
+const products = computed(() => {
+    const projects: any = [];
+    offersStore.offers.forEach((offer: any) => {
+        const project: any = projects.find((project: any) => project.projectId === offer.projectId);
+        if (project) {
+            project.noCredits += offer.creditsToOffer
+        } else {
+            projects.push({
+                projectId: offer.projectId,
+                vintage: offer.vintage,
+                noCredits: offer.creditsToOffer,
+            })
+        }
+    })
+    return projects;
+})
 
 const isActive = ref(true)
 const loading = ref(true)
@@ -162,7 +174,7 @@ const formData = ref({
 })
 
 const toggleProduct = (productId: string) => {
-    const product = products.value.find(p => p.id === productId)
+    const product = products.value.find((p: any) => p.id === productId)
     if (product) {
         product.includeInEmail = !product.includeInEmail
     }

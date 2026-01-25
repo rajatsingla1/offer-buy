@@ -85,15 +85,10 @@
 </template>
 <script setup>
 import { RouterLink } from "vue-router";
-import { onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useOffersStore } from "../stores/offers";
 
 const offersStore = useOffersStore();
-const { offers, loading, error } = storeToRefs(offersStore);
-const { fetchOffers } = offersStore;
+const { offers } = storeToRefs(offersStore);
 
-onMounted(() => {
-  fetchOffers();
-});
 </script>
