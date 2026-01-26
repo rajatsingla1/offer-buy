@@ -185,6 +185,7 @@ const loadUserData = async () => {
     loading.value = true
     try {
         if (uuid) {
+            await offersStore.fetchOffers();
             await subscribedUserStore.getSubscribedUser(uuid)
             const user = subscribedUserStore.subscribedUser as any
             if (user) {
