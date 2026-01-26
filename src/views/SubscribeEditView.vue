@@ -186,7 +186,9 @@ const loadUserData = async () => {
     try {
         if (uuid) {
             await offersStore.fetchOffers();
-            await subscribedUserStore.getSubscribedUser(uuid)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await subscribedUserStore.getSubscribedUser(uuid);
+            await new Promise(resolve => setTimeout(resolve, 1000));
             const user = subscribedUserStore.subscribedUser as any
             if (user) {
                 formData.value.email = user.email || ''
