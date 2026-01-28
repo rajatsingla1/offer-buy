@@ -196,10 +196,10 @@ const loadUserData = async () => {
                 formData.value.receiveInstantEmail = user.instant_updates || false
                 formData.value.emailFrequency = (user.schedule_preference || 'daily') as 'daily' | 'weekly'
 
-                const blacklisted = user.blacklisted_project_ids
-                if (Array.isArray(blacklisted)) {
+                const subscribedProjectIds = user.subscribed_project_ids
+                if (Array.isArray(subscribedProjectIds)) {
                     products.value.forEach((p) => {
-                        p.includeInEmail = !blacklisted.includes(p.projectId)
+                        p.includeInEmail = subscribedProjectIds.includes(p.projectId)
                     })
                 }
             }
@@ -215,14 +215,14 @@ const handleSubmit = async () => {
 
     saving.value = true
     try {
-        const blacklistedProjectIds = products.value
-            .filter((p) => !p.includeInEmail)
+        const subscribedProjectIds = products.value
+            .filter((p) => p.includeInEmail)
             .map((p) => p.projectId)
 
         const response = await subscribedUserStore.updateSubscribedUser(uuid, {
             instantUpdates: formData.value.receiveInstantEmail,
             schedulePreference: formData.value.emailFrequency,
-            blacklistedProjectIds,
+            subscribedProjectIds,
         })
 
         if (response) {

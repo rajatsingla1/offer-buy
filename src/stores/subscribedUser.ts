@@ -56,12 +56,12 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       instantUpdates,
       schedulePreference,
       active,
-      blacklistedProjectIds,
+      subscribedProjectIds,
     }: {
       instantUpdates?: boolean;
       schedulePreference?: string;
       active?: boolean;
-      blacklistedProjectIds?: string[];
+      subscribedProjectIds?: string[];
     },
   ) => {
     try {
@@ -69,7 +69,7 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
         instant_updates: instantUpdates,
         schedule_preference: schedulePreference,
         active,
-        blacklisted_project_ids: blacklistedProjectIds,
+        subscribed_project_ids: subscribedProjectIds,
       });
       if (response.data) {
         subscribedUser.value = response.data;
