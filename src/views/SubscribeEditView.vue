@@ -73,13 +73,22 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="flex items-center gap-4">
+                    <label for="auto-subscribe-new-edit"
+                        class="text-sm text-slate-700 cursor-pointer whitespace-nowrap min-w-[350px]">
+                        Automatically subscribe to new offers:
+                    </label>
+                    <input id="auto-subscribe-new-edit" v-model="formData.autoSubscribeNewOffers" type="checkbox"
+                        class="h-4 w-4 text-primary border-slate-300 rounded focus:ring-primary" />
+                </div>
             </div>
 
-            <!-- Product Selection Section -->
+            <!-- Projects to include -->
             <div class="space-y-4 pt-6 border-t border-slate-200">
-                <h3 class="text-ink">Product Selection</h3>
+                <h3 class="text-ink">Projects to include</h3>
                 <p class="text-sm text-slate-600 mb-4">
-                    Select which products to include in your email alerts.
+                    Choose which projects to include in your email alerts. When “All projects” is checked, every available project is included regardless of individual selection.
                 </p>
 
                 <section class="card overflow-hidden">
@@ -87,28 +96,37 @@
                         <table class="min-w-full divide-y divide-primary-100">
                             <thead class="table-header">
                                 <tr>
+                                    <th scope="col" class="px-6 py-3 text-left w-12">Include</th>
                                     <th scope="col" class="px-6 py-3 text-left">Project ID</th>
                                     <th scope="col" class="px-6 py-3 text-left">Vintage</th>
                                     <th scope="col" class="px-6 py-3 text-left">No Credits</th>
-                                    <th scope="col" class="px-6 py-3 text-left">Include in email:</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-primary-50 bg-white">
-                                <tr v-for="product in products" :key="product.id" class="hover:bg-primary-50/40">
+                                <tr class="bg-primary-50/30 hover:bg-primary-50/50">
                                     <td class="table-cell">
-                                        <div class="text-sm font-semibold text-ink">
-                                            {{ product.projectId }}
-                                        </div>
-                                    </td>
-                                    <td class="table-cell">{{ product.vintage }}</td>
-                                    <td class="table-cell">
-                                        {{ product.noCredits.toLocaleString() }}
-                                    </td>
-                                    <td class="table-cell">
-                                        <input type="checkbox" :checked="product.includeInEmail"
-                                            @change="toggleProduct(product.id)"
+                                        <input id="projects-all-edit" type="checkbox" :checked="allProjectsChecked"
+                                            @change="toggleAllProjects"
                                             class="h-4 w-4 text-primary border-slate-300 rounded focus:ring-primary" />
                                     </td>
+                                    <td class="table-cell" colspan="3">
+                                        <label for="projects-all-edit" class="text-sm font-medium text-ink cursor-pointer">
+                                            All projects
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr v-for="product in products" :key="product.projectId" class="hover:bg-primary-50/40">
+                                    <td class="table-cell">
+                                        <input type="checkbox" :checked="selectedProjectIds.has(product.projectId)"
+                                            :disabled="allProjectsChecked"
+                                            @change="toggleProject(product.projectId)"
+                                            class="h-4 w-4 text-primary border-slate-300 rounded focus:ring-primary disabled:opacity-50" />
+                                    </td>
+                                    <td class="table-cell">
+                                        <div class="text-sm font-semibold text-ink">{{ product.projectId }}</div>
+                                    </td>
+                                    <td class="table-cell">{{ product.vintage }}</td>
+                                    <td class="table-cell">{{ product.noCredits.toLocaleString() }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -145,20 +163,20 @@ const toast = useToast()
 const offersStore = useOffersStore()
 
 const products = computed(() => {
-    const projects: any = [];
+    const projects: { projectId: string; vintage: string; noCredits: number }[] = []
     offersStore.offers.forEach((offer: any) => {
-        const project: any = projects.find((project: any) => project.projectId === offer.projectId);
+        const project = projects.find((p) => p.projectId === offer.projectId)
         if (project) {
-            project.noCredits += offer.creditsToOffer
+            project.noCredits += offer.creditsToOffer ?? 0
         } else {
             projects.push({
                 projectId: offer.projectId,
-                vintage: offer.vintage,
-                noCredits: offer.creditsToOffer,
+                vintage: offer.vintage ?? '',
+                noCredits: offer.creditsToOffer ?? 0,
             })
         }
     })
-    return projects;
+    return projects
 })
 
 const isActive = ref(true)
@@ -170,14 +188,23 @@ const subscribing = ref(false)
 const formData = ref({
     email: '',
     receiveInstantEmail: false,
-    emailFrequency: 'daily' as 'daily' | 'weekly'
+    emailFrequency: 'daily' as 'daily' | 'weekly',
+    autoSubscribeNewOffers: true,
 })
 
-const toggleProduct = (productId: string) => {
-    const product = products.value.find((p: any) => p.id === productId)
-    if (product) {
-        product.includeInEmail = !product.includeInEmail
-    }
+const allProjectsChecked = ref(true)
+const selectedProjectIds = ref<Set<string>>(new Set())
+
+const toggleAllProjects = () => {
+    allProjectsChecked.value = !allProjectsChecked.value
+}
+
+const toggleProject = (projectId: string) => {
+    if (allProjectsChecked.value) return
+    const next = new Set(selectedProjectIds.value)
+    if (next.has(projectId)) next.delete(projectId)
+    else next.add(projectId)
+    selectedProjectIds.value = next
 }
 
 const loadUserData = async () => {
@@ -195,13 +222,15 @@ const loadUserData = async () => {
                 isActive.value = user.active !== false
                 formData.value.receiveInstantEmail = user.instant_updates || false
                 formData.value.emailFrequency = (user.schedule_preference || 'daily') as 'daily' | 'weekly'
+                formData.value.autoSubscribeNewOffers = user.subscribe_new_projects !== false
 
-                const subscribedProjectIds = user.subscribed_project_ids
-                if (Array.isArray(subscribedProjectIds)) {
-                    products.value.forEach((p) => {
-                        p.includeInEmail = subscribedProjectIds.includes(p.projectId)
-                    })
-                }
+                const subscribedIds = user.subscribed_project_ids
+                const idsList = Array.isArray(subscribedIds) ? subscribedIds : []
+                const allIds = new Set(products.value.map((p) => p.projectId))
+                const subscribedSet = new Set(idsList)
+                const hasAll = allIds.size > 0 && allIds.size === subscribedSet.size && [...allIds].every((id) => subscribedSet.has(id))
+                allProjectsChecked.value = hasAll
+                selectedProjectIds.value = subscribedSet
             }
         }
     } finally {
@@ -215,14 +244,15 @@ const handleSubmit = async () => {
 
     saving.value = true
     try {
-        const subscribedProjectIds = products.value
-            .filter((p) => p.includeInEmail)
-            .map((p) => p.projectId)
+        const subscribedProjectIds = allProjectsChecked.value
+            ? products.value.map((p) => p.projectId)
+            : Array.from(selectedProjectIds.value)
 
         const response = await subscribedUserStore.updateSubscribedUser(uuid, {
             instantUpdates: formData.value.receiveInstantEmail,
             schedulePreference: formData.value.emailFrequency,
             subscribedProjectIds,
+            autoSubscribeNewOffers: formData.value.autoSubscribeNewOffers,
         })
 
         if (response) {

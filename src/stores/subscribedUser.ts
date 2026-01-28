@@ -26,19 +26,28 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
     name,
     instantUpdates,
     schedulePreference,
+    subscribedProjectIds,
+    autoSubscribeNewOffers,
   }: {
     email: string;
     name?: string;
     instantUpdates: boolean;
     schedulePreference: string;
+    subscribedProjectIds: string[];
+    autoSubscribeNewOffers?: boolean;
   }) => {
     try {
-      const response = await apiClient.root.post("/subscribed-users", {
+      const body: Record<string, unknown> = {
         email,
         name,
         instantUpdates,
         schedulePreference,
-      });
+        subscribed_project_ids: subscribedProjectIds,
+      };
+      if (autoSubscribeNewOffers !== undefined) {
+        body.subscribe_new_projects = autoSubscribeNewOffers;
+      }
+      const response = await apiClient.root.post("/subscribed-users", body);
       return response.data;
     } catch (error) {
       toast.add({
@@ -57,20 +66,24 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       schedulePreference,
       active,
       subscribedProjectIds,
+      autoSubscribeNewOffers,
     }: {
       instantUpdates?: boolean;
       schedulePreference?: string;
       active?: boolean;
       subscribedProjectIds?: string[];
+      autoSubscribeNewOffers?: boolean;
     },
   ) => {
     try {
-      const response = await apiClient.root.patch(`/subscribed-users/${uuid}`, {
-        instant_updates: instantUpdates,
-        schedule_preference: schedulePreference,
-        active,
-        subscribed_project_ids: subscribedProjectIds,
-      });
+      const body: Record<string, unknown> = {};
+      if (instantUpdates != null) body.instant_updates = instantUpdates;
+      if (schedulePreference != null) body.schedule_preference = schedulePreference;
+      if (active != null) body.active = active;
+      if (subscribedProjectIds !== undefined) body.subscribed_project_ids = subscribedProjectIds;
+      if (autoSubscribeNewOffers != null) body.subscribe_new_projects = autoSubscribeNewOffers;
+
+      const response = await apiClient.root.patch(`/subscribed-users/${uuid}`, body);
       if (response.data) {
         subscribedUser.value = response.data;
       }
