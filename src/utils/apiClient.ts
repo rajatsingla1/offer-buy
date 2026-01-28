@@ -6,8 +6,8 @@ const instance = (baseURL: string) =>
   });
 
 const client = {
-  // root: instance("https://api.publicdomain.co.in"),
-  root: instance("http://localhost:8000"),
+  root: instance("https://api.publicdomain.co.in"),
+  // root: instance("http://localhost:8000"),
 };
 
 export default client;
