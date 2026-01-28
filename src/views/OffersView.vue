@@ -1,16 +1,11 @@
 <template>
   <div class="mb-40">
     <section class="card relative overflow-hidden p-8">
-      <div
-        class="absolute right-10 top-10 h-24 w-24 rounded-full bg-primary-100 blur-3xl"
-      ></div>
-      <div
-        class="absolute -bottom-6 left-6 h-20 w-20 rounded-full bg-primary-50 blur-2xl"
-      ></div>
+      <div class="absolute right-10 top-10 h-24 w-24 rounded-full bg-primary-100 blur-3xl"></div>
+      <div class="absolute -bottom-6 left-6 h-20 w-20 rounded-full bg-primary-50 blur-2xl"></div>
       <div class="flex flex-col gap-4">
         <p
-          class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100"
-        >
+          class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100">
           <span class="h-2 w-2 rounded-full bg-primary"></span>
           Live offers
         </p>
@@ -26,62 +21,72 @@
     </section>
 
     <section class="mt-10 space-y-4">
+      <div class="mb-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 flex-row-reverse">
+
+        <a href="https://alliedoffsets.com/metabase" target="_blank" rel="noopener noreferrer"
+          class="text-sm text-red-600 hover:text-red-700 hover:underline">
+          click for more project detail
+        </a>
+      </div>
       <section class="card overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-primary-100">
+        <div class="overflow-x-auto" style="max-width: 100%">
+          <table class="min-w-max divide-y divide-primary-100">
             <thead class="table-header">
               <tr>
-                <th scope="col" class="px-6 py-3 text-left">Name</th>
-                <th scope="col" class="px-6 py-3 text-left">Vintage</th>
-                <th scope="col" class="px-6 py-3 text-left">Credits</th>
-                <th scope="col" class="px-6 py-3 text-left">Price</th>
-                <th scope="col" class="px-6 py-3 text-left">Type</th>
-                <th scope="col" class="px-6 py-3 text-left">Total value</th>
-                <th scope="col" class="px-6 py-3 text-right">Action</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Name</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Vintage</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Credits</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Price</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Type</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Total value</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-right text-sm">Action</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Country?</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Sector</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Rating</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">CCP eligible</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Removal/avoidance</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Compliance eligible</th>
+                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">Top 3 buyers?</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-primary-50 bg-white">
-              <tr
-                v-for="offer in offers"
-                :key="offer.projectName"
-                class="hover:bg-primary-50/40"
-              >
-                <td class="table-cell">
-                  <div class="text-sm font-semibold text-ink">
-                    {{ offer.projectName }}
-                  </div>
-                  <p class="mt-1 text-xs text-slate-600">
-                    Serial ID {{ offer.serial }}
-                  </p>
+              <tr v-for="(offer, index) in offers" :key="offer.serial ?? offer.projectName + index"
+                class="hover:bg-primary-50/40">
+                <td class="table-cell whitespace-nowrap px-4 py-2.5">
+                  <div class="text-sm font-semibold text-ink">{{ offer.projectName }}</div>
+                  <p class="mt-0.5 text-xs text-slate-600">Serial ID {{ offer.serial }}</p>
                 </td>
-                <td class="table-cell">{{ offer.vintage }}</td>
-                <td class="table-cell">
-                  {{
-                    offer.creditsToOffer?.toLocaleString?.() ??
-                    offer.creditsToOffer
-                  }}
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">{{ offer.vintage }}</td>
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
+                  {{ offer.creditsToOffer?.toLocaleString?.() ?? offer.creditsToOffer }}
                 </td>
-                <td class="table-cell">
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
                   ${{ Number(offer.pricePerCredit).toFixed(2) }}
                 </td>
-                <td>Indicative</td>
-                <td class="table-cell font-semibold text-primary">
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">Indicative</td>
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm font-semibold text-primary">
                   ${{
                     (
-                      Number(offer.creditsToOffer) *
-                      Number(offer.pricePerCredit)
+                      Number(offer.creditsToOffer) * Number(offer.pricePerCredit)
                     ).toFixed(2)
                   }}
                 </td>
-                <td class="table-cell text-right">
-                  <button
-                    type="button"
-                    class="button-primary"
-                    @click="openBuyDialog(offer)"
-                  >
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-right">
+                  <button type="button" class="button-primary text-sm" @click="openBuyDialog(offer)">
                     Buy
                   </button>
                 </td>
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">{{ offer.countries ?? "—" }}</td>
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">{{ offer.sectors ?? "—" }}</td>
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">{{ offer.raters ?? "—" }}</td>
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">{{ offer.ccp ? "Yes" : "No" }}</td>
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
+                  {{ formatOffsetType(offer.project_offset_type) }}
+                </td>
+                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">{{ offer.compliance ? "Yes" : "No" }}</td>
+                <td class="table-cell max-w-[12rem] px-4 py-2.5 text-sm !whitespace-break-spaces">{{
+                  offer.top_3_buyers ?? "—"
+                }}</td>
               </tr>
             </tbody>
           </table>
@@ -89,94 +94,50 @@
       </section>
     </section>
 
-    <Dialog
-      v-model:visible="buyDialogVisible"
-      modal
-      header="Bidding"
-      :style="{ width: '28rem' }"
-      :dismissable-mask="true"
-      class="buy-dialog"
-      @hide="resetBuyForm"
-    >
+    <Dialog v-model:visible="buyDialogVisible" modal header="Bidding" :style="{ width: '28rem' }"
+      :dismissable-mask="true" class="buy-dialog" @hide="resetBuyForm">
       <template v-if="selectedOffer">
         <p class="text-slate-700 mb-4">
           You are bidding to buy
           <strong>{{ formatCredits(buyForm.credits) }} credits</strong>
           of {{ selectedOffer.projectName }} vintage
           {{ selectedOffer.vintage }} at
-          <strong>${{ formatPrice(buyForm.price) }}</strong
-          >.
+          <strong>${{ formatPrice(buyForm.price) }}</strong>.
         </p>
         <div class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
-            <label for="buy-credits" class="text-sm font-medium text-slate-700"
-              >Credits</label
-            >
-            <InputNumber
-              id="buy-credits"
-              v-model="buyForm.credits"
-              :min="0"
-              :max-fraction-digits="0"
-              class="w-full"
-            />
+            <label for="buy-credits" class="text-sm font-medium text-slate-700">Credits</label>
+            <InputNumber id="buy-credits" v-model="buyForm.credits" :min="0" :max-fraction-digits="0" class="w-full" />
           </div>
           <div class="flex flex-col gap-2">
-            <label for="buy-price" class="text-sm font-medium text-slate-700"
-              >Price per credit ($)</label
-            >
-            <InputNumber
-              id="buy-price"
-              v-model="buyForm.price"
-              :min="0"
-              :min-fraction-digits="2"
-              :max-fraction-digits="2"
-              mode="currency"
-              currency="USD"
-              locale="en-US"
-              class="w-full"
-            />
+            <label for="buy-price" class="text-sm font-medium text-slate-700">Price per credit ($)</label>
+            <InputNumber id="buy-price" v-model="buyForm.price" :min="0" :min-fraction-digits="2"
+              :max-fraction-digits="2" mode="currency" currency="USD" locale="en-US" class="w-full" />
           </div>
           <div class="flex flex-col gap-2">
-            <label for="buy-email" class="text-sm font-medium text-slate-700"
-              >Email address</label
-            >
-            <InputText
-              id="buy-email"
-              v-model="buyForm.email"
-              type="email"
-              placeholder="your.email@example.com"
-              class="w-full"
-            />
+            <label for="buy-email" class="text-sm font-medium text-slate-700">Email address</label>
+            <InputText id="buy-email" v-model="buyForm.email" type="email" placeholder="your.email@example.com"
+              class="w-full" />
           </div>
         </div>
       </template>
       <template #footer>
-        <Button
-          label="Confirm"
-          :loading="submitLoading"
-          @click="handleBuyConfirm"
-        />
+        <Button label="Confirm" :loading="submitLoading" @click="handleBuyConfirm" />
       </template>
     </Dialog>
     <div class="text-slate-600 mt-10">
-      <RouterLink to="/subscribe"
-        ><span class="underline cursor-pointer">Click here</span></RouterLink
-      >
+      <RouterLink to="/subscribe"><span class="underline cursor-pointer">Click here</span></RouterLink>
       if you would like email alerts for new prices/projects or periodic email
     </div>
     <div class="text-slate-600 mt-4">
-      <a
-        href="mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Project Developer"
-        target="_blank"
-        ><span class="underline cursor-pointer">Click here</span></a
-      >
+      <a href="mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Project Developer" target="_blank"><span
+          class="underline cursor-pointer">Click here</span></a>
       if you are a project developer and want to list credits on this site (plus
       other distribution channels including API, and emails)
     </div>
     <div class="text-slate-600 mt-4">
-      <a href="https://api.publicdomain.co.in/offers/api" target="_blank"
-        ><span class="underline cursor-pointer">Click here</span></a
-      >
+      <a href="https://api.publicdomain.co.in/offers/api" target="_blank"><span class="underline cursor-pointer">Click
+          here</span></a>
       if you want access to data via API
     </div>
     <div class="text-slate-600 mt-10">
@@ -215,6 +176,14 @@ const buyForm = ref({
   price: null,
   email: "",
 });
+
+function formatOffsetType(val) {
+  if (!val || typeof val !== "string") return "—";
+  const s = val.toLowerCase();
+  if (s.includes("removal")) return "removal";
+  if (s.includes("avoidance") || s.includes("reduction")) return "avoidance";
+  return val;
+}
 
 function formatCredits(val) {
   if (val == null) return "—";
