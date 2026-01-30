@@ -49,12 +49,7 @@
                 >
                   Name
                 </th>
-                <th
-                  scope="col"
-                  class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
-                  Vintage
-                </th>
+
                 <th
                   scope="col"
                   class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
@@ -140,11 +135,9 @@
                     {{ offer.projectName }}
                   </div>
                   <p class="mt-0.5 text-xs text-slate-600">
-                    Serial ID {{ offer.serial }}
+                    Vintage:
+                    {{ offer.vintage }}
                   </p>
-                </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  {{ offer.vintage }}
                 </td>
                 <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
                   {{
