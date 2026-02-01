@@ -66,13 +66,7 @@
                   scope="col"
                   class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
-                  Country
-                </th>
-                <th
-                  scope="col"
-                  class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
-                  Sector
+                  Country & Sector
                 </th>
                 <th
                   scope="col"
@@ -148,11 +142,9 @@
                     Buy
                   </button>
                 </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  {{ offer.countries ?? "—" }}
-                </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  {{ offer.sectors ?? "—" }}
+                <td class="table-cell px-4 py-2.5 text-sm">
+                  <div>{{ offer.countries ?? "—" }}</div>
+                  <div class="text-slate-600">{{ offer.sectors ?? "—" }}</div>
                 </td>
                 <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
                   {{ offer.raters ?? "—" }}
