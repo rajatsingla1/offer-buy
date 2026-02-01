@@ -110,7 +110,7 @@
                   </p>
                 </td>
                 <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  <div class="text-slate-600">Indicative</div>
+                  <div class="text-amber-600">Indicative</div>
                   <div>
                     {{
                       offer.creditsToOffer?.toLocaleString?.() ??
@@ -144,8 +144,11 @@
                   class="table-cell px-4 py-2.5 text-sm !whitespace-break-spaces"
                 >
                   <template v-if="offer.raters">
-                    <div v-for="(r, i) in splitByComma(offer.raters)" :key="i">
-                      {{ r }}
+                    <div
+                      v-for="(item, i) in commaBreakItems(offer.raters)"
+                      :key="i"
+                    >
+                      {{ item.text }}{{ item.comma }}
                     </div>
                   </template>
                   <span v-else>—</span>
@@ -160,7 +163,15 @@
                 <td
                   class="table-cell max-w-[12rem] px-4 py-2.5 text-sm !whitespace-break-spaces"
                 >
-                  {{ offer.top_3_buyers ?? "—" }}
+                  <template v-if="offer.top_3_buyers">
+                    <div
+                      v-for="(item, i) in commaBreakItems(offer.top_3_buyers)"
+                      :key="i"
+                    >
+                      {{ item.text }}{{ item.comma }}
+                    </div>
+                  </template>
+                  <span v-else>—</span>
                 </td>
               </tr>
             </tbody>
@@ -310,6 +321,11 @@ function splitByComma(val) {
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
+}
+
+function commaBreakItems(val) {
+  const arr = splitByComma(val);
+  return arr.map((text, i) => ({ text, comma: i < arr.length - 1 ? "," : "" }));
 }
 
 function formatCredits(val) {
