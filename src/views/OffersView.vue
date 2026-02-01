@@ -9,7 +9,7 @@
       ></div>
       <div class="flex flex-col gap-4">
         <p
-          class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100"
+          class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100"
         >
           <span class="h-2 w-2 rounded-full bg-primary"></span>
           Live offers
@@ -359,7 +359,7 @@ function validateBuyForm() {
     errors.push("Credits must be greater than 1.");
   } else if (Number.isFinite(available) && credits > available) {
     errors.push(
-      `Credits cannot exceed ${available.toLocaleString()} available.`,
+      `Credits cannot exceed ${available.toLocaleString()} available.`
     );
   }
 

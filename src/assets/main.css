@@ -30,7 +30,7 @@ a {
 }
 
 .table-cell {
-  @apply whitespace-nowrap px-6 py-4 text-sm text-slate-800;
+  @apply whitespace-nowrap px-4 py-4 text-sm text-slate-800;
 }
 
 /* PrimeVue Primary Color Override */
