@@ -54,7 +54,7 @@
                   scope="col"
                   class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
-                  CREDITS OFFER
+                  OFFER
                 </th>
                 <th
                   scope="col"
@@ -146,8 +146,15 @@
                   <div>{{ offer.countries ?? "—" }}</div>
                   <div class="text-slate-600">{{ offer.sectors ?? "—" }}</div>
                 </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  {{ offer.raters ?? "—" }}
+                <td
+                  class="table-cell px-4 py-2.5 text-sm !whitespace-break-spaces"
+                >
+                  <template v-if="offer.raters">
+                    <div v-for="(r, i) in splitByComma(offer.raters)" :key="i">
+                      {{ r }}
+                    </div>
+                  </template>
+                  <span v-else>—</span>
                 </td>
                 <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
                   {{ offer.ccp ? "Yes" : "No" }}
@@ -303,6 +310,14 @@ function formatOffsetType(val) {
   if (s.includes("removal")) return "removal";
   if (s.includes("avoidance") || s.includes("reduction")) return "avoidance";
   return val;
+}
+
+function splitByComma(val) {
+  if (!val) return [];
+  return String(val)
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 
 function formatCredits(val) {
