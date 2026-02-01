@@ -58,12 +58,6 @@
                 </th>
                 <th
                   scope="col"
-                  class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
-                  Type
-                </th>
-                <th
-                  scope="col"
                   class="whitespace-nowrap px-4 py-2.5 text-right text-sm"
                 >
                   Action
@@ -128,6 +122,7 @@
                   </p>
                 </td>
                 <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
+                  <div class="text-slate-600">Indicative</div>
                   <div>
                     {{
                       offer.creditsToOffer?.toLocaleString?.() ??
@@ -143,9 +138,6 @@
                       ).toLocaleString()
                     }}
                   </div>
-                </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  Indicative
                 </td>
                 <td class="table-cell whitespace-nowrap px-4 py-2.5 text-right">
                   <button
