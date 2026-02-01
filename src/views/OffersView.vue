@@ -54,25 +54,13 @@
                   scope="col"
                   class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
-                  Credits
-                </th>
-                <th
-                  scope="col"
-                  class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
-                  Price
+                  CREDITS OFFER
                 </th>
                 <th
                   scope="col"
                   class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   Type
-                </th>
-                <th
-                  scope="col"
-                  class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
-                  Total value
                 </th>
                 <th
                   scope="col"
@@ -140,26 +128,24 @@
                   </p>
                 </td>
                 <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  {{
-                    offer.creditsToOffer?.toLocaleString?.() ??
-                    offer.creditsToOffer
-                  }}
-                </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  ${{ Number(offer.pricePerCredit).toLocaleString() }}
+                  <div>
+                    {{
+                      offer.creditsToOffer?.toLocaleString?.() ??
+                      offer.creditsToOffer
+                    }}
+                    @ ${{ Number(offer.pricePerCredit).toLocaleString() }}
+                  </div>
+                  <div class="font-semibold text-primary">
+                    ${{
+                      (
+                        Number(offer.creditsToOffer) *
+                        Number(offer.pricePerCredit)
+                      ).toLocaleString()
+                    }}
+                  </div>
                 </td>
                 <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
                   Indicative
-                </td>
-                <td
-                  class="table-cell whitespace-nowrap px-4 py-2.5 text-sm font-semibold text-primary"
-                >
-                  ${{
-                    (
-                      Number(offer.creditsToOffer) *
-                      Number(offer.pricePerCredit)
-                    ).toLocaleString()
-                  }}
                 </td>
                 <td class="table-cell whitespace-nowrap px-4 py-2.5 text-right">
                   <button
