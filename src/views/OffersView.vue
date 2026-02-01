@@ -40,7 +40,7 @@
       </div>
       <section class="card overflow-hidden">
         <div class="overflow-x-auto" style="max-width: 100%">
-          <table class="min-w-max divide-y divide-primary-100">
+          <table class="w-full min-w-max divide-y divide-primary-100">
             <thead class="table-header">
               <tr>
                 <th
@@ -78,19 +78,13 @@
                   scope="col"
                   class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
-                  CCP eligible
-                </th>
-                <th
-                  scope="col"
-                  class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
                   Removal/avoidance
                 </th>
                 <th
                   scope="col"
                   class="whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
-                  Compliance eligible
+                  Eligible
                 </th>
                 <th
                   scope="col"
@@ -157,13 +151,11 @@
                   <span v-else>—</span>
                 </td>
                 <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  {{ offer.ccp ? "Yes" : "No" }}
-                </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
                   {{ formatOffsetType(offer.project_offset_type) }}
                 </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  {{ offer.compliance ? "Yes" : "No" }}
+                <td class="table-cell px-4 py-2.5 text-sm">
+                  <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
+                  <div>Compliance: {{ offer.compliance ? "Yes" : "No" }}</div>
                 </td>
                 <td
                   class="table-cell max-w-[12rem] px-4 py-2.5 text-sm !whitespace-break-spaces"
