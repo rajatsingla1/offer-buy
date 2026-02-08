@@ -12,9 +12,9 @@
         project.
         <br /><br />
 
-        The “firm” credits offered for sale by the project developers are
-        reserved/blocked at a registry level such that the project can’t sell
-        those credits elsewhere, unless the offer is amended or cancelled.
+        The “firm” credits offered for sale by the project developers are reserved/blocked at a registry level such that
+        the person making the offer is committed to selling the credits at that price, unless the offer is amended or
+        cancelled.
       </p>
     </div>
   </div>
