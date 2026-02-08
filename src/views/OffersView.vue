@@ -24,7 +24,7 @@
       <div class="mb-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 flex-row-reverse">
         <a href="https://alliedoffsets.metabaseapp.com/auth/login/password" target="_blank" rel="noopener noreferrer"
           class="text-sm text-red-600 hover:text-red-700 hover:underline">
-          click for more project detail
+          click for complete project detail on the AlliedOffsets database
         </a>
       </div>
       <section class="card overflow-hidden">
@@ -80,7 +80,7 @@
                     <span class=""># credits:</span> <span class="font-semibold text-primary">{{
                       offer.creditsToOffer?.toLocaleString?.() ??
                       offer.creditsToOffer
-                      }}</span>
+                    }}</span>
                   </div>
                   <div>
                     <span class=" inline-block">Price:</span> <span class="font-semibold text-primary">${{
