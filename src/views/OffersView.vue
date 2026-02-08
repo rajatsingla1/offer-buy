@@ -145,12 +145,15 @@
       :dismissable-mask="true" class="buy-dialog" @hide="resetBuyForm">
       <template v-if="selectedOffer">
         <p class="text-slate-700 mb-4">
-          You are bidding to buy
+          You are expressing an interest to buy
           <strong>{{ formatCredits(buyForm.credits) }} credits</strong>
           of {{ selectedOffer.projectName }} vintage
           {{ selectedOffer.vintage }} at
           <strong>${{ formatPrice(buyForm.price) }}</strong>.
         </p>
+        <p class="text-slate-700 mb-4">Your indication of interest will be emailed to the party offering the credits for
+          sale and the
+          administrator of this site.</p>
         <div class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
             <label for="buy-credits" class="text-sm font-medium text-slate-700">Credits</label>
@@ -165,6 +168,10 @@
             <label for="buy-email" class="text-sm font-medium text-slate-700">Email address</label>
             <InputText id="buy-email" v-model="buyForm.email" type="email" placeholder="your.email@example.com"
               class="w-full" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="buy-phone" class="text-sm font-medium text-slate-700">Phone(optional)</label>
+            <InputText id="buy-phone" v-model="buyForm.phone" type="tel" placeholder="123-456-7890" class="w-full" />
           </div>
         </div>
       </template>
@@ -222,6 +229,7 @@ const buyForm = ref({
   credits: null,
   price: null,
   email: "",
+  phone: "",
 });
 
 function formatOffsetType(val) {
@@ -263,6 +271,7 @@ function openBuyDialog(offer) {
     credits: Number.isFinite(credits) ? credits : 0,
     price: Number.isFinite(price) ? price : 0,
     email: "",
+    phone: "",
   };
   buyDialogVisible.value = true;
 }
@@ -270,7 +279,7 @@ function openBuyDialog(offer) {
 function resetBuyForm() {
   selectedOffer.value = null;
   submitLoading.value = false;
-  buyForm.value = { credits: null, price: null, email: "" };
+  buyForm.value = { credits: null, price: null, email: "", phone: "" };
 }
 
 function isValidEmail(email) {
@@ -332,6 +341,7 @@ async function handleBuyConfirm() {
       total,
       projectDeveloperEmail: selectedOffer.value?.email,
       email: buyForm.value.email.trim(),
+      phone: buyForm.value.phone.trim(),
     };
     await offersStore.sendOfferBid(payload);
     buyDialogVisible.value = false;
