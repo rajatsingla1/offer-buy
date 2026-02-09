@@ -50,18 +50,18 @@ onMounted(() => {
             </button>
           </RouterLink>
 
-          <a href="https://api.publicdomain.co.in/offers/api" target="_blank">
+          <RouterLink to="/api" custom v-slot="{ navigate }">
             <button
               type="button"
               class="rounded-full px-4 py-2 transition hover:bg-primary-50 hover:text-primary"
               :class="{
                 'bg-primary-50 text-primary': activeRouteName === 'api',
               }"
-              @click="openAPi"
+              @click="navigate"
             >
               API
             </button>
-          </a>
+          </RouterLink>
         </nav>
       </div>
     </header>

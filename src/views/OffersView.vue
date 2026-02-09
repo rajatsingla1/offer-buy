@@ -32,29 +32,34 @@
           <table class="w-full min-w-max divide-y divide-primary-100">
             <thead class="table-header">
               <tr>
-                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                <th scope="col" class="max-w-[14rem] w-[14rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Name
                 </th>
-
-                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  OFFER
+                <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  Offer<br />price
                 </th>
-                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-right text-sm">
-                  Action
+                <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  Number<br />credits
                 </th>
-                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  Country & Method
+                <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  Total<br />offer
                 </th>
-                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-right text-sm">
+                  Action/<br />type
+                </th>
+                <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  Country/<br />Method
+                </th>
+                <th scope="col" class="max-w-[8rem] w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Rating
                 </th>
-                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                <th scope="col" class="max-w-[6.5rem] w-[6.5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Removal/<br />avoidance
                 </th>
-                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                <th scope="col" class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Eligible
                 </th>
-                <th scope="col" class="whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Top 3 buyers
                 </th>
               </tr>
@@ -62,77 +67,77 @@
             <tbody class="divide-y divide-primary-50 bg-white">
               <tr v-for="(offer, index) in offers" :key="offer.serial ?? offer.projectName + index"
                 class="hover:bg-primary-50/40">
-                <td class="table-cell whitespace-nowrap px-4 py-2.5">
-                  <div class="text-sm font-semibold text-ink">
+                <td class="table-cell max-w-[14rem] overflow-hidden px-4 py-2.5">
+                  <div class="min-w-0 truncate text-sm font-semibold text-ink"
+                    :title="[offer.projectName, offer.projectId, 'Vintage: ' + (offer.vintage || '')].filter(Boolean).join('\n')">
                     {{ offer.projectName }}
                   </div>
-                  <p class="mt-0.5 text-xs text-slate-600">
+                  <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600" :title="offer.projectId">
                     {{ offer.projectId }}
                   </p>
-                  <p class="mt-0.5 text-xs text-slate-600">
-                    Vintage:
-                    {{ offer.vintage }}
+                  <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600"
+                    :title="'Vintage: ' + (offer.vintage || '')">
+                    Vintage: {{ offer.vintage }}
                   </p>
                 </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-
-                  <div>
-                    <span class=""># credits:</span> <span class="font-semibold text-primary">{{
-                      offer.creditsToOffer?.toLocaleString?.() ??
-                      offer.creditsToOffer
-                    }}</span>
-                  </div>
-                  <div>
-                    <span class=" inline-block">Price:</span> <span class="font-semibold text-primary">${{
-                      Number(offer.pricePerCredit).toLocaleString() }}</span>
-                  </div>
-                  <div class="">
-                    <span class=" inline-block">Total:</span> ${{
-                      (
-                        Number(offer.creditsToOffer) *
-                        Number(offer.pricePerCredit)
-                      ).toLocaleString()
-                    }}
-                  </div>
-                  <div class="">
-                    <span class=" inline-block">Type:</span> <span class="text-amber-600">Indicative</span>
-                  </div>
-
-
-
-
+                <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
+                  <span class="block min-w-0 truncate font-semibold text-primary"
+                    :title="'$' + Number(offer.pricePerCredit).toLocaleString()">
+                    ${{ Number(offer.pricePerCredit).toLocaleString() }}
+                  </span>
                 </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-right">
+                <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
+                  <span class="block min-w-0 truncate font-semibold text-primary"
+                    :title="String(offer.creditsToOffer?.toLocaleString?.() ?? offer.creditsToOffer)">
+                    {{ offer.creditsToOffer?.toLocaleString?.() ?? offer.creditsToOffer }}
+                  </span>
+                </td>
+                <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-sm">
+                  <span class="block min-w-0 truncate font-semibold text-ink"
+                    :title="'$' + (Number(offer.creditsToOffer) * Number(offer.pricePerCredit)).toLocaleString()">
+                    ${{ (Number(offer.creditsToOffer) * Number(offer.pricePerCredit)).toLocaleString() }}
+                  </span>
+                </td>
+                <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-right">
                   <button type="button" class="button-primary text-sm" @click="openBuyDialog(offer)">
                     Buy
                   </button>
+                  <div class="text-amber-600 text-xs mt-0.5">Indicative</div>
                 </td>
-                <td class="table-cell px-4 py-2.5 text-sm">
-                  <div>{{ offer.countries ?? "—" }}</div>
-                  <div class="text-slate-600">{{ offer.sectors ?? "—" }}</div>
+                <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm">
+                  <div class="min-w-0 truncate" :title="offer.countries ?? '—'">{{ offer.countries ?? "—" }}</div>
+                  <div class="min-w-0 truncate text-slate-600" :title="offer.sectors ?? '—'">{{ offer.sectors ?? "—" }}
+                  </div>
                 </td>
-                <td class="table-cell px-4 py-2.5 text-sm !whitespace-break-spaces">
-                  <template v-if="offer.raters">
-                    <div v-for="(item, i) in commaBreakItems(offer.raters)" :key="i">
-                      {{ item.text }}{{ item.comma }}
-                    </div>
-                  </template>
-                  <span v-else>—</span>
+                <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
+                  <div class="min-w-0" :title="offer.raters ?? '—'">
+                    <template v-if="offer.raters">
+                      <div v-for="(item, i) in commaBreakItems(offer.raters)" :key="i">{{ item.text }}{{ item.comma }}
+                      </div>
+                    </template>
+                    <span v-else>—</span>
+                  </div>
                 </td>
-                <td class="table-cell whitespace-nowrap px-4 py-2.5 text-sm">
-                  {{ formatOffsetType(offer.project_offset_type) }}
+                <td class="table-cell max-w-[6.5rem] overflow-hidden px-4 py-2.5 text-sm">
+                  <span class="block min-w-0 truncate" :title="formatOffsetType(offer.project_offset_type)">
+                    {{ formatOffsetType(offer.project_offset_type) }}
+                  </span>
                 </td>
-                <td class="table-cell px-4 py-2.5 text-sm">
-                  <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
-                  <div>Compliance: {{ offer.compliance ? "Yes" : "No" }}</div>
+                <td class="table-cell max-w-[7.5rem] overflow-hidden px-4 py-2.5 text-sm">
+                  <div class="min-w-0"
+                    :title="'CCP: ' + (offer.ccp ? 'Yes' : 'No') + ', Compliance: ' + (offer.compliance ? 'Yes' : 'No')">
+                    <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
+                    <div class="min-w-0 truncate">Compliance: {{ offer.compliance ? "Yes" : "No" }}</div>
+                  </div>
                 </td>
-                <td class="table-cell max-w-[12rem] px-4 py-2.5 text-sm !whitespace-break-spaces">
-                  <template v-if="offer.top_3_buyers">
-                    <div v-for="(item, i) in commaBreakItems(offer.top_3_buyers)" :key="i">
-                      {{ item.text }}{{ item.comma }}
-                    </div>
-                  </template>
-                  <span v-else>—</span>
+                <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
+                  <div class="min-w-0 " :title="offer.top_3_buyers ?? '—'">
+                    <template v-if="offer.top_3_buyers">
+                      <div v-for="(item, i) in commaBreakItems(offer.top_3_buyers)" :key="i">{{ item.text }}{{
+                        item.comma }}</div>
+                    </template>
+                    <span v-else>—</span>
+                  </div>
                 </td>
               </tr>
             </tbody>
