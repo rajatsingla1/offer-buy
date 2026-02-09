@@ -55,10 +55,13 @@
                           {{ sortDirection === 'asc' ? '↑' : '↓' }}
                         </span>
                       </span>
-                      <button
-                        type="button"
-                        class="inline-flex items-center gap-1 text-[0.7rem] font-normal text-slate-500 hover:text-primary-700"
+                      <span
+                        role="button"
+                        tabindex="0"
+                        class="inline-flex items-center gap-1 text-[0.7rem] font-normal text-slate-500 hover:text-primary-700 cursor-pointer"
                         @click.stop="toggleSort('uid')"
+                        @keydown.enter.prevent="toggleSort('uid')"
+                        @keydown.space.prevent="toggleSort('uid')"
                       >
                         <span>UID</span>
                         <span
@@ -67,7 +70,7 @@
                         >
                           {{ sortDirection === 'asc' ? '↑' : '↓' }}
                         </span>
-                      </button>
+                      </span>
                     </button>
                   </th>
                   <th
