@@ -28,120 +28,131 @@
         </a>
       </div>
       <section class="card overflow-hidden">
-        <div class="overflow-x-auto" style="max-width: 100%">
-          <table class="w-full min-w-max divide-y divide-primary-100">
-            <thead class="table-header">
-              <tr>
-                <th scope="col" class="max-w-[14rem] w-[14rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  Name
-                </th>
-                <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  Offer<br />price
-                </th>
-                <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  Number<br />credits
-                </th>
-                <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  Total<br />offer
-                </th>
-                <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-right text-sm">
-                  Action/<br />type
-                </th>
-                <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  Country/<br />Method
-                </th>
-                <th scope="col" class="max-w-[8rem] w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  Rating
-                </th>
-                <th scope="col" class="max-w-[6.5rem] w-[6.5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  Removal/<br />avoidance
-                </th>
-                <th scope="col" class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  Eligible
-                </th>
-                <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                  Top 3 buyers
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-primary-50 bg-white">
-              <tr v-for="(offer, index) in offers" :key="offer.serial ?? offer.projectName + index"
-                class="hover:bg-primary-50/40">
-                <td class="table-cell max-w-[14rem] overflow-hidden px-4 py-2.5">
-                  <div class="min-w-0 truncate text-sm font-semibold text-ink"
-                    :title="[offer.projectName, offer.projectId, 'Vintage: ' + (offer.vintage || '')].filter(Boolean).join('\n')">
-                    {{ offer.projectName }}
-                  </div>
-                  <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600" :title="offer.projectId">
-                    {{ offer.projectId }}
-                  </p>
-                  <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600"
-                    :title="'Vintage: ' + (offer.vintage || '')">
-                    Vintage: {{ offer.vintage }}
-                  </p>
-                </td>
-                <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
-                  <span class="block min-w-0 truncate font-semibold text-primary"
-                    :title="'$' + Number(offer.pricePerCredit).toLocaleString()">
-                    ${{ Number(offer.pricePerCredit).toLocaleString() }}
-                  </span>
-                </td>
-                <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
-                  <span class="block min-w-0 truncate font-semibold text-primary"
-                    :title="String(offer.creditsToOffer?.toLocaleString?.() ?? offer.creditsToOffer)">
-                    {{ offer.creditsToOffer?.toLocaleString?.() ?? offer.creditsToOffer }}
-                  </span>
-                </td>
-                <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-sm">
-                  <span class="block min-w-0 truncate font-semibold text-ink"
-                    :title="'$' + (Number(offer.creditsToOffer) * Number(offer.pricePerCredit)).toLocaleString()">
-                    ${{ (Number(offer.creditsToOffer) * Number(offer.pricePerCredit)).toLocaleString() }}
-                  </span>
-                </td>
-                <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-right">
-                  <button type="button" class="button-primary text-sm" @click="openBuyDialog(offer)">
-                    Buy
-                  </button>
-                  <div class="text-amber-600 text-xs mt-0.5">Indicative</div>
-                </td>
-                <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm">
-                  <div class="min-w-0 truncate" :title="offer.countries ?? '—'">{{ offer.countries ?? "—" }}</div>
-                  <div class="min-w-0 truncate text-slate-600" :title="offer.sectors ?? '—'">{{ offer.sectors ?? "—" }}
-                  </div>
-                </td>
-                <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
-                  <div class="min-w-0" :title="offer.raters ?? '—'">
-                    <template v-if="offer.raters">
-                      <div v-for="(item, i) in commaBreakItems(offer.raters)" :key="i">{{ item.text }}{{ item.comma }}
-                      </div>
-                    </template>
-                    <span v-else>—</span>
-                  </div>
-                </td>
-                <td class="table-cell max-w-[6.5rem] overflow-hidden px-4 py-2.5 text-sm">
-                  <span class="block min-w-0 truncate" :title="formatOffsetType(offer.project_offset_type)">
-                    {{ formatOffsetType(offer.project_offset_type) }}
-                  </span>
-                </td>
-                <td class="table-cell max-w-[7.5rem] overflow-hidden px-4 py-2.5 text-sm">
-                  <div class="min-w-0"
-                    :title="'CCP: ' + (offer.ccp ? 'Yes' : 'No') + ', Compliance: ' + (offer.compliance ? 'Yes' : 'No')">
-                    <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
-                    <div class="min-w-0 truncate">Compliance: {{ offer.compliance ? "Yes" : "No" }}</div>
-                  </div>
-                </td>
-                <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
-                  <div class="min-w-0 " :title="offer.top_3_buyers ?? '—'">
-                    <template v-if="offer.top_3_buyers">
-                      <div v-for="(item, i) in commaBreakItems(offer.top_3_buyers)" :key="i">{{ item.text }}{{
-                        item.comma }}</div>
-                    </template>
-                    <span v-else>—</span>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="relative">
+          <div ref="tableScrollRef" class="overflow-x-auto transition-opacity" style="max-width: 100%"
+            @scroll="onTableScroll">
+            <table class="w-full min-w-max divide-y divide-primary-100">
+              <thead class="table-header">
+                <tr>
+                  <th scope="col" class="max-w-[14rem] w-[14rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    Name
+                  </th>
+                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    Offer<br />price
+                  </th>
+                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    Number<br />credits
+                  </th>
+                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    Total<br />offer
+                  </th>
+                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    Action/<br />type
+                  </th>
+                  <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    Country/<br />Method
+                  </th>
+                  <th scope="col" class="max-w-[8rem] w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    Rating
+                  </th>
+                  <th scope="col" class="max-w-[6.5rem] w-[6.5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    Removal/<br />avoidance
+                  </th>
+                  <th scope="col" class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    Eligible
+                  </th>
+                  <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    Top 3 buyers
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-primary-50 bg-white">
+                <tr v-for="(offer, index) in offers" :key="offer.serial ?? offer.projectName + index"
+                  class="hover:bg-primary-50/40">
+                  <td class="table-cell max-w-[14rem] overflow-hidden px-4 py-2.5">
+                    <div class="min-w-0 truncate text-sm font-semibold text-ink"
+                      :title="[offer.projectName, offer.projectId, 'Vintage: ' + (offer.vintage || '')].filter(Boolean).join('\n')">
+                      {{ offer.projectName }}
+                    </div>
+                    <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600" :title="offer.projectId">
+                      {{ offer.projectId }}
+                    </p>
+                    <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600"
+                      :title="'Vintage: ' + (offer.vintage || '')">
+                      Vintage: {{ offer.vintage }}
+                    </p>
+                  </td>
+                  <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 truncate font-semibold text-primary"
+                      :title="'$' + Number(offer.pricePerCredit).toLocaleString()">
+                      ${{ Number(offer.pricePerCredit).toLocaleString() }}
+                    </span>
+                  </td>
+                  <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 truncate font-semibold text-primary"
+                      :title="String(offer.creditsToOffer?.toLocaleString?.() ?? offer.creditsToOffer)">
+                      {{ offer.creditsToOffer?.toLocaleString?.() ?? offer.creditsToOffer }}
+                    </span>
+                  </td>
+                  <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 truncate font-semibold text-ink"
+                      :title="'$' + (Number(offer.creditsToOffer) * Number(offer.pricePerCredit)).toLocaleString()">
+                      ${{ (Number(offer.creditsToOffer) * Number(offer.pricePerCredit)).toLocaleString() }}
+                    </span>
+                  </td>
+                  <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-right">
+                    <button type="button" class="button-primary text-sm" @click="openBuyDialog(offer)">
+                      Buy
+                    </button>
+                    <div class="text-amber-600 text-xs mt-0.5">Indicative</div>
+                  </td>
+                  <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <div class="min-w-0 truncate" :title="offer.countries ?? '—'">{{ offer.countries ?? "—" }}</div>
+                    <div class="min-w-0 truncate text-slate-600" :title="offer.sectors ?? '—'">{{ offer.sectors ?? "—"
+                      }}
+                    </div>
+                  </td>
+                  <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
+                    <div class="min-w-0" :title="offer.raters ?? '—'">
+                      <template v-if="offer.raters">
+                        <div v-for="(item, i) in commaBreakItems(offer.raters)" :key="i">{{ item.text }}{{ item.comma }}
+                        </div>
+                      </template>
+                      <span v-else>—</span>
+                    </div>
+                  </td>
+                  <td class="table-cell max-w-[6.5rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 truncate" :title="formatOffsetType(offer.project_offset_type)">
+                      {{ formatOffsetType(offer.project_offset_type) }}
+                    </span>
+                  </td>
+                  <td class="table-cell max-w-[7.5rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <div class="min-w-0"
+                      :title="'CCP: ' + (offer.ccp ? 'Yes' : 'No') + ', Compliance: ' + (offer.compliance ? 'Yes' : 'No')">
+                      <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
+                      <div class="min-w-0 truncate">Compliance: {{ offer.compliance ? "Yes" : "No" }}</div>
+                    </div>
+                  </td>
+                  <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
+                    <div class="min-w-0 " :title="offer.top_3_buyers ?? '—'">
+                      <template v-if="offer.top_3_buyers">
+                        <div v-for="(item, i) in commaBreakItems(offer.top_3_buyers)" :key="i">{{ item.text }}{{
+                          item.comma }}</div>
+                      </template>
+                      <span v-else>—</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Transition name="fade">
+            <div v-show="showSwipeIndicator"
+              class="pointer-events-none absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/85 px-3 py-1.5 text-xs font-medium text-primary-700 shadow-sm ring-1 ring-primary-200/60 backdrop-blur-sm"
+              aria-hidden="true">
+              Swipe →
+            </div>
+          </Transition>
         </div>
       </section>
     </section>
@@ -213,7 +224,7 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, watch, nextTick } from "vue";
 import { RouterLink } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useOffersStore } from "../stores/offers";
@@ -226,6 +237,34 @@ import InputText from "primevue/inputtext";
 const toast = useToast();
 const offersStore = useOffersStore();
 const { offers } = storeToRefs(offersStore);
+
+const tableScrollRef = ref(null);
+const showSwipeIndicator = ref(true);
+const SWIPE_HIDE_THRESHOLD = 20;
+
+function onTableScroll() {
+  const el = tableScrollRef.value;
+  if (!el) return;
+  if (el.scrollLeft >= SWIPE_HIDE_THRESHOLD) {
+    showSwipeIndicator.value = false;
+  }
+}
+
+function updateSwipeIndicatorVisibility() {
+  const el = tableScrollRef.value;
+  if (!el) return;
+  const canScroll = el.scrollWidth > el.clientWidth;
+  if (!canScroll) {
+    showSwipeIndicator.value = false;
+  } else if (el.scrollLeft >= SWIPE_HIDE_THRESHOLD) {
+    showSwipeIndicator.value = false;
+  } else {
+    showSwipeIndicator.value = true;
+  }
+}
+
+onMounted(updateSwipeIndicatorVisibility);
+watch(offers, () => nextTick(updateSwipeIndicatorVisibility), { immediate: false });
 
 const buyDialogVisible = ref(false);
 const selectedOffer = ref(null);
@@ -355,3 +394,13 @@ async function handleBuyConfirm() {
   }
 }
 </script>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
