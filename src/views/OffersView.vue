@@ -29,45 +29,155 @@
       </div>
       <section class="card overflow-hidden">
         <div class="relative">
-          <div ref="tableScrollRef" class="overflow-x-auto transition-opacity" style="max-width: 100%"
-            @scroll="onTableScroll">
+          <div
+            ref="tableScrollRef"
+            class="max-w-full overflow-x-auto transition-opacity"
+            @scroll="onTableScroll"
+          >
             <table class="w-full min-w-max divide-y divide-primary-100">
               <thead class="table-header">
                 <tr>
-                  <th scope="col" class="max-w-[14rem] w-[14rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Name
+                  <th
+                    scope="col"
+                    class="max-w-[14rem] w-[14rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  >
+                    <button
+                      type="button"
+                      class="flex flex-col items-start gap-0.5 text-left text-slate-700"
+                      @click="toggleSort('name')"
+                    >
+                      <span class="inline-flex items-center gap-1">
+                        <span>Name</span>
+                        <span
+                          v-if="sortKey === 'name'"
+                          class="text-[0.7rem] text-slate-500"
+                        >
+                          {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                        </span>
+                      </span>
+                      <button
+                        type="button"
+                        class="inline-flex items-center gap-1 text-[0.7rem] font-normal text-slate-500 hover:text-primary-700"
+                        @click.stop="toggleSort('uid')"
+                      >
+                        <span>UID</span>
+                        <span
+                          v-if="sortKey === 'uid'"
+                          class="text-[0.7rem] text-slate-500"
+                        >
+                          {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                        </span>
+                      </button>
+                    </button>
                   </th>
-                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Offer<br />price
+                  <th
+                    scope="col"
+                    class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  >
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-1 text-slate-700"
+                      @click="toggleSort('price')"
+                    >
+                      <span>Offer<br />price</span>
+                      <span
+                        v-if="sortKey === 'price'"
+                        class="text-[0.7rem] text-slate-500"
+                      >
+                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                      </span>
+                    </button>
                   </th>
-                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Number<br />credits
+                  <th
+                    scope="col"
+                    class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  >
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-1 text-slate-700"
+                      @click="toggleSort('credits')"
+                    >
+                      <span>Number<br />credits</span>
+                      <span
+                        v-if="sortKey === 'credits'"
+                        class="text-[0.7rem] text-slate-500"
+                      >
+                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                      </span>
+                    </button>
                   </th>
-                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Total<br />offer
+                  <th
+                    scope="col"
+                    class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  >
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-1 text-slate-700"
+                      @click="toggleSort('total')"
+                    >
+                      <span>Total<br />offer</span>
+                      <span
+                        v-if="sortKey === 'total'"
+                        class="text-[0.7rem] text-slate-500"
+                      >
+                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                      </span>
+                    </button>
                   </th>
-                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Action/<br />type
+                  <th
+                    scope="col"
+                    class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  >
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-1 text-slate-700"
+                      @click="toggleSort('type')"
+                    >
+                      <span>Action/<br />type</span>
+                      <span
+                        v-if="sortKey === 'type'"
+                        class="text-[0.7rem] text-slate-500"
+                      >
+                        {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                      </span>
+                    </button>
                   </th>
-                  <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th
+                    scope="col"
+                    class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  >
                     Country/<br />Method
                   </th>
-                  <th scope="col" class="max-w-[8rem] w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th
+                    scope="col"
+                    class="max-w-[8rem] w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  >
                     Rating
                   </th>
-                  <th scope="col" class="max-w-[6.5rem] w-[6.5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th
+                    scope="col"
+                    class="max-w-[6.5rem] w-[6.5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  >
                     Removal/<br />avoidance
                   </th>
-                  <th scope="col" class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th
+                    scope="col"
+                    class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  >
                     Eligible
                   </th>
-                  <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th
+                    scope="col"
+                    class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  >
                     Top 3 buyers
                   </th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-primary-50 bg-white">
-                <tr v-for="(offer, index) in offers" :key="offer.serial ?? offer.projectName + index"
+                <tr
+                  v-for="(offer, index) in sortedOffers"
+                  :key="offerRowKey(offer, index)"
                   class="hover:bg-primary-50/40">
                   <td class="table-cell max-w-[14rem] overflow-hidden px-4 py-2.5">
                     <div class="min-w-0 truncate text-sm font-semibold text-ink"
@@ -109,7 +219,7 @@
                   <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm">
                     <div class="min-w-0 truncate" :title="offer.countries ?? '—'">{{ offer.countries ?? "—" }}</div>
                     <div class="min-w-0 truncate text-slate-600" :title="offer.sectors ?? '—'">{{ offer.sectors ?? "—"
-                      }}
+                    }}
                     </div>
                   </td>
                   <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
@@ -206,8 +316,8 @@
       other distribution channels including API, and emails)
     </div>
     <div class="text-slate-600 mt-4">
-      <a href="https://api.publicdomain.co.in/offers/api" target="_blank"><span class="underline cursor-pointer">Click
-          here</span></a>
+      <router-link to="/api" target="_blank"><span class="underline cursor-pointer">Click
+          here</span></router-link>
       if you want access to data via API
     </div>
     <div class="text-slate-600 mt-10">
@@ -224,7 +334,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, watch, nextTick } from "vue";
+import { ref, onMounted, watch, nextTick, computed } from "vue";
 import { RouterLink } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useOffersStore } from "../stores/offers";
@@ -237,6 +347,91 @@ import InputText from "primevue/inputtext";
 const toast = useToast();
 const offersStore = useOffersStore();
 const { offers } = storeToRefs(offersStore);
+
+const sortKey = ref(null);
+const sortDirection = ref("asc");
+
+const sortedOffers = computed(() => {
+  const list = offers.value;
+  if (!list || !Array.isArray(list)) return [];
+  if (!sortKey.value) return [...list];
+
+  const getNumeric = (val) => {
+    const n = Number(val);
+    return Number.isFinite(n) ? n : 0;
+  };
+  const total = (offer) =>
+    getNumeric(offer.creditsToOffer) * getNumeric(offer.pricePerCredit);
+  const typeStr = (offer) =>
+    formatOffsetType(offer.project_offset_type || "").toString().toLowerCase();
+
+  const dir = sortDirection.value === "asc" ? 1 : -1;
+  const key = sortKey.value;
+
+  return [...list].sort((a, b) => {
+    let av;
+    let bv;
+    let numeric = false;
+    switch (key) {
+      case "name":
+        av = (a.projectName || "").toString().toLowerCase();
+        bv = (b.projectName || "").toString().toLowerCase();
+        break;
+      case "uid":
+        av = (a.projectId || "").toString().toLowerCase();
+        bv = (b.projectId || "").toString().toLowerCase();
+        break;
+      case "price":
+        av = getNumeric(a.pricePerCredit);
+        bv = getNumeric(b.pricePerCredit);
+        numeric = true;
+        break;
+      case "credits":
+        av = getNumeric(a.creditsToOffer);
+        bv = getNumeric(b.creditsToOffer);
+        numeric = true;
+        break;
+      case "total":
+        av = total(a);
+        bv = total(b);
+        numeric = true;
+        break;
+      case "type":
+        av = typeStr(a);
+        bv = typeStr(b);
+        break;
+      default:
+        return 0;
+    }
+
+    if (numeric) {
+      if (av !== bv) return av > bv ? dir : -dir;
+    } else {
+      const cmp = String(av).localeCompare(String(bv));
+      if (cmp !== 0) return cmp * dir;
+    }
+    // Tie-breaker: keep order stable by comparing name then id
+    const nameCmp = (a.projectName || "").localeCompare(b.projectName || "");
+    if (nameCmp !== 0) return nameCmp * dir;
+    return (a.projectId || "").localeCompare(b.projectId || "") * dir;
+  });
+});
+
+function toggleSort(key) {
+  if (sortKey.value === key) {
+    sortDirection.value = sortDirection.value === "asc" ? "desc" : "asc";
+  } else {
+    sortKey.value = key;
+    sortDirection.value = "asc";
+  }
+}
+
+function offerRowKey(offer, index) {
+  if (offer.orderId != null) return String(offer.orderId);
+  if (offer.id != null) return String(offer.id);
+  if (offer.serial != null) return String(offer.serial);
+  return `row-${(offer.projectId ?? "")}-${(offer.projectName ?? "")}-${(offer.vintage ?? "")}-${index}`;
+}
 
 const tableScrollRef = ref(null);
 const showSwipeIndicator = ref(true);
@@ -399,6 +594,7 @@ async function handleBuyConfirm() {
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
