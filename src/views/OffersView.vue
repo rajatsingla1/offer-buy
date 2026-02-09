@@ -586,6 +586,12 @@ async function handleBuyConfirm() {
       phone: buyForm.value.phone.trim(),
     };
     await offersStore.sendOfferBid(payload);
+    toast.add({
+      severity: "success",
+      summary: "Bid submitted",
+      detail: "Your bid has been submitted successfully.",
+      life: 5000,
+    });
     buyDialogVisible.value = false;
   } finally {
     submitLoading.value = false;
