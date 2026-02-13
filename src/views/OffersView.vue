@@ -29,8 +29,9 @@
       </div>
       <section class="card overflow-hidden">
         <div class="relative">
-          <div ref="tableScrollRef" class="max-w-full overflow-x-auto transition-opacity" @scroll="onTableScroll">
-            <table class="w-full min-w-max divide-y divide-primary-100">
+          <div ref="tableScrollRef" class="max-h-[1000px] max-w-full overflow-x-auto transition-opacity"
+            @scroll="onTableScroll">
+            <table class="w-full min-w-max divide-y divide-primary-100 ">
               <thead class="table-header">
                 <tr>
                   <th scope="col" class="max-w-[14rem] w-[14rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
@@ -53,7 +54,7 @@
                       </span>
                     </button>
                   </th>
-                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     <button type="button" class="inline-flex items-center gap-1 text-slate-700"
                       @click="toggleSort('price')">
                       <span>Offer<br />price</span>
@@ -62,7 +63,7 @@
                       </span>
                     </button>
                   </th>
-                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     <button type="button" class="inline-flex items-center gap-1 text-slate-700"
                       @click="toggleSort('credits')">
                       <span>Number<br />credits</span>
@@ -148,13 +149,13 @@
                   </td>
                   <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-sm">
                     <span class="block min-w-0 truncate font-semibold text-ink" :title="'$' +
-                      (
+                      Math.round(
                         Number(offer.creditsToOffer) *
                         Number(offer.pricePerCredit)
                       ).toLocaleString()
                       ">
                       ${{
-                        (
+                        Math.round(
                           Number(offer.creditsToOffer) *
                           Number(offer.pricePerCredit)
                         ).toLocaleString()

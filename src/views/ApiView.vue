@@ -1,7 +1,53 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useToast } from "primevue/usetoast";
+import apiClient from "../utils/apiClient.ts";
 
+const toast = useToast();
 const structureOpen = ref(false);
+
+const subscribeEmail = ref("");
+const subscribeLoading = ref(false);
+const subscribeError = ref("");
+
+const emailValid = computed(() => {
+  const e = subscribeEmail.value.trim();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+});
+
+async function handleSubscribe() {
+  subscribeError.value = "";
+  const email = subscribeEmail.value.trim();
+  if (!emailValid.value) {
+    subscribeError.value = "Please enter a valid email address.";
+    return;
+  }
+  subscribeLoading.value = true;
+  try {
+    await apiClient.root.post("offers/api/subscribe", { email });
+    toast.add({
+      severity: "success",
+      summary: "Token sent",
+      detail: "Email with token has been sent.",
+      life: 5000,
+    });
+    subscribeEmail.value = "";
+  } catch (err) {
+    const msg =
+      err.response?.data?.detail ||
+      err.response?.data?.message ||
+      "Something went wrong. Please try again.";
+    subscribeError.value = typeof msg === "string" ? msg : "Request failed.";
+    toast.add({
+      severity: "error",
+      summary: "Subscription failed",
+      detail: subscribeError.value,
+      life: 5000,
+    });
+  } finally {
+    subscribeLoading.value = false;
+  }
+}
 </script>
 
 <template>
@@ -9,7 +55,7 @@ const structureOpen = ref(false);
     <div class="card p-8">
       <h2 class="text-2xl font-semibold text-ink">API</h2>
       <p class="mt-2 text-slate-600">
-        Public GET endpoint for listing carbon credit offers.
+        GET endpoint for listing carbon credit offers.
       </p>
 
       <div class="mt-6 rounded-xl bg-slate-50 p-4 font-mono text-sm">
@@ -22,11 +68,51 @@ const structureOpen = ref(false);
         </div>
       </div>
 
-      <h3 class="mt-8 text-lg font-semibold text-ink">Response</h3>
-      <p class="mt-1 text-sm text-slate-600">
-        Returns a JSON array of offer objects. No query parameters required.
-      </p>
 
+
+      <h3 class="mt-10 text-lg font-semibold text-ink">Get an API token</h3>
+      <p class="mt-1 text-sm text-slate-600">
+        Enter your email to receive a token by email. We’ll send the endpoint and usage instructions.
+      </p>
+      <form class="mt-4 space-y-4" @submit.prevent="handleSubscribe">
+        <div>
+          <label for="api-subscribe-email" class="block text-slate-700 mb-2">Email address</label>
+          <input id="api-subscribe-email" v-model="subscribeEmail" type="email" placeholder="your.email@example.com"
+            autocomplete="email" :disabled="subscribeLoading"
+            class="w-full max-w-xs px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-60"
+            :class="subscribeError ? 'border-red-300' : 'border-slate-300'" />
+          <p v-if="subscribeError" class="mt-1.5 text-sm text-red-600">{{ subscribeError }}</p>
+        </div>
+        <div>
+          <button type="submit" :disabled="subscribeLoading || !subscribeEmail.trim()" class="button-primary text-sm">
+            <span v-if="subscribeLoading" class="inline-flex items-center gap-2">
+              <svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              Sending…
+            </span>
+            <span v-else>Send token</span>
+          </button>
+        </div>
+      </form>
+
+      <h3 class="mt-10 text-lg font-semibold text-ink">Using your token</h3>
+      <p class="mt-1 text-sm text-slate-600">
+        Send your token in the request header to authenticate.
+      </p>
+      <div class="mt-3 rounded-xl bg-slate-50 p-4 font-mono text-sm">
+        <p class="text-slate-500">Header name:</p>
+        <p class="mt-1 break-all text-ink"><code class="rounded bg-white px-1.5 py-0.5">x-api-key-alliedexchange</code>
+        </p>
+        <p class="mt-3 text-slate-500">Header value:</p>
+        <p class="mt-1 break-all text-ink"><code class="rounded bg-white px-1.5 py-0.5">your-token</code></p>
+      </div>
+
+      <h3 class="mt-10 text-lg font-semibold text-ink">Response</h3>
+      <p class="mt-1 text-sm text-slate-600">
+        Returns a JSON array of offer objects.
+      </p>
       <button type="button"
         class="mt-6 flex w-full items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-left font-medium text-slate-800 transition hover:bg-slate-100"
         @click="structureOpen = !structureOpen">
@@ -144,17 +230,6 @@ const structureOpen = ref(false);
             </tr>
           </tbody>
         </table>
-      </div>
-
-      <div class="mt-6">
-        <a href="https://api.publicdomain.co.in/offers/api" target="_blank" rel="noopener noreferrer"
-          class="button-primary inline-flex items-center gap-2">
-          Open API in new tab
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </a>
       </div>
     </div>
   </div>
