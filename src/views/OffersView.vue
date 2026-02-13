@@ -1,16 +1,11 @@
 <template>
   <div class="mb-40">
     <section class="card relative overflow-hidden p-8">
-      <div
-        class="absolute right-10 top-10 h-24 w-24 rounded-full bg-primary-100 blur-3xl"
-      ></div>
-      <div
-        class="absolute -bottom-6 left-6 h-20 w-20 rounded-full bg-primary-50 blur-2xl"
-      ></div>
+      <div class="absolute right-10 top-10 h-24 w-24 rounded-full bg-primary-100 blur-3xl"></div>
+      <div class="absolute -bottom-6 left-6 h-20 w-20 rounded-full bg-primary-50 blur-2xl"></div>
       <div class="flex flex-col gap-4">
         <p
-          class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100"
-        >
+          class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100">
           <span class="h-2 w-2 rounded-full bg-primary"></span>
           Live offers
         </p>
@@ -26,247 +21,138 @@
     </section>
 
     <section class="mt-10 space-y-4">
-      <div
-        class="mb-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 flex-row-reverse"
-      >
-        <a
-          href="https://alliedoffsets.metabaseapp.com/auth/login/password"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-sm text-red-600 hover:text-red-700 hover:underline"
-        >
+      <div class="mb-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 flex-row-reverse">
+        <a href="https://alliedoffsets.metabaseapp.com/auth/login/password" target="_blank" rel="noopener noreferrer"
+          class="text-sm text-red-600 hover:text-red-700 hover:underline">
           click for complete project detail on the AlliedOffsets database
         </a>
       </div>
       <section class="card overflow-hidden">
         <div class="relative">
-          <div
-            ref="tableScrollRef"
-            class="max-w-full overflow-x-auto transition-opacity"
-            @scroll="onTableScroll"
-          >
+          <div ref="tableScrollRef" class="max-w-full overflow-x-auto transition-opacity" @scroll="onTableScroll">
             <table class="w-full min-w-max divide-y divide-primary-100">
               <thead class="table-header">
                 <tr>
-                  <th
-                    scope="col"
-                    class="max-w-[14rem] w-[14rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                  >
-                    <button
-                      type="button"
-                      class="flex flex-col items-start gap-0.5 text-left text-slate-700"
-                      @click="toggleSort('name')"
-                    >
+                  <th scope="col" class="max-w-[14rem] w-[14rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    <button type="button" class="flex flex-col items-start gap-0.5 text-left text-slate-700"
+                      @click="toggleSort('name')">
                       <span class="inline-flex items-center gap-1">
                         <span>Name</span>
-                        <span
-                          v-if="sortKey === 'name'"
-                          class="text-[0.7rem] text-slate-500"
-                        >
+                        <span v-if="sortKey === 'name'" class="text-[0.7rem] text-slate-500">
                           {{ sortDirection === "asc" ? "↑" : "↓" }}
                         </span>
                       </span>
-                      <span
-                        role="button"
-                        tabindex="0"
+                      <span role="button" tabindex="0"
                         class="inline-flex items-center gap-1 text-[0.7rem] font-normal text-slate-500 hover:text-primary-700 cursor-pointer"
-                        @click.stop="toggleSort('uid')"
-                        @keydown.enter.prevent="toggleSort('uid')"
-                        @keydown.space.prevent="toggleSort('uid')"
-                      >
+                        @click.stop="toggleSort('uid')" @keydown.enter.prevent="toggleSort('uid')"
+                        @keydown.space.prevent="toggleSort('uid')">
                         <span>UID</span>
-                        <span
-                          v-if="sortKey === 'uid'"
-                          class="text-[0.7rem] text-slate-500"
-                        >
+                        <span v-if="sortKey === 'uid'" class="text-[0.7rem] text-slate-500">
                           {{ sortDirection === "asc" ? "↑" : "↓" }}
                         </span>
                       </span>
                     </button>
                   </th>
-                  <th
-                    scope="col"
-                    class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                  >
-                    <button
-                      type="button"
-                      class="inline-flex items-center gap-1 text-slate-700"
-                      @click="toggleSort('price')"
-                    >
+                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    <button type="button" class="inline-flex items-center gap-1 text-slate-700"
+                      @click="toggleSort('price')">
                       <span>Offer<br />price</span>
-                      <span
-                        v-if="sortKey === 'price'"
-                        class="text-[0.7rem] text-slate-500"
-                      >
+                      <span v-if="sortKey === 'price'" class="text-[0.7rem] text-slate-500">
                         {{ sortDirection === "asc" ? "↑" : "↓" }}
                       </span>
                     </button>
                   </th>
-                  <th
-                    scope="col"
-                    class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                  >
-                    <button
-                      type="button"
-                      class="inline-flex items-center gap-1 text-slate-700"
-                      @click="toggleSort('credits')"
-                    >
+                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    <button type="button" class="inline-flex items-center gap-1 text-slate-700"
+                      @click="toggleSort('credits')">
                       <span>Number<br />credits</span>
-                      <span
-                        v-if="sortKey === 'credits'"
-                        class="text-[0.7rem] text-slate-500"
-                      >
+                      <span v-if="sortKey === 'credits'" class="text-[0.7rem] text-slate-500">
                         {{ sortDirection === "asc" ? "↑" : "↓" }}
                       </span>
                     </button>
                   </th>
-                  <th
-                    scope="col"
-                    class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                  >
-                    <button
-                      type="button"
-                      class="inline-flex items-center gap-1 text-slate-700"
-                      @click="toggleSort('total')"
-                    >
+                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    <button type="button" class="inline-flex items-center gap-1 text-slate-700"
+                      @click="toggleSort('total')">
                       <span>Total<br />offer</span>
-                      <span
-                        v-if="sortKey === 'total'"
-                        class="text-[0.7rem] text-slate-500"
-                      >
+                      <span v-if="sortKey === 'total'" class="text-[0.7rem] text-slate-500">
                         {{ sortDirection === "asc" ? "↑" : "↓" }}
                       </span>
                     </button>
                   </th>
-                  <th
-                    scope="col"
-                    class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                  >
-                    <button
-                      type="button"
-                      class="inline-flex items-center gap-1 text-slate-700"
-                      @click="toggleSort('type')"
-                    >
+                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    <button type="button" class="inline-flex items-center gap-1 text-slate-700"
+                      @click="toggleSort('type')">
                       <span>Action/<br />type</span>
-                      <span
-                        v-if="sortKey === 'type'"
-                        class="text-[0.7rem] text-slate-500"
-                      >
+                      <span v-if="sortKey === 'type'" class="text-[0.7rem] text-slate-500">
                         {{ sortDirection === "asc" ? "↑" : "↓" }}
                       </span>
                     </button>
                   </th>
-                  <th
-                    scope="col"
-                    class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                  >
+                  <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Country/<br />Method
                   </th>
-                  <th
-                    scope="col"
-                    class="max-w-[8rem] w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                  >
+                  <th scope="col" class="max-w-[8rem] w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Rating
                   </th>
-                  <th
-                    scope="col"
-                    class="max-w-[6.5rem] w-[6.5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                  >
+                  <th scope="col" class="max-w-[6.5rem] w-[6.5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Removal/<br />avoidance
                   </th>
-                  <th
-                    scope="col"
-                    class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                  >
+                  <th scope="col" class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Eligible
                   </th>
-                  <th
-                    scope="col"
-                    class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                  >
+                  <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Top 3 buyers
                   </th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-primary-50 bg-white">
-                <tr
-                  v-for="(offer, index) in sortedOffers"
-                  :key="offerRowKey(offer, index)"
-                  class="hover:bg-primary-50/40"
-                >
-                  <td
-                    class="table-cell max-w-[14rem] overflow-hidden px-4 py-2.5"
-                  >
-                    <div
-                      class="min-w-0 truncate text-sm font-semibold text-ink"
-                      :title="
-                        [
-                          offer.projectName,
-                          offer.projectId,
-                          'Vintage: ' + (offer.vintage || ''),
-                        ]
-                          .filter(Boolean)
-                          .join('\n')
-                      "
-                    >
+                <tr v-for="(offer, index) in sortedOffers" :key="offerRowKey(offer, index)"
+                  class="hover:bg-primary-50/40">
+                  <td class="table-cell max-w-[14rem] overflow-hidden px-4 py-2.5">
+                    <div class="min-w-0 truncate text-sm font-semibold text-ink" :title="[
+                      offer.projectName,
+                      offer.projectId,
+                      'Vintage: ' + (offer.vintage || ''),
+                    ]
+                      .filter(Boolean)
+                      .join('\n')
+                      ">
                       {{ offer.projectName }}
                     </div>
-                    <p
-                      class="mt-0.5 min-w-0 truncate text-xs text-slate-600"
-                      :title="offer.projectId"
-                    >
+                    <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600" :title="offer.projectId">
                       {{ offer.projectId }}
                     </p>
-                    <p
-                      class="mt-0.5 min-w-0 truncate text-xs text-slate-600"
-                      :title="'Vintage: ' + (offer.vintage || '')"
-                    >
+                    <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600"
+                      :title="'Vintage: ' + (offer.vintage || '')">
                       Vintage: {{ offer.vintage }}
                     </p>
                   </td>
-                  <td
-                    class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <span
-                      class="block min-w-0 truncate font-semibold text-primary"
-                      :title="
-                        '$' + Number(offer.pricePerCredit).toLocaleString()
-                      "
-                    >
-                      ${{ Number(offer.pricePerCredit).toLocaleString() }}
+                  <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 truncate font-semibold text-primary" :title="'$' + Number(offer.pricePerCredit).toFixed(2).toLocaleString()
+                      ">
+                      ${{ Number(offer.pricePerCredit).toFixed(2).toLocaleString() }}
                     </span>
                   </td>
-                  <td
-                    class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <span
-                      class="block min-w-0 truncate font-semibold text-primary"
-                      :title="
-                        String(
-                          offer.creditsToOffer?.toLocaleString?.() ??
-                            offer.creditsToOffer,
-                        )
-                      "
-                    >
+                  <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 truncate font-semibold text-primary" :title="String(
+                      offer.creditsToOffer?.toLocaleString?.() ??
+                      offer.creditsToOffer,
+                    )
+                      ">
                       {{
                         offer.creditsToOffer?.toLocaleString?.() ??
                         offer.creditsToOffer
                       }}
                     </span>
                   </td>
-                  <td
-                    class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <span
-                      class="block min-w-0 truncate font-semibold text-ink"
-                      :title="
-                        '$' +
-                        (
-                          Number(offer.creditsToOffer) *
-                          Number(offer.pricePerCredit)
-                        ).toLocaleString()
-                      "
-                    >
+                  <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 truncate font-semibold text-ink" :title="'$' +
+                      (
+                        Number(offer.creditsToOffer) *
+                        Number(offer.pricePerCredit)
+                      ).toLocaleString()
+                      ">
                       ${{
                         (
                           Number(offer.creditsToOffer) *
@@ -275,92 +161,56 @@
                       }}
                     </span>
                   </td>
-                  <td
-                    class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-right"
-                  >
-                    <button
-                      type="button"
-                      class="button-primary text-sm"
-                      @click="openBuyDialog(offer)"
-                    >
+                  <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-right">
+                    <button type="button" class="button-primary text-sm" @click="openBuyDialog(offer)">
                       Buy
                     </button>
                     <div class="text-amber-600 text-xs mt-0.5">Indicative</div>
                   </td>
-                  <td
-                    class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <div
-                      class="min-w-0 truncate"
-                      :title="offer.countries ?? '—'"
-                    >
+                  <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <div class="min-w-0 truncate" :title="offer.countries ?? '—'">
                       {{ offer.countries ?? "—" }}
                     </div>
-                    <div
-                      class="min-w-0 truncate text-slate-600"
-                      :title="offer.sectors ?? '—'"
-                    >
+                    <div class="min-w-0 truncate text-slate-600" :title="offer.sectors ?? '—'">
                       {{ offer.sectors ?? "—" }}
                     </div>
                   </td>
-                  <td
-                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces"
-                  >
+                  <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
                     <div class="min-w-0" :title="offer.raters ?? '—'">
                       <template v-if="offer.raters">
-                        <div
-                          v-for="(item, i) in commaBreakItems(offer.raters)"
-                          :key="i"
-                        >
+                        <div v-for="(item, i) in commaBreakItems(offer.raters)" :key="i">
                           {{ item.text }}{{ item.comma }}
                         </div>
                       </template>
                       <span v-else>—</span>
                     </div>
                   </td>
-                  <td
-                    class="table-cell max-w-[6.5rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <span
-                      class="block min-w-0 truncate"
-                      :title="formatOffsetType(offer.project_offset_type)"
-                    >
+                  <td class="table-cell max-w-[6.5rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 truncate" :title="formatOffsetType(offer.project_offset_type)">
                       {{ formatOffsetType(offer.project_offset_type) }}
                     </span>
                   </td>
-                  <td
-                    class="table-cell max-w-[7.5rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <div
-                      class="min-w-0"
-                      :title="
-                        'CCP: ' +
-                        (offer.ccp ? 'Yes' : 'No') +
-                        ', Compliance: ' +
-                        (offer.compliance ? 'Yes' : 'No')
-                      "
-                    >
+                  <td class="table-cell max-w-[7.5rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <div class="min-w-0" :title="'CCP: ' +
+                      (offer.ccp ? 'Yes' : 'No') +
+                      ', Compliance: ' +
+                      (offer.compliance ? 'Yes' : 'No')
+                      ">
                       <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
-                      <div v-if="offer.corsia_phase_eligibility != null">
+                      <div ">
                         Corsia:
-                        {{ offer.corsia_phase_eligibility ? "Yes" : "No" }}
+                        {{ offer.corsia_phase_eligibility ? " Yes" : "No" }} </div>
+                        <div class="min-w-0 truncate">
+                          Compliance: {{ offer.compliance ? "Yes" : "No" }}
+                        </div>
                       </div>
-                      <div class="min-w-0 truncate">
-                        Compliance: {{ offer.compliance ? "Yes" : "No" }}
-                      </div>
-                    </div>
                   </td>
-                  <td
-                    class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces"
-                  >
+                  <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
                     <div class="min-w-0" :title="offer.top_3_buyers ?? '—'">
                       <template v-if="offer.top_3_buyers">
-                        <div
-                          v-for="(item, i) in commaBreakItems(
-                            offer.top_3_buyers,
-                          )"
-                          :key="i"
-                        >
+                        <div v-for="(item, i) in commaBreakItems(
+                          offer.top_3_buyers,
+                        )" :key="i">
                           {{ item.text }}{{ item.comma }}
                         </div>
                       </template>
@@ -372,11 +222,9 @@
             </table>
           </div>
           <Transition name="fade">
-            <div
-              v-show="showSwipeIndicator"
+            <div v-show="showSwipeIndicator"
               class="pointer-events-none absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/85 px-3 py-1.5 text-xs font-medium text-primary-700 shadow-sm ring-1 ring-primary-200/60 backdrop-blur-sm"
-              aria-hidden="true"
-            >
+              aria-hidden="true">
               Swipe →
             </div>
           </Transition>
@@ -384,23 +232,15 @@
       </section>
     </section>
 
-    <Dialog
-      v-model:visible="buyDialogVisible"
-      modal
-      header="Bidding"
-      :style="{ width: '28rem' }"
-      :dismissable-mask="true"
-      class="buy-dialog"
-      @hide="resetBuyForm"
-    >
+    <Dialog v-model:visible="buyDialogVisible" modal header="Bidding" :style="{ width: '28rem' }"
+      :dismissable-mask="true" class="buy-dialog" @hide="resetBuyForm">
       <template v-if="selectedOffer">
         <p class="text-slate-700 mb-4">
           You are expressing an interest to buy
           <strong>{{ formatCredits(buyForm.credits) }} credits</strong>
           of {{ selectedOffer.projectName }} vintage
           {{ selectedOffer.vintage }} at
-          <strong>${{ formatPrice(buyForm.price) }}</strong
-          >.
+          <strong>${{ formatPrice(buyForm.price) }}</strong>.
         </p>
         <p class="text-slate-700 mb-4">
           Your indication of interest will be emailed to the party offering the
@@ -408,86 +248,41 @@
         </p>
         <div class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
-            <label for="buy-credits" class="text-sm font-medium text-slate-700"
-              >Credits</label
-            >
-            <InputNumber
-              id="buy-credits"
-              v-model="buyForm.credits"
-              :min="0"
-              :max-fraction-digits="0"
-              class="w-full"
-            />
+            <label for="buy-credits" class="text-sm font-medium text-slate-700">Credits</label>
+            <InputNumber id="buy-credits" v-model="buyForm.credits" :min="0" :max-fraction-digits="0" class="w-full" />
           </div>
           <div class="flex flex-col gap-2">
-            <label for="buy-price" class="text-sm font-medium text-slate-700"
-              >Price per credit ($)</label
-            >
-            <InputNumber
-              id="buy-price"
-              v-model="buyForm.price"
-              :min="0"
-              :min-fraction-digits="2"
-              :max-fraction-digits="2"
-              mode="currency"
-              currency="USD"
-              locale="en-US"
-              class="w-full"
-            />
+            <label for="buy-price" class="text-sm font-medium text-slate-700">Price per credit ($)</label>
+            <InputNumber id="buy-price" v-model="buyForm.price" :min="0" :min-fraction-digits="2"
+              :max-fraction-digits="2" mode="currency" currency="USD" locale="en-US" class="w-full" />
           </div>
           <div class="flex flex-col gap-2">
-            <label for="buy-email" class="text-sm font-medium text-slate-700"
-              >Email address</label
-            >
-            <InputText
-              id="buy-email"
-              v-model="buyForm.email"
-              type="email"
-              placeholder="your.email@example.com"
-              class="w-full"
-            />
+            <label for="buy-email" class="text-sm font-medium text-slate-700">Email address</label>
+            <InputText id="buy-email" v-model="buyForm.email" type="email" placeholder="your.email@example.com"
+              class="w-full" />
           </div>
           <div class="flex flex-col gap-2">
-            <label for="buy-phone" class="text-sm font-medium text-slate-700"
-              >Phone(optional)</label
-            >
-            <InputText
-              id="buy-phone"
-              v-model="buyForm.phone"
-              type="tel"
-              placeholder="123-456-7890"
-              class="w-full"
-            />
+            <label for="buy-phone" class="text-sm font-medium text-slate-700">Phone(optional)</label>
+            <InputText id="buy-phone" v-model="buyForm.phone" type="tel" placeholder="123-456-7890" class="w-full" />
           </div>
         </div>
       </template>
       <template #footer>
-        <Button
-          label="Confirm"
-          :loading="submitLoading"
-          @click="handleBuyConfirm"
-        />
+        <Button label="Confirm" :loading="submitLoading" @click="handleBuyConfirm" />
       </template>
     </Dialog>
     <div class="text-slate-600 mt-10">
-      <RouterLink to="/subscribe"
-        ><span class="underline cursor-pointer">Click here</span></RouterLink
-      >
+      <RouterLink to="/subscribe"><span class="underline cursor-pointer">Click here</span></RouterLink>
       if you would like email alerts for new prices/projects or periodic email
     </div>
     <div class="text-slate-600 mt-4">
-      <a
-        href="mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Project Developer"
-        target="_blank"
-        ><span class="underline cursor-pointer">Click here</span></a
-      >
+      <a href="mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Project Developer" target="_blank"><span
+          class="underline cursor-pointer">Click here</span></a>
       if you are a project developer and want to list credits on this site (plus
       other distribution channels including API, and emails)
     </div>
     <div class="text-slate-600 mt-4">
-      <router-link to="/api" target="_blank"
-        ><span class="underline cursor-pointer">Click here</span></router-link
-      >
+      <router-link to="/api" target="_blank"><span class="underline cursor-pointer">Click here</span></router-link>
       if you want access to data via API
     </div>
     <div class="text-slate-600 mt-10">
@@ -661,8 +456,13 @@ function splitByComma(val) {
     .filter(Boolean);
 }
 
+function uniqueItems(arr) {
+  return [...new Set(arr)];
+}
+
 function commaBreakItems(val) {
-  const arr = splitByComma(val);
+  let arr = splitByComma(val);
+  arr = uniqueItems(arr);
   return arr.map((text, i) => ({ text, comma: i < arr.length - 1 ? "," : "" }));
 }
 
