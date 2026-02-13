@@ -11,7 +11,7 @@
         </p>
         <div class="space-y-3">
           <h1 class="text-3xl font-semibold text-ink sm:text-4xl">
-            AlliedExchange
+               Carbon Credit Offers
           </h1>
           <p class="max-w-3xl text-lg text-slate-600">
             Review curated opportunities with clear pricing and quantities.
