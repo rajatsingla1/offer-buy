@@ -11,7 +11,7 @@
         </p>
         <div class="space-y-3">
           <h1 class="text-3xl font-semibold text-ink sm:text-4xl">
-               Carbon Credit Offers
+            Carbon Credit Offers
           </h1>
           <p class="max-w-3xl text-lg text-slate-600">
             Review curated opportunities with clear pricing and quantities.
@@ -198,13 +198,13 @@
                       (offer.compliance ? 'Yes' : 'No')
                       ">
                       <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
-                      <div ">
+                      <div>
                         Corsia:
                         {{ offer.corsia_phase_eligibility ? " Yes" : "No" }} </div>
-                        <div class="min-w-0 truncate">
-                          Compliance: {{ offer.compliance ? "Yes" : "No" }}
-                        </div>
+                      <div class="min-w-0 truncate">
+                        Compliance: {{ offer.compliance ? "Yes" : "No" }}
                       </div>
+                    </div>
                   </td>
                   <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
                     <div class="min-w-0" :title="offer.top_3_buyers ?? '—'">
