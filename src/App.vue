@@ -29,6 +29,14 @@ onMounted(() => {
         </div>
 
         <nav class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+          <RouterLink to="/" custom v-slot="{ navigate }">
+            <button type="button" class="rounded-full px-4 py-2 transition hover:bg-primary-50 hover:text-primary"
+              :class="{
+                'bg-primary-50 text-primary': activeRouteName === 'offers',
+              }" @click="navigate">
+              Home
+            </button>
+          </RouterLink>
           <RouterLink to="/about" custom v-slot="{ navigate }">
             <button type="button" class="rounded-full px-4 py-2 transition hover:bg-primary-50 hover:text-primary"
               :class="{

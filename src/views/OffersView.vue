@@ -35,7 +35,7 @@
               <thead class="table-header">
                 <tr>
                   <th scope="col" class="max-w-[14rem] w-[14rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="flex flex-col items-start gap-0.5 text-left text-slate-700"
+                    <button type="button" class="flex flex-col items-start gap-0.5 text-left "
                       @click="toggleSort('name')">
                       <span class="inline-flex items-center gap-1">
                         <span>Name</span>
@@ -55,8 +55,7 @@
                     </button>
                   </th>
                   <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="inline-flex items-center gap-1 text-slate-700"
-                      @click="toggleSort('price')">
+                    <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('price')">
                       <span>Offer<br />price</span>
                       <span v-if="sortKey === 'price'" class="text-[0.7rem] text-slate-500">
                         {{ sortDirection === "asc" ? "↑" : "↓" }}
@@ -64,8 +63,7 @@
                     </button>
                   </th>
                   <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="inline-flex items-center gap-1 text-slate-700"
-                      @click="toggleSort('credits')">
+                    <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('credits')">
                       <span>Number<br />credits</span>
                       <span v-if="sortKey === 'credits'" class="text-[0.7rem] text-slate-500">
                         {{ sortDirection === "asc" ? "↑" : "↓" }}
@@ -73,8 +71,7 @@
                     </button>
                   </th>
                   <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="inline-flex items-center gap-1 text-slate-700"
-                      @click="toggleSort('total')">
+                    <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('total')">
                       <span>Total<br />offer</span>
                       <span v-if="sortKey === 'total'" class="text-[0.7rem] text-slate-500">
                         {{ sortDirection === "asc" ? "↑" : "↓" }}
@@ -82,9 +79,8 @@
                     </button>
                   </th>
                   <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="inline-flex items-center gap-1 text-slate-700"
-                      @click="toggleSort('type')">
-                      <span>Action/<br />type</span>
+                    <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('type')">
+                      <span>Action/<br />type*</span>
                       <span v-if="sortKey === 'type'" class="text-[0.7rem] text-slate-500">
                         {{ sortDirection === "asc" ? "↑" : "↓" }}
                       </span>
@@ -199,7 +195,7 @@
                       ">
                       <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
                       <div>
-                        Corsia:
+                        CORSIA:
                         {{ offer.corsia_phase_eligibility ? " Yes" : "No" }} </div>
                       <div class="min-w-0 truncate">
                         Compliance: {{ offer.compliance ? "Yes" : "No" }}
@@ -286,6 +282,7 @@
       <router-link to="/api" target="_blank"><span class="underline cursor-pointer">Click here</span></router-link>
       if you want access to data via API
     </div>
+
     <div class="text-slate-600 mt-10">
       <h1 class="text-xl">T&Cs:</h1>
       <p>
@@ -295,6 +292,17 @@
         scrambled it to make a type specimen book. It has survived not only five
         centuries, but also the leap into electronic typesetting, remaining
         essentially unchanged.
+      </p>
+    </div>
+    <div class="text-slate-600 text-xs mt-4">
+      <p>
+        *an “indicative” offer means that the final agreement on price/quantity is subject to agreement with the seller
+        (we
+        put you in touch, but we are not involved with the negotiations). A “firm” offer means that a 3rd party has
+        reserved
+        the credits and unless the offer is modified then they are available at that price (subject to potential
+        transaction
+        costs).
       </p>
     </div>
   </div>
