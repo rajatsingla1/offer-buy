@@ -21,7 +21,18 @@
     </section>
 
     <section class="mt-10 space-y-4">
-      <div class="mb-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 flex-row-reverse">
+      <div class="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="button" class="button-outline text-sm" @click="filterDialogVisible = true">
+            Amend view for custom criteria
+          </button>
+          <template v-if="hasActiveFilters">
+            <span class="text-sm text-slate-600">{{ filteredOffers.length }} results</span>
+            <button type="button" class="text-sm text-primary-600 hover:text-primary-700 hover:underline font-medium" @click="resetFilters">
+              Reset
+            </button>
+          </template>
+        </div>
         <a href="https://alliedoffsets.metabaseapp.com/auth/login/password" target="_blank" rel="noopener noreferrer"
           class="text-sm text-red-600 hover:text-red-700 hover:underline">
           click for complete project detail on the AlliedOffsets database
@@ -104,7 +115,7 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-primary-50 bg-white">
-                <tr v-for="(offer, index) in sortedOffers" :key="offerRowKey(offer, index)"
+                <tr v-for="(offer, index) in filteredOffers" :key="offerRowKey(offer, index)"
                   class="hover:bg-primary-50/40">
                   <td class="table-cell max-w-[14rem] overflow-hidden px-4 py-2.5">
                     <div class="min-w-0 truncate text-sm font-semibold text-ink" :title="[
@@ -268,6 +279,14 @@
         <Button label="Confirm" :loading="submitLoading" @click="handleBuyConfirm" />
       </template>
     </Dialog>
+
+    <OffersFilterDialog
+      v-model:visible="filterDialogVisible"
+      v-model:criteria="filterCriteria"
+      :offers="offers"
+      @applied="onFiltersApplied"
+    />
+
     <div class="text-slate-600 mt-10">
       <RouterLink to="/subscribe"><span class="underline cursor-pointer">Click here</span></RouterLink>
       if you would like email alerts for new prices/projects or periodic email
@@ -322,6 +341,8 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
+import OffersFilterDialog from "../components/OffersFilterDialog.vue";
+import { defaultCriteria, filterOffers, hasActiveFilters as checkHasActiveFilters, splitByComma } from "../composables/offersFilter.js";
 
 const toast = useToast();
 const offersStore = useOffersStore();
@@ -329,6 +350,8 @@ const { offers } = storeToRefs(offersStore);
 
 const sortKey = ref(null);
 const sortDirection = ref("asc");
+const filterDialogVisible = ref(false);
+const filterCriteria = ref(defaultCriteria());
 
 const sortedOffers = computed(() => {
   const list = offers.value;
@@ -398,6 +421,24 @@ const sortedOffers = computed(() => {
   });
 });
 
+const filteredOffers = computed(() =>
+  filterOffers(sortedOffers.value, filterCriteria.value)
+);
+
+const hasActiveFilters = computed(() => checkHasActiveFilters(filterCriteria.value));
+
+function onFiltersApplied() {
+  toast.add({
+    severity: "success",
+    summary: "View updated",
+    life: 3000,
+  });
+}
+
+function resetFilters() {
+  filterCriteria.value = defaultCriteria();
+}
+
 function toggleSort(key) {
   if (sortKey.value === key) {
     sortDirection.value = sortDirection.value === "asc" ? "desc" : "asc";
@@ -460,14 +501,6 @@ function formatOffsetType(val) {
   if (s.includes("removal")) return "removal";
   if (s.includes("avoidance") || s.includes("reduction")) return "avoidance";
   return val;
-}
-
-function splitByComma(val) {
-  if (!val) return [];
-  return String(val)
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
 }
 
 function uniqueItems(arr) {
