@@ -1,57 +1,26 @@
 <template>
-  <Dialog
-    v-model:visible="isVisible"
-    modal
-    header="Custom criteria"
-    :style="{ width: '32rem' }"
-    :dismissable-mask="true"
-    class="filter-dialog"
-    @hide="emit('update:visible', false)"
-  >
+  <Dialog v-model:visible="isVisible" modal header="Filters" :style="{ width: '32rem' }" :dismissable-mask="true"
+    class="filter-dialog" @hide="emit('update:visible', false)">
     <div class="flex flex-col gap-4 text-sm">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label class="font-medium text-slate-700">Offer price range</label>
           <div class="flex items-center gap-2">
-            <InputNumber
-              v-model="local.priceMin"
-              :min="0"
-              :min-fraction-digits="0"
-              :max-fraction-digits="2"
-              placeholder="Min"
-              class="flex-1 filter-input text-sm"
-            />
+            <InputNumber v-model="local.priceMin" :min="0" :min-fraction-digits="0" :max-fraction-digits="2"
+              placeholder="Min" class="flex-1 filter-input text-sm" />
             <span class="text-slate-400">–</span>
-            <InputNumber
-              v-model="local.priceMax"
-              :min="0"
-              :min-fraction-digits="0"
-              :max-fraction-digits="2"
-              placeholder="Max"
-              class="flex-1 filter-input text-sm"
-            />
+            <InputNumber v-model="local.priceMax" :min="0" :min-fraction-digits="0" :max-fraction-digits="2"
+              placeholder="Max" class="flex-1 filter-input text-sm" />
           </div>
         </div>
         <div class="flex flex-col gap-2">
           <label class="font-medium text-slate-700">Total offer range</label>
           <div class="flex items-center gap-2">
-            <InputNumber
-              v-model="local.totalMin"
-              :min="0"
-              :min-fraction-digits="0"
-              :max-fraction-digits="0"
-              placeholder="Min"
-              class="flex-1 filter-input text-sm"
-            />
+            <InputNumber v-model="local.totalMin" :min="0" :min-fraction-digits="0" :max-fraction-digits="0"
+              placeholder="Min" class="flex-1 filter-input text-sm" />
             <span class="text-slate-400">–</span>
-            <InputNumber
-              v-model="local.totalMax"
-              :min="0"
-              :min-fraction-digits="0"
-              :max-fraction-digits="0"
-              placeholder="Max"
-              class="flex-1 filter-input text-sm"
-            />
+            <InputNumber v-model="local.totalMax" :min="0" :min-fraction-digits="0" :max-fraction-digits="0"
+              placeholder="Max" class="flex-1 filter-input text-sm" />
           </div>
         </div>
       </div>
@@ -59,73 +28,43 @@
         <label class="font-medium text-slate-700">Offer type</label>
         <div class="flex gap-6">
           <label class="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              v-model="local.indicative"
-              class="rounded border-slate-300 text-primary focus:ring-primary"
-            />
+            <input type="checkbox" v-model="local.indicative"
+              class="rounded border-slate-300 text-primary focus:ring-primary" />
             <span>Indicative</span>
           </label>
           <label class="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              v-model="local.firm"
-              class="rounded border-slate-300 text-primary focus:ring-primary"
-            />
+            <input type="checkbox" v-model="local.firm"
+              class="rounded border-slate-300 text-primary focus:ring-primary" />
             <span>Firm</span>
           </label>
         </div>
       </div>
       <div class="flex flex-col gap-2">
         <label class="font-medium text-slate-700">Country</label>
-        <MultiSelect
-          v-model="local.countries"
-          :options="countryOptions"
-          placeholder="All"
-          filter
-          show-clear
-          class="w-full filter-multiselect text-sm"
-        />
+        <MultiSelect v-model="local.countries" :options="countryOptions" placeholder="All" filter show-clear
+          class="w-full filter-multiselect text-sm" />
       </div>
       <div class="flex flex-col gap-2">
         <label class="font-medium text-slate-700">Method / Sector</label>
-        <MultiSelect
-          v-model="local.sectors"
-          :options="sectorOptions"
-          placeholder="All"
-          filter
-          show-clear
-          class="w-full filter-multiselect text-sm"
-        />
+        <MultiSelect v-model="local.sectors" :options="sectorOptions" placeholder="All" filter show-clear
+          class="w-full filter-multiselect text-sm" />
       </div>
       <div class="flex flex-col gap-2">
         <label class="font-medium text-slate-700">Rating (rated by)</label>
-        <MultiSelect
-          v-model="local.raters"
-          :options="raterOptions"
-          placeholder="All"
-          filter
-          show-clear
-          class="w-full filter-multiselect text-sm"
-        />
+        <MultiSelect v-model="local.raters" :options="raterOptions" placeholder="All" filter show-clear
+          class="w-full filter-multiselect text-sm" />
       </div>
       <div class="flex flex-col gap-2">
         <label class="font-medium text-slate-700">Removal / Avoidance</label>
         <div class="flex gap-6">
           <label class="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              v-model="local.avoidance"
-              class="rounded border-slate-300 text-primary focus:ring-primary"
-            />
+            <input type="checkbox" v-model="local.avoidance"
+              class="rounded border-slate-300 text-primary focus:ring-primary" />
             <span>Avoidance</span>
           </label>
           <label class="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              v-model="local.removal"
-              class="rounded border-slate-300 text-primary focus:ring-primary"
-            />
+            <input type="checkbox" v-model="local.removal"
+              class="rounded border-slate-300 text-primary focus:ring-primary" />
             <span>Removal</span>
           </label>
         </div>
@@ -134,27 +73,18 @@
         <label class="font-medium text-slate-700">Eligible</label>
         <div class="flex gap-6">
           <label class="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              v-model="local.ccpEligible"
-              class="rounded border-slate-300 text-primary focus:ring-primary"
-            />
+            <input type="checkbox" v-model="local.ccpEligible"
+              class="rounded border-slate-300 text-primary focus:ring-primary" />
             <span>CCP</span>
           </label>
           <label class="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              v-model="local.corsiaEligible"
-              class="rounded border-slate-300 text-primary focus:ring-primary"
-            />
+            <input type="checkbox" v-model="local.corsiaEligible"
+              class="rounded border-slate-300 text-primary focus:ring-primary" />
             <span>CORSIA</span>
           </label>
           <label class="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              v-model="local.complianceEligible"
-              class="rounded border-slate-300 text-primary focus:ring-primary"
-            />
+            <input type="checkbox" v-model="local.complianceEligible"
+              class="rounded border-slate-300 text-primary focus:ring-primary" />
             <span>Compliance</span>
           </label>
         </div>
@@ -240,6 +170,7 @@ function clearAll() {
 .filter-input :deep(input) {
   font-size: 0.875rem;
 }
+
 .filter-multiselect :deep(.p-multiselect-label),
 .filter-multiselect :deep(input) {
   font-size: 0.875rem;
