@@ -279,6 +279,11 @@
       other distribution channels including API, and emails)
     </div>
     <div class="text-slate-600 mt-4">
+      <a href="mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Other Credits" target="_blank"><span
+          class="underline cursor-pointer">Click here</span></a>
+      if you are interested in other credits and we will try to put you in touch with a potential broker or seller
+    </div>
+    <div class="text-slate-600 mt-4">
       <router-link to="/api" target="_blank"><span class="underline cursor-pointer">Click here</span></router-link>
       if you want access to data via API
     </div>
