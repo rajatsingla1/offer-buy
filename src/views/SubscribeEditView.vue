@@ -88,11 +88,26 @@
             <div class="space-y-4 pt-6 border-t border-slate-200">
                 <h3 class="text-ink">Projects to include</h3>
                 <p class="text-sm text-slate-600 mb-4">
-                    Choose which projects to include in your email alerts. When “All projects” is checked, every available project is included regardless of individual selection.
+                    Choose which projects to include in your email alerts. When “All projects” is checked, every
+                    available project is included regardless of individual selection.
                 </p>
 
+                <div class="mb-6 flex flex-wrap items-center gap-3">
+                    <button type="button" class="button-outline text-sm" @click="filterDialogVisible = true">
+                        Amend view for custom criteria
+                    </button>
+                    <template v-if="hasActiveFilters">
+                        <span class="text-sm text-slate-600">{{ products.length }} projects</span>
+                        <button type="button"
+                            class="text-sm text-primary-600 hover:text-primary-700 hover:underline font-medium"
+                            @click="resetFilters">
+                            Reset
+                        </button>
+                    </template>
+                </div>
+
                 <section class="card overflow-hidden">
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
                         <table class="min-w-full divide-y divide-primary-100">
                             <thead class="table-header">
                                 <tr>
@@ -103,14 +118,15 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-primary-50 bg-white">
-                                <tr class="bg-primary-50/30 hover:bg-primary-50/50">
+                                <tr v-if="!hasActiveFilters" class="bg-primary-50/30 hover:bg-primary-50/50">
                                     <td class="table-cell">
                                         <input id="projects-all-edit" type="checkbox" :checked="allProjectsChecked"
                                             @change="toggleAllProjects"
                                             class="h-4 w-4 text-primary border-slate-300 rounded focus:ring-primary" />
                                     </td>
                                     <td class="table-cell" colspan="3">
-                                        <label for="projects-all-edit" class="text-sm font-medium text-ink cursor-pointer">
+                                        <label for="projects-all-edit"
+                                            class="text-sm font-medium text-ink cursor-pointer">
                                             All projects
                                         </label>
                                     </td>
@@ -118,7 +134,7 @@
                                 <tr v-for="product in products" :key="product.projectId" class="hover:bg-primary-50/40">
                                     <td class="table-cell">
                                         <input type="checkbox" :checked="selectedProjectIds.has(product.projectId)"
-                                            :disabled="allProjectsChecked"
+                                            :disabled="allProjectsChecked && !hasActiveFilters"
                                             @change="toggleProject(product.projectId)"
                                             class="h-4 w-4 text-primary border-slate-300 rounded focus:ring-primary disabled:opacity-50" />
                                     </td>
@@ -145,26 +161,40 @@
                     @click="handleUnsubscribeAll" :loading="unsubscribing" class="w-80" />
             </div>
         </form>
+
+        <OffersFilterDialog v-model:visible="filterDialogVisible" v-model:criteria="filterCriteria" :offers="offers"
+            @applied="onFiltersApplied" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useSubscribedUserStore } from '../stores/subscribedUser.ts'
 import Button from "primevue/button"
 import ProgressSpinner from "primevue/progressspinner"
 import { useToast } from 'primevue/usetoast'
 import { useOffersStore } from '../stores/offers.ts'
+import OffersFilterDialog from '../components/OffersFilterDialog.vue'
+import { defaultCriteria, filterOffers, hasActiveFilters as checkHasActiveFilters } from '../composables/offersFilter.js'
 
 const route = useRoute()
 const subscribedUserStore = useSubscribedUserStore()
 const toast = useToast()
 const offersStore = useOffersStore()
+const { offers } = storeToRefs(offersStore)
+
+const filterDialogVisible = ref(false)
+const filterCriteria = ref(defaultCriteria())
+
+const filteredOffers = computed(() => filterOffers(offers.value ?? [], filterCriteria.value))
+const hasActiveFilters = computed(() => checkHasActiveFilters(filterCriteria.value))
 
 const products = computed(() => {
     const projects: { projectId: string; vintage: string; noCredits: number }[] = []
-    offersStore.offers.forEach((offer: any) => {
+    const offerList = filteredOffers.value
+    offerList.forEach((offer: any) => {
         const project = projects.find((p) => p.projectId === offer.projectId)
         if (project) {
             project.noCredits += offer.creditsToOffer ?? 0
@@ -178,6 +208,16 @@ const products = computed(() => {
     })
     return projects
 })
+
+function onFiltersApplied() {
+    allProjectsChecked.value = false
+    selectedProjectIds.value = new Set(products.value.map((p) => p.projectId))
+    toast.add({ severity: 'success', summary: 'View updated', life: 3000 })
+}
+
+function resetFilters() {
+    filterCriteria.value = defaultCriteria()
+}
 
 const isActive = ref(true)
 const loading = ref(true)
@@ -244,7 +284,7 @@ const handleSubmit = async () => {
 
     saving.value = true
     try {
-        const subscribedProjectIds = allProjectsChecked.value
+        const subscribedProjectIds = (allProjectsChecked.value && !hasActiveFilters.value)
             ? products.value.map((p) => p.projectId)
             : Array.from(selectedProjectIds.value)
 

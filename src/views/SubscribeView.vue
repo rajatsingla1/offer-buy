@@ -50,7 +50,8 @@
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <label for="auto-subscribe-new" class="text-sm text-slate-700 cursor-pointer whitespace-nowrap min-w-[350px]">
+                    <label for="auto-subscribe-new"
+                        class="text-sm text-slate-700 cursor-pointer whitespace-nowrap min-w-[350px]">
                         Automatically subscribe to new offers:
                     </label>
                     <input id="auto-subscribe-new" v-model="formData.autoSubscribeNewOffers" type="checkbox"
@@ -62,12 +63,29 @@
             <div class="space-y-4 pt-6 border-t border-slate-200">
                 <h3 class="text-ink">Projects to include</h3>
                 <p class="text-sm text-slate-600 mb-4">
-                    Choose which projects to include in your email alerts. When “All projects” is checked, every available project is included regardless of individual selection.
+                    Choose which projects to include in your email alerts. When “All projects” is checked, every
+                    available project is included regardless of individual selection.
                 </p>
 
+
+                <div class="mb-6 flex flex-wrap items-center gap-3">
+                    <button type="button" class="button-outline text-sm" @click="filterDialogVisible = true">
+                        Filter projects
+                    </button>
+                    <template v-if="hasActiveFilters">
+                        <span class="text-sm text-slate-600">{{ products.length }} projects</span>
+                        <button type="button"
+                            class="text-sm text-primary-600 hover:text-primary-700 hover:underline font-medium"
+                            @click="resetFilters">
+                            Reset
+                        </button>
+                    </template>
+                </div>
+
+
                 <section class="card overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-primary-100">
+                    <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
+                        <table class="min-w-full divide-y divide-primary-100 ">
                             <thead class="table-header">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left w-12">Include</th>
@@ -77,7 +95,7 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-primary-50 bg-white">
-                                <tr class="bg-primary-50/30 hover:bg-primary-50/50">
+                                <tr v-if="!hasActiveFilters" class="bg-primary-50/30 hover:bg-primary-50/50">
                                     <td class="table-cell">
                                         <input id="projects-all" type="checkbox" :checked="allProjectsChecked"
                                             @change="toggleAllProjects"
@@ -92,7 +110,7 @@
                                 <tr v-for="product in products" :key="product.projectId" class="hover:bg-primary-50/40">
                                     <td class="table-cell">
                                         <input type="checkbox" :checked="selectedProjectIds.has(product.projectId)"
-                                            :disabled="allProjectsChecked"
+                                            :disabled="allProjectsChecked && !hasActiveFilters"
                                             @change="toggleProject(product.projectId)"
                                             class="h-4 w-4 text-primary border-slate-300 rounded focus:ring-primary disabled:opacity-50" />
                                     </td>
@@ -110,19 +128,33 @@
 
             <Button class="w-80" type="submit" label="Subscribe" />
         </form>
+
+        <OffersFilterDialog v-model:visible="filterDialogVisible" v-model:criteria="filterCriteria" :offers="offers"
+            @applied="onFiltersApplied" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { RouterLink } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useSubscribedUserStore } from '../stores/subscribedUser.ts'
 import { useOffersStore } from '../stores/offers.ts'
 import Button from "primevue/button"
 import { useToast } from 'primevue/usetoast'
+import OffersFilterDialog from '../components/OffersFilterDialog.vue'
+import { defaultCriteria, filterOffers, hasActiveFilters as checkHasActiveFilters } from '../composables/offersFilter.js'
 
 const subscribedUserStore = useSubscribedUserStore()
 const offersStore = useOffersStore()
+const { offers } = storeToRefs(offersStore)
 const toast = useToast()
+
+const filterDialogVisible = ref(false)
+const filterCriteria = ref(defaultCriteria())
+
+const filteredOffers = computed(() => filterOffers(offers.value ?? [], filterCriteria.value))
+const hasActiveFilters = computed(() => checkHasActiveFilters(filterCriteria.value))
 
 const formData = ref({
     email: '',
@@ -136,7 +168,8 @@ const selectedProjectIds = ref<Set<string>>(new Set())
 
 const products = computed(() => {
     const projects: { projectId: string; vintage: string; noCredits: number }[] = []
-    offersStore.offers.forEach((offer: any) => {
+    const offerList = filteredOffers.value
+    offerList.forEach((offer: any) => {
         const project = projects.find((p) => p.projectId === offer.projectId)
         if (project) {
             project.noCredits += offer.creditsToOffer ?? 0
@@ -150,6 +183,16 @@ const products = computed(() => {
     })
     return projects
 })
+
+function onFiltersApplied() {
+    allProjectsChecked.value = false
+    selectedProjectIds.value = new Set(products.value.map((p) => p.projectId))
+    toast.add({ severity: 'success', summary: 'View updated', life: 3000 })
+}
+
+function resetFilters() {
+    filterCriteria.value = defaultCriteria()
+}
 
 const toggleAllProjects = () => {
     allProjectsChecked.value = !allProjectsChecked.value
@@ -173,7 +216,7 @@ const resetForm = () => {
 }
 
 const handleSubmit = async () => {
-    const subscribedProjectIds = allProjectsChecked.value
+    const subscribedProjectIds = (allProjectsChecked.value && !hasActiveFilters.value)
         ? products.value.map((p) => p.projectId)
         : Array.from(selectedProjectIds.value)
 
