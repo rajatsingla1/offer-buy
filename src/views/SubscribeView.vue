@@ -210,7 +210,7 @@ const resetForm = () => {
     formData.value.email = ''
     formData.value.receiveInstantEmail = false
     formData.value.emailFrequency = 'daily'
-    formData.value.autoSubscribeNewOffers = true
+    formData.value.autoSubscribeNewOffers = false
     allProjectsChecked.value = true
     selectedProjectIds.value = new Set()
 }

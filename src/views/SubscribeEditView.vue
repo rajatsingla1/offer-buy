@@ -94,7 +94,7 @@
 
                 <div class="mb-6 flex flex-wrap items-center gap-3">
                     <button type="button" class="button-outline text-sm" @click="filterDialogVisible = true">
-                        Amend view for custom criteria
+                        Filter projects
                     </button>
                     <template v-if="hasActiveFilters">
                         <span class="text-sm text-slate-600">{{ products.length }} projects</span>
