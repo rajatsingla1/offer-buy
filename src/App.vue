@@ -15,7 +15,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-white via-surface to-primary-50">
+  <div class="min-h-screen bg-gradient-to-b from-white via-surface to-primary-50 bg-fixed">
     <header class="sticky top-0 z-10 border-b border-primary-100 bg-white/80 backdrop-blur">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         <div class="flex items-center gap-1">
