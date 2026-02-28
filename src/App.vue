@@ -54,6 +54,11 @@ onMounted(() => {
               API
             </button>
           </RouterLink>
+
+          <a href="https://offer-price-pi.vercel.app/login" target="_blank" rel="noopener noreferrer"
+            class="rounded-full px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-primary-50 hover:text-primary border border-primary-200 hover:border-primary-300">
+            Developer Login
+          </a>
         </nav>
       </div>
     </header>
