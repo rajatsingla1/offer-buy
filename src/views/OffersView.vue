@@ -28,7 +28,8 @@
           </button>
           <template v-if="hasActiveFilters">
             <span class="text-sm text-slate-600">{{ filteredOffers.length }} results</span>
-            <button type="button" class="text-sm text-primary-600 hover:text-primary-700 hover:underline font-medium" @click="resetFilters">
+            <button type="button" class="text-sm text-primary-600 hover:text-primary-700 hover:underline font-medium"
+              @click="resetFilters">
               Reset
             </button>
           </template>
@@ -280,12 +281,8 @@
       </template>
     </Dialog>
 
-    <OffersFilterDialog
-      v-model:visible="filterDialogVisible"
-      v-model:criteria="filterCriteria"
-      :offers="offers"
-      @applied="onFiltersApplied"
-    />
+    <OffersFilterDialog v-model:visible="filterDialogVisible" v-model:criteria="filterCriteria" :offers="offers"
+      @applied="onFiltersApplied" />
 
     <div class="text-slate-600 mt-10">
       <RouterLink to="/subscribe"><span class="underline cursor-pointer">Click here</span></RouterLink>
@@ -307,16 +304,22 @@
       if you want access to data via API
     </div>
 
-    <div class="text-slate-600 mt-10">
-      <h1 class="text-xl">T&Cs:</h1>
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged.
-      </p>
+    <div class="mt-10 text-slate-600">
+      <Accordion>
+        <AccordionPanel value="terms">
+          <AccordionHeader>T&Cs</AccordionHeader>
+          <AccordionContent>
+            <p class="">
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text ever
+              since the 1500s, when an unknown printer took a galley of type and
+              scrambled it to make a type specimen book. It has survived not only five
+              centuries, but also the leap into electronic typesetting, remaining
+              essentially unchanged.
+            </p>
+          </AccordionContent>
+        </AccordionPanel>
+      </Accordion>
     </div>
     <div class="text-slate-600 text-xs mt-4">
       <p>
@@ -341,6 +344,10 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
+import Accordion from "primevue/accordion";
+import AccordionPanel from "primevue/accordionpanel";
+import AccordionHeader from "primevue/accordionheader";
+import AccordionContent from "primevue/accordioncontent";
 import OffersFilterDialog from "../components/OffersFilterDialog.vue";
 import { defaultCriteria, filterOffers, hasActiveFilters as checkHasActiveFilters, splitByComma } from "../composables/offersFilter.js";
 
@@ -352,6 +359,7 @@ const sortKey = ref(null);
 const sortDirection = ref("asc");
 const filterDialogVisible = ref(false);
 const filterCriteria = ref(defaultCriteria());
+
 
 const sortedOffers = computed(() => {
   const list = offers.value;
