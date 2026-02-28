@@ -309,14 +309,129 @@
         <AccordionPanel value="terms">
           <AccordionHeader>T&Cs</AccordionHeader>
           <AccordionContent>
-            <p class="">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text ever
-              since the 1500s, when an unknown printer took a galley of type and
-              scrambled it to make a type specimen book. It has survived not only five
-              centuries, but also the leap into electronic typesetting, remaining
-              essentially unchanged.
-            </p>
+            <div class="space-y-4 text-sm leading-relaxed max-h-[30rem] overflow-y-auto">
+              <h2 class="text-lg font-semibold">Website &amp; API Terms of Use</h2>
+              <p class="text-xs text-slate-500">Last updated: February 2026</p>
+              <p>By accessing this website or using the API, you confirm that you have read, understood, and agree to be
+                bound by these Terms of Use. If you do not agree, you must not access the website or use the API.</p>
+              <p>These Terms of Use ("Terms") govern your access to and use of this website (the "Website") and any
+                related
+                application programming interfaces ("API") made available by AlliedOffsets ("we", "us", or "our").</p>
+
+              <h3 class="font-semibold">1. Definitions</h3>
+              <p>"Data" means all pricing information, live offers, project details, analytics, metadata, and any other
+                information made available via the Website or API.</p>
+              <p>"Live Offers" means indicative or live pricing, availability, or market information relating to
+                voluntary
+                carbon market projects or credits.</p>
+              <p>"User" means any individual or entity accessing the Website or API.</p>
+              <p>"Permitted Use" means internal business evaluation and analysis purposes only.</p>
+
+              <h3 class="font-semibold">2. Access and Licence</h3>
+              <p>We grant you a limited, non-exclusive, non-transferable, revocable licence to access and use the
+                Website,
+                API, and Data solely for the Permitted Use.</p>
+              <p>Nothing in these Terms transfers ownership of the Data or any intellectual property rights to you.</p>
+
+              <h3 class="font-semibold">3. Permitted Use and Use Restrictions</h3>
+              <p>Subject to these Terms, you may access and use the Website, API, and Data solely for your internal
+                business
+                evaluation, analysis, and decision-making purposes.</p>
+              <p>Except as expressly permitted above, you must not, directly or indirectly:</p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>share Data with clients, counterparties, or external advisors;</li>
+                <li>publish, display, distribute, or make Data available externally (including in reports,
+                  presentations, or
+                  marketing materials);</li>
+                <li>resell, sublicense, redistribute, or otherwise commercialise the Data;</li>
+                <li>use the Data to price, benchmark, or support transactions for third parties;</li>
+                <li>incorporate the Data into any product, service, database, or tool made available to others;</li>
+                <li>copy, scrape, harvest, extract, or download Data at scale;</li>
+                <li>cache or store Data beyond temporary technical storage required for the permitted use described
+                  above;
+                </li>
+                <li>use the Data to create or support a competing product or service;</li>
+                <li>circumvent access controls, rate limits, or security measures; or</li>
+                <li>use the Website, API, or Data in any unlawful, misleading, abusive, or unethical manner.</li>
+              </ul>
+              <p>These restrictions apply regardless of whether Data is accessed via the Website or the API.</p>
+              <p>Any use outside the permitted use described above requires our prior written consent or a separate
+                written
+                licence agreement.</p>
+
+              <h3 class="font-semibold">4. API Access and Use</h3>
+              <p>API access is provided at our sole discretion and may be subject to additional requirements, including
+                authentication keys, rate limits, or usage thresholds.</p>
+              <p>We reserve the right to:</p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Modify, suspend, or withdraw API access at any time</li>
+                <li>Change API functionality, endpoints, or response formats without notice</li>
+              </ul>
+              <p>API credentials are personal to you and must not be shared.</p>
+
+              <h3 class="font-semibold">5. Behaviour and Termination</h3>
+              <p>We may suspend or terminate your access to the Website, API, or Data immediately and without notice if:
+              </p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>You breach these Terms</li>
+                <li>We reasonably believe your use harms our business, data integrity, or partners</li>
+                <li>You misuse, misrepresent, or redistribute the Data</li>
+                <li>You engage in conduct we reasonably consider inappropriate, abusive, or unethical</li>
+              </ul>
+              <p>Termination may occur without liability to you.</p>
+
+              <h3 class="font-semibold">6. Nature of the Data</h3>
+              <p>The Data and Live Offers are provided for informational purposes only.</p>
+              <p>They:</p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Do not constitute binding offers, financial advice, or investment recommendations</li>
+                <li>May be indicative only and subject to change, withdrawal, or error</li>
+              </ul>
+              <p>We make no guarantees as to the accuracy, completeness, or availability of the Data.</p>
+
+              <h3 class="font-semibold">7. Changes to Services</h3>
+              <p>We reserve the right, at any time and without notice, to modify, suspend, or discontinue any aspect of
+                the
+                Website, API, Data, or related services, including content, functionality, availability, scope,
+                methodology,
+                or coverage.</p>
+
+              <h3 class="font-semibold">8. Intellectual Property</h3>
+              <p>All intellectual property rights in the Website, API, and Data (including databases, content, and
+                underlying methodologies) are owned by us or our licensors.</p>
+              <p>You may not use our name, branding, or trademarks without prior written consent.</p>
+
+              <h3 class="font-semibold">9. Disclaimer</h3>
+              <p>The Website, API, and Data are provided on an "as is" and "as available" basis.</p>
+              <p>To the maximum extent permitted by law, we disclaim all warranties, express or implied, including
+                fitness
+                for a particular purpose and non-infringement.</p>
+
+              <h3 class="font-semibold">10. Limitation of Liability</h3>
+              <p>To the maximum extent permitted by law, we shall have no liability to you arising out of or in
+                connection
+                with your use of the Website, API, or Data.</p>
+              <p>Without limiting the above, we shall not be liable for any loss or damage, whether direct or indirect,
+                including any loss of profits, revenue, business opportunity, data, or any decisions made or actions
+                taken
+                in reliance on the Data.</p>
+              <p>Nothing in these Terms limits or excludes liability for fraud, fraudulent misrepresentation, or any
+                liability that cannot be excluded under applicable law.</p>
+
+              <h3 class="font-semibold">11. Changes to These Terms</h3>
+              <p>We may update these Terms from time to time. Continued use of the Website or API constitutes acceptance
+                of
+                the updated Terms.</p>
+
+              <h3 class="font-semibold">12. Governing Law</h3>
+              <p>These Terms are governed by and construed in accordance with the laws of England and Wales, and the
+                courts
+                of England and Wales shall have exclusive jurisdiction.</p>
+
+              <h3 class="font-semibold">13. Contact</h3>
+              <p>For questions regarding these Terms, please contact: <a href="mailto:legal@alliedoffsets.com"
+                  class="text-primary underline">legal@alliedoffsets.com</a></p>
+            </div>
           </AccordionContent>
         </AccordionPanel>
       </Accordion>
