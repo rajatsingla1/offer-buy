@@ -94,7 +94,7 @@
 
                 <div class="mb-6 flex flex-wrap items-center gap-3">
                     <button type="button" class="button-outline text-sm" @click="filterDialogVisible = true">
-                        Filter projects
+                        Amend the list of projects you receive emails about
                     </button>
                     <template v-if="hasActiveFilters">
                         <span class="text-sm text-slate-600">{{ products.length }} projects</span>
