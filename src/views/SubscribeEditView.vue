@@ -284,15 +284,22 @@ const handleSubmit = async () => {
 
     saving.value = true
     try {
+        const allProductIds = products.value.map((p) => p.projectId)
         const subscribedProjectIds = (allProjectsChecked.value && !hasActiveFilters.value)
-            ? products.value.map((p) => p.projectId)
+            ? allProductIds
             : Array.from(selectedProjectIds.value)
+
+        const subscribedSet = new Set(subscribedProjectIds)
+        const unsubscribedProjectIds = formData.value.autoSubscribeNewOffers
+            ? allProductIds.filter((id) => !subscribedSet.has(id))
+            : []
 
         const response = await subscribedUserStore.updateSubscribedUser(uuid, {
             instantUpdates: formData.value.receiveInstantEmail,
             schedulePreference: formData.value.emailFrequency,
             subscribedProjectIds,
             autoSubscribeNewOffers: formData.value.autoSubscribeNewOffers,
+            unsubscribedProjectIds,
         })
 
         if (response) {

@@ -28,6 +28,7 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
     schedulePreference,
     subscribedProjectIds,
     autoSubscribeNewOffers,
+    unsubscribedProjectIds,
   }: {
     email: string;
     name?: string;
@@ -35,6 +36,7 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
     schedulePreference: string;
     subscribedProjectIds: string[];
     autoSubscribeNewOffers?: boolean;
+    unsubscribedProjectIds?: string[];
   }) => {
     try {
       const body: Record<string, unknown> = {
@@ -46,6 +48,9 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       };
       if (autoSubscribeNewOffers !== undefined) {
         body.subscribe_new_projects = autoSubscribeNewOffers;
+      }
+      if (unsubscribedProjectIds !== undefined) {
+        body.unsubscribed_project_ids = unsubscribedProjectIds;
       }
       const response = await apiClient.root.post("/subscribed-users", body);
       return response.data;
@@ -67,12 +72,14 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       active,
       subscribedProjectIds,
       autoSubscribeNewOffers,
+      unsubscribedProjectIds,
     }: {
       instantUpdates?: boolean;
       schedulePreference?: string;
       active?: boolean;
       subscribedProjectIds?: string[];
       autoSubscribeNewOffers?: boolean;
+      unsubscribedProjectIds?: string[];
     },
   ) => {
     try {
@@ -82,6 +89,7 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       if (active != null) body.active = active;
       if (subscribedProjectIds !== undefined) body.subscribed_project_ids = subscribedProjectIds;
       if (autoSubscribeNewOffers != null) body.subscribe_new_projects = autoSubscribeNewOffers;
+      if (unsubscribedProjectIds !== undefined) body.unsubscribed_project_ids = unsubscribedProjectIds;
 
       const response = await apiClient.root.patch(`/subscribed-users/${uuid}`, body);
       if (response.data) {
