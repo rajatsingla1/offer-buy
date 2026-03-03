@@ -290,9 +290,7 @@ const handleSubmit = async () => {
             : Array.from(selectedProjectIds.value)
 
         const subscribedSet = new Set(subscribedProjectIds)
-        const unsubscribedProjectIds = formData.value.autoSubscribeNewOffers
-            ? allProductIds.filter((id) => !subscribedSet.has(id))
-            : []
+        const unsubscribedProjectIds = allProductIds.filter((id) => !subscribedSet.has(id))
 
         const response = await subscribedUserStore.updateSubscribedUser(uuid, {
             instantUpdates: formData.value.receiveInstantEmail,
