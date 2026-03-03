@@ -19,9 +19,9 @@ export function defaultCriteria() {
     raters: [],
     avoidance: true,
     removal: true,
-    ccpEligible: false,
-    corsiaEligible: false,
-    complianceEligible: false,
+    ccpEligible: null,
+    corsiaEligible: null,
+    complianceEligible: null,
   };
 }
 
@@ -32,7 +32,7 @@ export function hasActiveFilters(criteria) {
   if (f.countries?.length || f.sectors?.length || f.raters?.length) return true;
   if (!f.indicative || !f.firm) return true;
   if (!f.avoidance || !f.removal) return true;
-  if (f.ccpEligible || f.corsiaEligible || f.complianceEligible) return true;
+  if (f.ccpEligible != null || f.corsiaEligible != null || f.complianceEligible != null) return true;
   return false;
 }
 
@@ -110,16 +110,14 @@ export function filterOffers(offers, criteria) {
       if (f.removal && !isRemoval(offer)) return false;
     }
 
-    // Only apply eligible filters when at least one is selected
-    const anyEligible = f.ccpEligible || f.corsiaEligible || f.complianceEligible;
-    if (anyEligible) {
-      if (f.ccpEligible && !offer.ccp) return false;
-      if (f.corsiaEligible) {
-        const c = offer.corsia_phase_eligibility;
-        if (!c || String(c).toLowerCase() === "no") return false;
-      }
-      if (f.complianceEligible && !offer.compliance) return false;
-    }
+    if (f.ccpEligible === true && !offer.ccp) return false;
+    if (f.ccpEligible === false && offer.ccp) return false;
+
+    if (f.corsiaEligible === true && !offer.corsia_phase_eligibility) return false;
+    if (f.corsiaEligible === false && offer.corsia_phase_eligibility) return false;
+
+    if (f.complianceEligible === true && !offer.compliance) return false;
+    if (f.complianceEligible === false && offer.compliance) return false;
     return true;
   });
 }

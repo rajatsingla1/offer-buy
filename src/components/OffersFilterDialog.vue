@@ -72,20 +72,23 @@
       <div class="flex flex-col gap-2">
         <label class="font-medium text-slate-700">Eligible</label>
         <div class="flex gap-6">
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" v-model="local.ccpEligible"
-              class="rounded border-slate-300 text-primary focus:ring-primary" />
+          <label class="flex items-center gap-2 cursor-pointer" @click.prevent="cycleTriState('ccpEligible')">
+            <input type="checkbox" ref="ccpCheckbox" :checked="local.ccpEligible === true"
+              class="rounded border-slate-300 text-primary focus:ring-primary pointer-events-none" />
             <span>CCP</span>
+            <span class="text-xs text-slate-400">{{ triStateLabel(local.ccpEligible) }}</span>
           </label>
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" v-model="local.corsiaEligible"
-              class="rounded border-slate-300 text-primary focus:ring-primary" />
+          <label class="flex items-center gap-2 cursor-pointer" @click.prevent="cycleTriState('corsiaEligible')">
+            <input type="checkbox" ref="corsiaCheckbox" :checked="local.corsiaEligible === true"
+              class="rounded border-slate-300 text-primary focus:ring-primary pointer-events-none" />
             <span>CORSIA</span>
+            <span class="text-xs text-slate-400">{{ triStateLabel(local.corsiaEligible) }}</span>
           </label>
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" v-model="local.complianceEligible"
-              class="rounded border-slate-300 text-primary focus:ring-primary" />
+          <label class="flex items-center gap-2 cursor-pointer" @click.prevent="cycleTriState('complianceEligible')">
+            <input type="checkbox" ref="complianceCheckbox" :checked="local.complianceEligible === true"
+              class="rounded border-slate-300 text-primary focus:ring-primary pointer-events-none" />
             <span>Compliance</span>
+            <span class="text-xs text-slate-400">{{ triStateLabel(local.complianceEligible) }}</span>
           </label>
         </div>
       </div>
@@ -98,7 +101,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, nextTick } from "vue";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
@@ -129,6 +132,31 @@ const raterOptions = computed(() => getUniqueRaters(props.offers));
 
 const local = ref({ ...defaultCriteria() });
 
+const ccpCheckbox = ref(null);
+const corsiaCheckbox = ref(null);
+const complianceCheckbox = ref(null);
+
+const checkboxRefs = { ccpEligible: ccpCheckbox, corsiaEligible: corsiaCheckbox, complianceEligible: complianceCheckbox };
+
+function triStateLabel(val) {
+  if (val === null) return "(both)";
+  return val ? "(yes)" : "(no)";
+}
+
+function cycleTriState(field) {
+  const cur = local.value[field];
+  local.value[field] = cur === null ? true : cur === true ? false : null;
+  syncIndeterminate();
+}
+
+function syncIndeterminate() {
+  nextTick(() => {
+    for (const [field, elRef] of Object.entries(checkboxRefs)) {
+      if (elRef.value) elRef.value.indeterminate = local.value[field] === null;
+    }
+  });
+}
+
 function syncFromCriteria() {
   local.value = {
     priceMin: props.criteria.priceMin ?? null,
@@ -142,16 +170,19 @@ function syncFromCriteria() {
     raters: props.criteria.raters ? [...props.criteria.raters] : [],
     avoidance: props.criteria.avoidance ?? true,
     removal: props.criteria.removal ?? true,
-    ccpEligible: props.criteria.ccpEligible ?? false,
-    corsiaEligible: props.criteria.corsiaEligible ?? false,
-    complianceEligible: props.criteria.complianceEligible ?? false,
+    ccpEligible: props.criteria.ccpEligible ?? null,
+    corsiaEligible: props.criteria.corsiaEligible ?? null,
+    complianceEligible: props.criteria.complianceEligible ?? null,
   };
 }
 
 watch(
   () => props.visible,
   (visible) => {
-    if (visible) syncFromCriteria();
+    if (visible) {
+      syncFromCriteria();
+      syncIndeterminate();
+    }
   },
   { immediate: true }
 );
@@ -164,6 +195,7 @@ function apply() {
 
 function clearAll() {
   local.value = { ...defaultCriteria() };
+  syncIndeterminate();
 }
 </script>
 <style scoped>

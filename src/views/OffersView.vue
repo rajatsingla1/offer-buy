@@ -208,7 +208,7 @@
                       <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
                       <div>
                         CORSIA:
-                        {{ offer.corsia_phase_eligibility ? " Yes" : "No" }} </div>
+                        {{ offer.corsia_phase_eligibility ? "Yes" : "No" }} </div>
                       <div class="min-w-0 truncate">
                         Compliance: {{ offer.compliance ? "Yes" : "No" }}
                       </div>
