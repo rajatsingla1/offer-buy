@@ -28,7 +28,10 @@ onMounted(() => {
           <RouterLink to="/" custom v-slot="{ navigate }">
             <div @click="navigate" class="cursor-pointer">
               <div class="text-lg font-semibold text-primary">
-                AlliedExchange
+                Alliedcredits
+              </div>
+              <div class="text-xs text-slate-600">
+                An AlliedOffsets price distribution service
               </div>
             </div>
           </RouterLink>

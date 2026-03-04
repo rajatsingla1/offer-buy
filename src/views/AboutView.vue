@@ -3,7 +3,7 @@
     <div class="card p-8">
       <h2 class="text-2xl font-semibold text-ink">About</h2>
       <p class="mt-4 text-slate-700">
-        AlliedExchange is an initiative by AlliedOffsets to improve transparency
+        Alliedcredits is an initiative by AlliedOffsets to improve transparency
         in the carbon markets. We aim to facilitate the distribution of offers
         both to the potential end buyers, but also to other intermediaries
         including exchanges and OTC brokers.<br /><br />
@@ -12,9 +12,10 @@
         project.
         <br /><br />
 
-        The “firm” credits offered for sale by the project developers are reserved/blocked by a 3rd party such that
-        the person making the offer is committed to selling the credits at that price, unless the offer is amended or
-        cancelled.
+        The “firm” credits offered for sale by the project developers are
+        reserved/blocked by a 3rd party such that the person making the offer is
+        committed to selling the credits at that price, unless the offer is
+        amended or cancelled.
       </p>
     </div>
   </div>

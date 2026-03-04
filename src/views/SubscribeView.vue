@@ -233,7 +233,7 @@ const formData = ref({
   email: "",
   receiveInstantEmail: false,
   emailFrequency: "daily" as "daily" | "weekly",
-  autoSubscribeNewOffers: true,
+  autoSubscribeNewOffers: false,
 });
 
 const allProjectsChecked = ref(true);
