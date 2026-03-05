@@ -74,7 +74,7 @@
                       </span>
                     </button>
                   </th>
-                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[6rem] w-[6rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('credits')">
                       <span>Number<br />credits</span>
                       <span v-if="sortKey === 'credits'" class="text-[0.7rem] text-slate-500">
@@ -82,7 +82,7 @@
                       </span>
                     </button>
                   </th>
-                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[6rem] w-[6rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('total')">
                       <span>Total<br />offer</span>
                       <span v-if="sortKey === 'total'" class="text-[0.7rem] text-slate-500">
@@ -90,7 +90,7 @@
                       </span>
                     </button>
                   </th>
-                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('type')">
                       <span>Action/<br />type*</span>
                       <span v-if="sortKey === 'type'" class="text-[0.7rem] text-slate-500">
