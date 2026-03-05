@@ -46,7 +46,7 @@
             <table class="w-full min-w-max divide-y divide-primary-100 ">
               <thead class="table-header">
                 <tr>
-                  <th scope="col" class="max-w-[14rem] w-[14rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[13rem] w-[13rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     <button type="button" class="flex flex-col items-start gap-0.5 text-left "
                       @click="toggleSort('name')">
                       <span class="inline-flex items-center gap-1">

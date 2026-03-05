@@ -3,7 +3,7 @@
     <div class="card p-8">
       <h2 class="text-2xl font-semibold text-ink">About</h2>
       <p class="mt-4 text-slate-700">
-        Alliedcredits is an initiative by AlliedOffsets to improve transparency
+        AlliedCredits is an initiative by AlliedOffsets to improve transparency
         in the carbon markets. We aim to facilitate the distribution of offers
         both to the potential end buyers, but also to other intermediaries
         including exchanges and OTC brokers.<br /><br />
