@@ -20,7 +20,7 @@ export function defaultCriteria() {
     avoidance: true,
     removal: true,
     ccpEligible: null,
-    corsiaEligible: null,
+    corsiaValues: [],
     complianceEligible: null,
   };
 }
@@ -32,7 +32,7 @@ export function hasActiveFilters(criteria) {
   if (f.countries?.length || f.sectors?.length || f.raters?.length) return true;
   if (!f.indicative || !f.firm) return true;
   if (!f.avoidance || !f.removal) return true;
-  if (f.ccpEligible != null || f.corsiaEligible != null || f.complianceEligible != null) return true;
+  if (f.ccpEligible != null || f.corsiaValues?.length || f.complianceEligible != null) return true;
   return false;
 }
 
@@ -55,6 +55,16 @@ export function getUniqueRaters(offers) {
   const set = new Set();
   offers.forEach((o) => splitByComma(o.raters).forEach((r) => set.add(r)));
   return [...set].sort();
+}
+
+export function getUniqueCorsiaValues(offers) {
+  if (!offers || !Array.isArray(offers)) return [];
+  const set = new Set();
+  offers.forEach((o) => {
+    const v = o.corsia_phase_eligibility;
+    set.add(v ? String(v).trim() : "No");
+  });
+  return [...set].sort((a, b) => (a === "No" ? 1 : b === "No" ? -1 : a.localeCompare(b)));
 }
 
 export function filterOffers(offers, criteria) {
@@ -113,8 +123,10 @@ export function filterOffers(offers, criteria) {
     if (f.ccpEligible === true && !offer.ccp) return false;
     if (f.ccpEligible === false && offer.ccp) return false;
 
-    if (f.corsiaEligible === true && !offer.corsia_phase_eligibility) return false;
-    if (f.corsiaEligible === false && offer.corsia_phase_eligibility) return false;
+    if (f.corsiaValues?.length) {
+      const val = offer.corsia_phase_eligibility ? String(offer.corsia_phase_eligibility).trim() : "No";
+      if (!f.corsiaValues.includes(val)) return false;
+    }
 
     if (f.complianceEligible === true && !offer.compliance) return false;
     if (f.complianceEligible === false && offer.compliance) return false;

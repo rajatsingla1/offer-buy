@@ -78,12 +78,6 @@
             <span>CCP</span>
             <span class="text-xs text-slate-400">{{ triStateLabel(local.ccpEligible) }}</span>
           </label>
-          <label class="flex items-center gap-2 cursor-pointer" @click.prevent="cycleTriState('corsiaEligible')">
-            <input type="checkbox" ref="corsiaCheckbox" :checked="local.corsiaEligible === true"
-              class="rounded border-slate-300 text-primary focus:ring-primary pointer-events-none" />
-            <span>CORSIA</span>
-            <span class="text-xs text-slate-400">{{ triStateLabel(local.corsiaEligible) }}</span>
-          </label>
           <label class="flex items-center gap-2 cursor-pointer" @click.prevent="cycleTriState('complianceEligible')">
             <input type="checkbox" ref="complianceCheckbox" :checked="local.complianceEligible === true"
               class="rounded border-slate-300 text-primary focus:ring-primary pointer-events-none" />
@@ -91,6 +85,11 @@
             <span class="text-xs text-slate-400">{{ triStateLabel(local.complianceEligible) }}</span>
           </label>
         </div>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label class="font-medium text-slate-700">CORSIA</label>
+        <MultiSelect v-model="local.corsiaValues" :options="corsiaOptions" placeholder="All" filter show-clear
+          class="w-full filter-multiselect text-sm" />
       </div>
     </div>
     <template #footer>
@@ -111,6 +110,7 @@ import {
   getUniqueCountries,
   getUniqueSectors,
   getUniqueRaters,
+  getUniqueCorsiaValues,
 } from "../composables/offersFilter.js";
 
 const props = defineProps({
@@ -129,14 +129,14 @@ const isVisible = computed({
 const countryOptions = computed(() => getUniqueCountries(props.offers));
 const sectorOptions = computed(() => getUniqueSectors(props.offers));
 const raterOptions = computed(() => getUniqueRaters(props.offers));
+const corsiaOptions = computed(() => getUniqueCorsiaValues(props.offers));
 
 const local = ref({ ...defaultCriteria() });
 
 const ccpCheckbox = ref(null);
-const corsiaCheckbox = ref(null);
 const complianceCheckbox = ref(null);
 
-const checkboxRefs = { ccpEligible: ccpCheckbox, corsiaEligible: corsiaCheckbox, complianceEligible: complianceCheckbox };
+const checkboxRefs = { ccpEligible: ccpCheckbox, complianceEligible: complianceCheckbox };
 
 function triStateLabel(val) {
   if (val === null) return "(both)";
@@ -171,7 +171,7 @@ function syncFromCriteria() {
     avoidance: props.criteria.avoidance ?? true,
     removal: props.criteria.removal ?? true,
     ccpEligible: props.criteria.ccpEligible ?? null,
-    corsiaEligible: props.criteria.corsiaEligible ?? null,
+    corsiaValues: props.criteria.corsiaValues ? [...props.criteria.corsiaValues] : [],
     complianceEligible: props.criteria.complianceEligible ?? null,
   };
 }
