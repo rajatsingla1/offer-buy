@@ -17,7 +17,7 @@ onMounted(() => {
 <template>
   <div class="min-h-screen bg-gradient-to-b from-white via-surface to-primary-50 bg-fixed">
     <header class="sticky top-0 z-10 border-b border-primary-100 bg-white/80 backdrop-blur">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
+      <div class="mx-auto flex max-w-[84rem] items-center justify-between px-4 py-4">
         <div class="flex items-center gap-1">
           <RouterLink to="/" custom v-slot="{ navigate }">
             <div @click="navigate" class="cursor-pointer">
@@ -66,7 +66,7 @@ onMounted(() => {
       </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-4 pb-16 pt-10">
+    <main class="mx-auto max-w-[84rem] px-4 pb-16 pt-10">
       <RouterView />
     </main>
     <Toast position="bottom-center" />

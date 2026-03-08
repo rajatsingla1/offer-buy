@@ -44,7 +44,7 @@
           <div ref="tableScrollRef" class="max-h-[1000px] max-w-full overflow-x-auto transition-opacity"
             @scroll="onTableScroll">
             <table class="w-full min-w-max divide-y divide-primary-100 ">
-              <thead class="table-header">
+              <thead class=" sticky top-0 z-1 table-header">
                 <tr>
                   <th scope="col" class="max-w-[13rem] w-[13rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     <button type="button" class="flex flex-col items-start gap-0.5 text-left "
@@ -66,7 +66,7 @@
                       </span>
                     </button>
                   </th>
-                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[6rem] w-[6rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('price')">
                       <span>Offer<br />price</span>
                       <span v-if="sortKey === 'price'" class="text-[0.7rem] text-slate-500">
@@ -82,7 +82,7 @@
                       </span>
                     </button>
                   </th>
-                  <th scope="col" class="max-w-[6rem] w-[6rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('total')">
                       <span>Total<br />offer</span>
                       <span v-if="sortKey === 'total'" class="text-[0.7rem] text-slate-500">
@@ -98,19 +98,19 @@
                       </span>
                     </button>
                   </th>
-                  <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[11rem] w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Country/<br />Method
                   </th>
-                  <th scope="col" class="max-w-[8rem] w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Rating
                   </th>
                   <th scope="col" class="max-w-[6.5rem] w-[6.5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Removal/<br />avoidance
                   </th>
-                  <th scope="col" class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[9rem] w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Eligible
                   </th>
-                  <th scope="col" class="max-w-[12rem] w-[12rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[11rem] w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Top 3 buyers
                   </th>
                 </tr>
@@ -118,7 +118,7 @@
               <tbody class="divide-y divide-primary-50 bg-white">
                 <tr v-for="(offer, index) in filteredOffers" :key="offerRowKey(offer, index)"
                   class="hover:bg-primary-50/40">
-                  <td class="table-cell max-w-[14rem] overflow-hidden px-4 py-2.5">
+                  <td class="table-cell max-w-[13rem] overflow-hidden px-4 py-2.5">
                     <div class="min-w-0 truncate text-sm font-semibold text-ink" :title="[
                       offer.projectName,
                       offer.projectId,
@@ -176,7 +176,7 @@
                     </button>
                     <div class="text-amber-600 text-xs mt-0.5">Indicative</div>
                   </td>
-                  <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm">
+                  <td class="table-cell max-w-[11rem] overflow-hidden px-4 py-2.5 text-sm">
                     <div class="min-w-0 truncate" :title="offer.countries ?? '—'">
                       {{ offer.countries ?? "—" }}
                     </div>
@@ -184,7 +184,7 @@
                       {{ offer.sectors ?? "—" }}
                     </div>
                   </td>
-                  <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
+                  <td class="table-cell max-w-[7rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
                     <div class="min-w-0" :title="offer.raters ?? '—'">
                       <template v-if="offer.raters">
                         <div v-for="(item, i) in commaBreakItems(offer.raters)" :key="i">
@@ -208,13 +208,13 @@
                       <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
                       <div>
                         CORSIA:
-                        {{ offer.corsia_phase_eligibility ? "Yes" : "No" }} </div>
+                        {{ offer.corsia_phase_eligibility || "No" }} </div>
                       <div class="min-w-0 truncate">
                         Compliance: {{ offer.compliance ? "Yes" : "No" }}
                       </div>
                     </div>
                   </td>
-                  <td class="table-cell max-w-[12rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
+                  <td class="table-cell max-w-[11rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
                     <div class="min-w-0" :title="offer.top_3_buyers ?? '—'">
                       <template v-if="offer.top_3_buyers">
                         <div v-for="(item, i) in commaBreakItems(
