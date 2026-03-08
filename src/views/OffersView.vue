@@ -579,7 +579,7 @@ function offerRowKey(offer, index) {
 }
 
 const tableScrollRef = ref(null);
-const showSwipeIndicator = ref(true);
+const showSwipeIndicator = ref(false);
 const SWIPE_HIDE_THRESHOLD = 20;
 
 function onTableScroll() {
@@ -603,10 +603,7 @@ function updateSwipeIndicatorVisibility() {
   }
 }
 
-onMounted(updateSwipeIndicatorVisibility);
-watch(offers, () => nextTick(updateSwipeIndicatorVisibility), {
-  immediate: false,
-});
+
 
 const buyDialogVisible = ref(false);
 const selectedOffer = ref(null);
