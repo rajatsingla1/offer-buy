@@ -200,12 +200,7 @@
                     </span>
                   </td>
                   <td class="table-cell max-w-[7.5rem] overflow-hidden px-4 py-2.5 text-sm">
-                    <div class="min-w-0" :title="'CCP: ' +
-                      (offer.ccp ? 'Yes' : 'No') +
-                      ', CORSIA: ' + (offer.corsia_phase_eligibility || 'No') +
-                      ', Compliance: ' +
-                      (offer.compliance ? 'Yes' : 'No')
-                      ">
+                    <div class="min-w-0" :title="'CCP: ' + (offer.ccp ? 'Yes' : 'No') + '\nCORSIA: ' + (offer.corsia_phase_eligibility || 'No') + '\nCompliance: ' + (offer.compliance ? 'Yes' : 'No')">
                       <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
                       <div>
                         CORSIA:
