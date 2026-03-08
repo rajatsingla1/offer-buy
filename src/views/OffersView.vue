@@ -180,8 +180,8 @@
                     <div class="min-w-0 truncate" :title="offer.countries ?? '—'">
                       {{ offer.countries ?? "—" }}
                     </div>
-                    <div class="min-w-0 truncate text-slate-600" :title="offer.sectors ?? '—'">
-                      {{ offer.sectors ?? "—" }}
+                    <div class="min-w-0 truncate text-slate-600" :title="offer.sectors ?? ''">
+                      {{ offer.sectors ?? "" }}
                     </div>
                   </td>
                   <td class="table-cell max-w-[7rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
