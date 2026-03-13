@@ -25,6 +25,19 @@
         </div>
       </div>
       <div class="flex flex-col gap-2">
+        <label class="font-medium text-slate-700">Vintage</label>
+        <div class="flex items-center gap-2">
+          <InputNumber v-model="local.vintageMin" :min="1990" :max="2100" :max-fraction-digits="0" :use-grouping="false"
+            placeholder="Min" class="flex-1 filter-input text-sm" :disabled="local.vintageExact?.length > 0" />
+          <span class="text-slate-400">–</span>
+          <InputNumber v-model="local.vintageMax" :min="1990" :max="2100" :max-fraction-digits="0" :use-grouping="false"
+            placeholder="Max" class="flex-1 filter-input text-sm" :disabled="local.vintageExact?.length > 0" />
+        </div>
+        <MultiSelect v-model="local.vintageExact" :options="vintageOptions" placeholder="Or select exact years" filter
+          show-clear class="w-full filter-multiselect text-sm"
+          :disabled="local.vintageMin != null || local.vintageMax != null" />
+      </div>
+      <div class="flex flex-col gap-2">
         <label class="font-medium text-slate-700">Offer type</label>
         <div class="flex gap-6">
           <label class="flex items-center gap-2 cursor-pointer">
@@ -111,6 +124,7 @@ import {
   getUniqueSectors,
   getUniqueRaters,
   getUniqueCorsiaValues,
+  getUniqueVintages,
 } from "../composables/offersFilter.js";
 
 const props = defineProps({
@@ -130,6 +144,7 @@ const countryOptions = computed(() => getUniqueCountries(props.offers));
 const sectorOptions = computed(() => getUniqueSectors(props.offers));
 const raterOptions = computed(() => getUniqueRaters(props.offers));
 const corsiaOptions = computed(() => getUniqueCorsiaValues(props.offers));
+const vintageOptions = computed(() => getUniqueVintages(props.offers));
 
 const local = ref({ ...defaultCriteria() });
 
@@ -163,6 +178,9 @@ function syncFromCriteria() {
     priceMax: props.criteria.priceMax ?? null,
     totalMin: props.criteria.totalMin ?? null,
     totalMax: props.criteria.totalMax ?? null,
+    vintageMin: props.criteria.vintageMin ?? null,
+    vintageMax: props.criteria.vintageMax ?? null,
+    vintageExact: props.criteria.vintageExact ? [...props.criteria.vintageExact] : [],
     indicative: props.criteria.indicative ?? true,
     firm: props.criteria.firm ?? true,
     countries: props.criteria.countries ? [...props.criteria.countries] : [],

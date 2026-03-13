@@ -66,7 +66,15 @@
                       </span>
                     </button>
                   </th>
-                  <th scope="col" class="max-w-[6rem] w-[6rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                    <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('vintage')">
+                      <span>Vintage</span>
+                      <span v-if="sortKey === 'vintage'" class="text-[0.7rem] text-slate-500">
+                        {{ sortDirection === "asc" ? "↑" : "↓" }}
+                      </span>
+                    </button>
+                  </th>
+                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('price')">
                       <span>Offer<br />price</span>
                       <span v-if="sortKey === 'price'" class="text-[0.7rem] text-slate-500">
@@ -98,7 +106,7 @@
                       </span>
                     </button>
                   </th>
-                  <th scope="col" class="max-w-[11rem] w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <th scope="col" class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Country/<br />Method
                   </th>
                   <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
@@ -122,7 +130,6 @@
                     <div class="min-w-0 truncate text-sm font-semibold text-ink" :title="[
                       offer.projectName,
                       offer.projectId,
-                      'Vintage: ' + (offer.vintage || ''),
                     ]
                       .filter(Boolean)
                       .join('\n')
@@ -132,10 +139,11 @@
                     <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600" :title="offer.projectId">
                       {{ offer.projectId }}
                     </p>
-                    <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600"
-                      :title="'Vintage: ' + (offer.vintage || '')">
-                      Vintage: {{ offer.vintage }}
-                    </p>
+                  </td>
+                  <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 truncate font-semibold text-ink" :title="String(offer.vintage || '—')">
+                      {{ offer.vintage || "—" }}
+                    </span>
                   </td>
                   <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
                     <span class="block min-w-0 truncate font-semibold text-primary" :title="'$' + Number(offer.pricePerCredit).toFixed(2).toLocaleString()
@@ -468,8 +476,8 @@ const toast = useToast();
 const offersStore = useOffersStore();
 const { offers } = storeToRefs(offersStore);
 
-const sortKey = ref(null);
-const sortDirection = ref("asc");
+const sortKey = ref('total');
+const sortDirection = ref("desc");
 const filterDialogVisible = ref(false);
 const filterCriteria = ref(defaultCriteria());
 
@@ -505,6 +513,11 @@ const sortedOffers = computed(() => {
       case "uid":
         av = (a.projectId || "").toString().toLowerCase();
         bv = (b.projectId || "").toString().toLowerCase();
+        break;
+      case "vintage":
+        av = getNumeric(a.vintage);
+        bv = getNumeric(b.vintage);
+        numeric = true;
         break;
       case "price":
         av = getNumeric(a.pricePerCredit);

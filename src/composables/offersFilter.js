@@ -12,6 +12,9 @@ export function defaultCriteria() {
     priceMax: null,
     totalMin: null,
     totalMax: null,
+    vintageMin: null,
+    vintageMax: null,
+    vintageExact: [],
     indicative: true,
     firm: true,
     countries: [],
@@ -29,6 +32,7 @@ export function hasActiveFilters(criteria) {
   const d = defaultCriteria();
   const f = criteria || d;
   if (f.priceMin != null || f.priceMax != null || f.totalMin != null || f.totalMax != null) return true;
+  if (f.vintageMin != null || f.vintageMax != null || f.vintageExact?.length) return true;
   if (f.countries?.length || f.sectors?.length || f.raters?.length) return true;
   if (!f.indicative || !f.firm) return true;
   if (!f.avoidance || !f.removal) return true;
@@ -67,6 +71,15 @@ export function getUniqueCorsiaValues(offers) {
   return [...set].sort((a, b) => (a === "No" ? 1 : b === "No" ? -1 : a.localeCompare(b)));
 }
 
+export function getUniqueVintages(offers) {
+  if (!offers || !Array.isArray(offers)) return [];
+  const set = new Set();
+  offers.forEach((o) => {
+    if (o.vintage != null && String(o.vintage).trim()) set.add(String(o.vintage).trim());
+  });
+  return [...set].sort();
+}
+
 export function filterOffers(offers, criteria) {
   if (!offers || !offers.length) return offers;
   const f = criteria;
@@ -93,6 +106,14 @@ export function filterOffers(offers, criteria) {
     if (f.priceMax != null && price > Number(f.priceMax)) return false;
     if (f.totalMin != null && totalVal < Number(f.totalMin)) return false;
     if (f.totalMax != null && totalVal > Number(f.totalMax)) return false;
+
+    const vintage = getNumeric(offer.vintage);
+    if (f.vintageExact?.length) {
+      if (!f.vintageExact.includes(String(offer.vintage))) return false;
+    } else {
+      if (f.vintageMin != null && vintage < Number(f.vintageMin)) return false;
+      if (f.vintageMax != null && vintage > Number(f.vintageMax)) return false;
+    }
 
     // Only filter by offer type when not both selected (both = show all)
     if (f.indicative !== f.firm) {
