@@ -112,11 +112,10 @@
                   <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Rating
                   </th>
-                  <th scope="col" class="max-w-[6.5rem] w-[6.5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Removal/<br />avoidance
-                  </th>
+
                   <th scope="col" class="max-w-[9rem] w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Eligible
+                    Eligible/<br />
+                    Offset type
                   </th>
                   <th scope="col" class="max-w-[11rem] w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                     Top 3 buyers
@@ -202,14 +201,10 @@
                       <span v-else>—</span>
                     </div>
                   </td>
-                  <td class="table-cell max-w-[6.5rem] overflow-hidden px-4 py-2.5 text-sm">
-                    <span class="block min-w-0 truncate" :title="formatOffsetType(offer.project_offset_type)">
-                      {{ formatOffsetType(offer.project_offset_type) }}
-                    </span>
-                  </td>
+
                   <td class="table-cell max-w-[7.5rem] overflow-hidden px-4 py-2.5 text-sm">
                     <div class="min-w-0"
-                      :title="'CCP: ' + (offer.ccp ? 'Yes' : 'No') + '\nCORSIA: ' + (offer.corsia_phase_eligibility || 'No') + '\nCompliance: ' + (offer.compliance ? 'Yes' : 'No')">
+                      :title="'CCP: ' + (offer.ccp ? 'Yes' : 'No') + '\nCORSIA: ' + (offer.corsia_phase_eligibility || 'No') + '\nCompliance: ' + (offer.compliance ? 'Yes' : 'No') + '\n' + formatOffsetType(offer.project_offset_type)">
                       <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
                       <div class="text-wrap">
                         CORSIA:
@@ -217,6 +212,9 @@
                       </div>
                       <div class="min-w-0 truncate">
                         Compliance: {{ offer.compliance ? "Yes" : "No" }}
+                      </div>
+                      <div class="min-w-0 truncate">
+                        {{ formatOffsetType(offer.project_offset_type) }}
                       </div>
                     </div>
                   </td>
