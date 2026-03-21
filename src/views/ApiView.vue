@@ -59,9 +59,9 @@ async function handleSubscribe() {
       <div class="mt-6 rounded-xl bg-slate-50 p-4 font-mono text-sm">
         <div class="flex items-center gap-2">
           <span class="rounded bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800">GET</span>
-          <a href="https://api.publicdomain.co.in/offers/api" target="_blank" rel="noopener noreferrer"
+          <a href="https://api.alliedcredits.com/offers/api" target="_blank" rel="noopener noreferrer"
             class="text-primary hover:underline">
-            https://api.publicdomain.co.in/offers/api
+            https://api.alliedcredits.com/offers/api
           </a>
         </div>
       </div>

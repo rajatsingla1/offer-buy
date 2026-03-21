@@ -6,7 +6,7 @@ const instance = (baseURL: string) =>
   });
 
 const client = {
-  root: instance("https://api.publicdomain.co.in"),
+  root: instance("https://api.alliedcredits.com"),
   // root: instance("http://localhost:8000"),
 };
 
