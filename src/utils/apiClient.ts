@@ -6,7 +6,7 @@ const instance = (baseURL: string) =>
   });
 
 const client = {
-  root: instance("https://api.alliedcredits.com"),
+  root: instance("https://credits-api.alliedoffsets.com"),
   // root: instance("http://localhost:8000"),
 };
 
