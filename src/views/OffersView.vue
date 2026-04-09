@@ -1,11 +1,16 @@
 <template>
   <div class="mb-40">
     <section class="card relative overflow-hidden p-8">
-      <div class="absolute right-10 top-10 h-24 w-24 rounded-full bg-primary-100 blur-3xl"></div>
-      <div class="absolute -bottom-6 left-6 h-20 w-20 rounded-full bg-primary-50 blur-2xl"></div>
+      <div
+        class="absolute right-10 top-10 h-24 w-24 rounded-full bg-primary-100 blur-3xl"
+      ></div>
+      <div
+        class="absolute -bottom-6 left-6 h-20 w-20 rounded-full bg-primary-50 blur-2xl"
+      ></div>
       <div class="flex flex-col gap-4">
         <p
-          class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100">
+          class="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700 ring-1 ring-primary-100"
+        >
           <span class="h-2 w-2 rounded-full bg-primary"></span>
           Live offers
         </p>
@@ -28,228 +33,426 @@
         </TabList>
         <TabPanels>
           <TabPanel value="spot">
-            <div class="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+            <div
+              class="mb-3 mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2"
+            >
               <div class="flex flex-wrap items-center gap-3">
-          <button type="button" class="button-outline text-sm" @click="filterDialogVisible = true">
-            Amend view for custom criteria
-          </button>
-          <template v-if="hasActiveFilters">
-            <span class="text-sm text-slate-600">{{ filteredOffers.length }} results</span>
-            <button type="button" class="text-sm text-primary-600 hover:text-primary-700 hover:underline font-medium"
-              @click="resetFilters">
-              Reset
-            </button>
-          </template>
-        </div>
-        <a href="https://alliedoffsets.metabaseapp.com/auth/login/password" target="_blank" rel="noopener noreferrer"
-          class="text-sm text-red-600 hover:text-red-700 hover:underline">
-          click for complete project detail on the AlliedOffsets database
-        </a>
-      </div>
-      <section class="card overflow-hidden">
-        <div class="relative">
-          <div ref="tableScrollRef" class="max-h-[1000px] max-w-full overflow-x-auto transition-opacity"
-            @scroll="onTableScroll">
-            <table class="w-full min-w-max divide-y divide-primary-100 ">
-              <thead class=" sticky top-0 z-1 table-header">
-                <tr>
-                  <th scope="col" class="max-w-[13rem] w-[13rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="flex flex-col items-start gap-0.5 text-left "
-                      @click="toggleSort('name')">
-                      <span class="inline-flex items-center gap-1">
-                        <span>Name</span>
-                        <span v-if="sortKey === 'name'" class="text-[0.7rem] text-slate-500">
-                          {{ sortDirection === "asc" ? "↑" : "↓" }}
-                        </span>
-                      </span>
-                      <span role="button" tabindex="0"
-                        class="inline-flex items-center gap-1 text-[0.7rem] font-normal text-slate-500 hover:text-primary-700 cursor-pointer"
-                        @click.stop="toggleSort('uid')" @keydown.enter.prevent="toggleSort('uid')"
-                        @keydown.space.prevent="toggleSort('uid')">
-                        <span>UID</span>
-                        <span v-if="sortKey === 'uid'" class="text-[0.7rem] text-slate-500">
-                          {{ sortDirection === "asc" ? "↑" : "↓" }}
-                        </span>
-                      </span>
-                    </button>
-                  </th>
-                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('vintage')">
-                      <span>Vintage</span>
-                      <span v-if="sortKey === 'vintage'" class="text-[0.7rem] text-slate-500">
-                        {{ sortDirection === "asc" ? "↑" : "↓" }}
-                      </span>
-                    </button>
-                  </th>
-                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('price')">
-                      <span>Offer<br />price</span>
-                      <span v-if="sortKey === 'price'" class="text-[0.7rem] text-slate-500">
-                        {{ sortDirection === "asc" ? "↑" : "↓" }}
-                      </span>
-                    </button>
-                  </th>
-                  <th scope="col" class="max-w-[6rem] w-[6rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('credits')">
-                      <span>Number<br />credits</span>
-                      <span v-if="sortKey === 'credits'" class="text-[0.7rem] text-slate-500">
-                        {{ sortDirection === "asc" ? "↑" : "↓" }}
-                      </span>
-                    </button>
-                  </th>
-                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('total')">
-                      <span>Total<br />offer</span>
-                      <span v-if="sortKey === 'total'" class="text-[0.7rem] text-slate-500">
-                        {{ sortDirection === "asc" ? "↑" : "↓" }}
-                      </span>
-                    </button>
-                  </th>
-                  <th scope="col" class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    <button type="button" class="inline-flex items-center gap-1 " @click="toggleSort('type')">
-                      <span>Action/<br />type*</span>
-                      <span v-if="sortKey === 'type'" class="text-[0.7rem] text-slate-500">
-                        {{ sortDirection === "asc" ? "↑" : "↓" }}
-                      </span>
-                    </button>
-                  </th>
-                  <th scope="col" class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Country/<br />Method
-                  </th>
-                  <th scope="col" class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Rating
-                  </th>
-
-                  <th scope="col" class="max-w-[9rem] w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Eligible/<br />
-                    Offset type
-                  </th>
-                  <th scope="col" class="max-w-[11rem] w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
-                    Top 3 buyers
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-primary-50 bg-white">
-                <tr v-for="(offer, index) in filteredOffers" :key="offerRowKey(offer, index)"
-                  class="hover:bg-primary-50/40">
-                  <td class="table-cell max-w-[13rem] overflow-hidden px-4 py-2.5">
-                    <div class="min-w-0 truncate text-sm font-semibold text-ink" :title="[
-                      offer.projectName,
-                      offer.projectId,
-                    ]
-                      .filter(Boolean)
-                      .join('\n')
-                      ">
-                      {{ offer.projectName }}
-                    </div>
-                    <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600" :title="offer.projectId">
-                      {{ offer.projectId }}
-                    </p>
-                  </td>
-                  <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
-                    <span class="block min-w-0 truncate font-semibold text-ink" :title="String(offer.vintage || '—')">
-                      {{ offer.vintage || "—" }}
-                    </span>
-                  </td>
-                  <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
-                    <span class="block min-w-0 truncate font-semibold text-primary" :title="'$' + Number(offer.pricePerCredit).toFixed(2).toLocaleString()
-                      ">
-                      ${{ Number(offer.pricePerCredit).toFixed(2).toLocaleString() }}
-                    </span>
-                  </td>
-                  <td class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm">
-                    <span class="block min-w-0 truncate font-semibold text-primary" :title="String(
-                      offer.creditsToOffer?.toLocaleString?.() ??
-                      offer.creditsToOffer,
-                    )
-                      ">
-                      {{
-                        offer.creditsToOffer?.toLocaleString?.() ??
-                        offer.creditsToOffer
-                      }}
-                    </span>
-                  </td>
-                  <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-sm">
-                    <span class="block min-w-0 truncate font-semibold text-ink" :title="'$' +
-                      Math.round(
-                        Number(offer.creditsToOffer) *
-                        Number(offer.pricePerCredit)
-                      ).toLocaleString()
-                      ">
-                      ${{
-                        Math.round(
-                          Number(offer.creditsToOffer) *
-                          Number(offer.pricePerCredit)
-                        ).toLocaleString()
-                      }}
-                    </span>
-                  </td>
-                  <td class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-right">
-                    <button type="button" class="button-primary text-sm" @click="openBuyDialog(offer)">
-                      Buy
-                    </button>
-                    <div class="text-amber-600 text-xs mt-0.5">Indicative</div>
-                  </td>
-                  <td class="table-cell max-w-[11rem] overflow-hidden px-4 py-2.5 text-sm">
-                    <div class="min-w-0 truncate" :title="offer.countries ?? '—'">
-                      {{ offer.countries ?? "—" }}
-                    </div>
-                    <div class="min-w-0 truncate text-slate-600" :title="offer.sectors ?? ''">
-                      {{ offer.sectors ?? "" }}
-                    </div>
-                  </td>
-                  <td class="table-cell max-w-[7rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
-                    <div class="min-w-0" :title="offer.raters ?? '—'">
-                      <template v-if="offer.raters">
-                        <div v-for="(item, i) in commaBreakItems(offer.raters)" :key="i">
-                          {{ item.text }}{{ item.comma }}
-                        </div>
-                      </template>
-                      <span v-else>—</span>
-                    </div>
-                  </td>
-
-                  <td class="table-cell max-w-[7.5rem] overflow-hidden px-4 py-2.5 text-sm">
-                    <div class="min-w-0"
-                      :title="'CCP: ' + (offer.ccp ? 'Yes' : 'No') + '\nCORSIA: ' + (offer.corsia_phase_eligibility || 'No') + '\nCompliance: ' + (offer.compliance ? 'Yes' : 'No') + '\n' + formatOffsetType(offer.project_offset_type)">
-                      <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
-                      <div class="text-wrap">
-                        CORSIA:
-                        {{ offer.corsia_phase_eligibility || "No" }}
-                      </div>
-                      <div class="min-w-0 truncate">
-                        Compliance: {{ offer.compliance ? "Yes" : "No" }}
-                      </div>
-                      <div class="min-w-0 truncate">
-                        {{ formatOffsetType(offer.project_offset_type) }}
-                      </div>
-                    </div>
-                  </td>
-                  <td class="table-cell max-w-[11rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces">
-                    <div class="min-w-0" :title="offer.top_3_buyers ?? '—'">
-                      <template v-if="offer.top_3_buyers">
-                        <div v-for="(item, i) in commaBreakItems(
-                          offer.top_3_buyers,
-                        )" :key="i">
-                          {{ item.text }}{{ item.comma }}
-                        </div>
-                      </template>
-                      <span v-else>—</span>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <Transition name="fade">
-            <div v-show="showSwipeIndicator"
-              class="pointer-events-none absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/85 px-3 py-1.5 text-xs font-medium text-primary-700 shadow-sm ring-1 ring-primary-200/60 backdrop-blur-sm"
-              aria-hidden="true">
-              Swipe →
+                <button
+                  type="button"
+                  class="text-sm font-medium text-slate-700 hover:text-primary-700 underline underline-offset-4 decoration-slate-400 hover:decoration-primary-700 transition-colors"
+                  @click="filterDialogVisible = true"
+                >
+                  <span class="inline-flex items-center gap-1.5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polygon
+                        points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
+                      ></polygon>
+                    </svg>
+                    Amend view for custom criteria
+                  </span>
+                </button>
+                <template v-if="hasActiveFilters">
+                  <span class="text-sm text-slate-600"
+                    >{{ filteredOffers.length }} results</span
+                  >
+                  <button
+                    type="button"
+                    class="text-sm text-primary-600 hover:text-primary-700 hover:underline font-medium"
+                    @click="resetFilters"
+                  >
+                    Reset
+                  </button>
+                </template>
+              </div>
+              <a
+                href="https://alliedoffsets.metabaseapp.com/auth/login/password"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-sm text-red-600 hover:text-red-700 hover:underline"
+              >
+                click for complete project detail on the AlliedOffsets database
+              </a>
             </div>
-          </Transition>
-        </div>
-      </section>
+            <section class="card overflow-hidden">
+              <div class="relative">
+                <div
+                  ref="tableScrollRef"
+                  class="max-h-[1000px] max-w-full overflow-x-auto transition-opacity"
+                  @scroll="onTableScroll"
+                >
+                  <table class="w-full min-w-max divide-y divide-primary-100">
+                    <thead class="sticky top-0 z-1 table-header">
+                      <tr>
+                        <th
+                          scope="col"
+                          class="max-w-[13rem] w-[13rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                        >
+                          <button
+                            type="button"
+                            class="flex flex-col items-start gap-0.5 text-left"
+                            @click="toggleSort('name')"
+                          >
+                            <span class="inline-flex items-center gap-1">
+                              <span>Name</span>
+                              <span
+                                v-if="sortKey === 'name'"
+                                class="text-[0.7rem] text-slate-500"
+                              >
+                                {{ sortDirection === "asc" ? "↑" : "↓" }}
+                              </span>
+                            </span>
+                            <span
+                              role="button"
+                              tabindex="0"
+                              class="inline-flex items-center gap-1 text-[0.7rem] font-normal text-slate-500 hover:text-primary-700 cursor-pointer"
+                              @click.stop="toggleSort('uid')"
+                              @keydown.enter.prevent="toggleSort('uid')"
+                              @keydown.space.prevent="toggleSort('uid')"
+                            >
+                              <span>UID</span>
+                              <span
+                                v-if="sortKey === 'uid'"
+                                class="text-[0.7rem] text-slate-500"
+                              >
+                                {{ sortDirection === "asc" ? "↑" : "↓" }}
+                              </span>
+                            </span>
+                          </button>
+                        </th>
+                        <th
+                          scope="col"
+                          class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                        >
+                          <button
+                            type="button"
+                            class="inline-flex items-center gap-1"
+                            @click="toggleSort('vintage')"
+                          >
+                            <span>Vintage</span>
+                            <span
+                              v-if="sortKey === 'vintage'"
+                              class="text-[0.7rem] text-slate-500"
+                            >
+                              {{ sortDirection === "asc" ? "↑" : "↓" }}
+                            </span>
+                          </button>
+                        </th>
+                        <th
+                          scope="col"
+                          class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                        >
+                          <button
+                            type="button"
+                            class="inline-flex items-center gap-1"
+                            @click="toggleSort('price')"
+                          >
+                            <span>Offer<br />price</span>
+                            <span
+                              v-if="sortKey === 'price'"
+                              class="text-[0.7rem] text-slate-500"
+                            >
+                              {{ sortDirection === "asc" ? "↑" : "↓" }}
+                            </span>
+                          </button>
+                        </th>
+                        <th
+                          scope="col"
+                          class="max-w-[6rem] w-[6rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                        >
+                          <button
+                            type="button"
+                            class="inline-flex items-center gap-1"
+                            @click="toggleSort('credits')"
+                          >
+                            <span>Number<br />credits</span>
+                            <span
+                              v-if="sortKey === 'credits'"
+                              class="text-[0.7rem] text-slate-500"
+                            >
+                              {{ sortDirection === "asc" ? "↑" : "↓" }}
+                            </span>
+                          </button>
+                        </th>
+                        <th
+                          scope="col"
+                          class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                        >
+                          <button
+                            type="button"
+                            class="inline-flex items-center gap-1"
+                            @click="toggleSort('total')"
+                          >
+                            <span>Total<br />offer</span>
+                            <span
+                              v-if="sortKey === 'total'"
+                              class="text-[0.7rem] text-slate-500"
+                            >
+                              {{ sortDirection === "asc" ? "↑" : "↓" }}
+                            </span>
+                          </button>
+                        </th>
+                        <th
+                          scope="col"
+                          class="max-w-[5rem] w-[5rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                        >
+                          <button
+                            type="button"
+                            class="inline-flex items-center gap-1"
+                            @click="toggleSort('type')"
+                          >
+                            <span>Action/<br />type*</span>
+                            <span
+                              v-if="sortKey === 'type'"
+                              class="text-[0.7rem] text-slate-500"
+                            >
+                              {{ sortDirection === "asc" ? "↑" : "↓" }}
+                            </span>
+                          </button>
+                        </th>
+                        <th
+                          scope="col"
+                          class="max-w-[10rem] w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                        >
+                          Country/<br />Method
+                        </th>
+                        <th
+                          scope="col"
+                          class="max-w-[7rem] w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                        >
+                          Rating
+                        </th>
+
+                        <th
+                          scope="col"
+                          class="max-w-[9rem] w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                        >
+                          Eligible/<br />
+                          Offset type
+                        </th>
+                        <th
+                          scope="col"
+                          class="max-w-[11rem] w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                        >
+                          Top 3 buyers
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-primary-50 bg-white">
+                      <tr
+                        v-for="(offer, index) in filteredOffers"
+                        :key="offerRowKey(offer, index)"
+                        class="hover:bg-primary-50/40"
+                      >
+                        <td
+                          class="table-cell max-w-[13rem] overflow-hidden px-4 py-2.5"
+                        >
+                          <div
+                            class="min-w-0 truncate text-sm font-semibold text-ink"
+                            :title="
+                              [offer.projectName, offer.projectId]
+                                .filter(Boolean)
+                                .join('\n')
+                            "
+                          >
+                            {{ offer.projectName }}
+                          </div>
+                          <p
+                            class="mt-0.5 min-w-0 truncate text-xs text-slate-600"
+                            :title="offer.projectId"
+                          >
+                            {{ offer.projectId }}
+                          </p>
+                        </td>
+                        <td
+                          class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm"
+                        >
+                          <span
+                            class="block min-w-0 truncate font-semibold text-ink"
+                            :title="String(offer.vintage || '—')"
+                          >
+                            {{ offer.vintage || "—" }}
+                          </span>
+                        </td>
+                        <td
+                          class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm"
+                        >
+                          <span
+                            class="block min-w-0 truncate font-semibold text-primary"
+                            :title="
+                              '$' +
+                              Number(offer.pricePerCredit)
+                                .toFixed(2)
+                                .toLocaleString()
+                            "
+                          >
+                            ${{
+                              Number(offer.pricePerCredit)
+                                .toFixed(2)
+                                .toLocaleString()
+                            }}
+                          </span>
+                        </td>
+                        <td
+                          class="table-cell max-w-[5rem] overflow-hidden px-4 py-2.5 text-sm"
+                        >
+                          <span
+                            class="block min-w-0 truncate font-semibold text-primary"
+                            :title="
+                              String(
+                                offer.creditsToOffer?.toLocaleString?.() ??
+                                  offer.creditsToOffer,
+                              )
+                            "
+                          >
+                            {{
+                              offer.creditsToOffer?.toLocaleString?.() ??
+                              offer.creditsToOffer
+                            }}
+                          </span>
+                        </td>
+                        <td
+                          class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-sm"
+                        >
+                          <span
+                            class="block min-w-0 truncate font-semibold text-ink"
+                            :title="
+                              '$' +
+                              Math.round(
+                                Number(offer.creditsToOffer) *
+                                  Number(offer.pricePerCredit),
+                              ).toLocaleString()
+                            "
+                          >
+                            ${{
+                              Math.round(
+                                Number(offer.creditsToOffer) *
+                                  Number(offer.pricePerCredit),
+                              ).toLocaleString()
+                            }}
+                          </span>
+                        </td>
+                        <td
+                          class="table-cell max-w-[6rem] overflow-hidden px-4 py-2.5 text-right"
+                        >
+                          <button
+                            type="button"
+                            class="button-primary text-sm"
+                            @click="openBuyDialog(offer)"
+                          >
+                            Buy
+                          </button>
+                          <div class="text-amber-600 text-xs mt-0.5">
+                            Indicative
+                          </div>
+                        </td>
+                        <td
+                          class="table-cell max-w-[11rem] overflow-hidden px-4 py-2.5 text-sm"
+                        >
+                          <div
+                            class="min-w-0 truncate"
+                            :title="offer.countries ?? '—'"
+                          >
+                            {{ offer.countries ?? "—" }}
+                          </div>
+                          <div
+                            class="min-w-0 truncate text-slate-600"
+                            :title="offer.sectors ?? ''"
+                          >
+                            {{ offer.sectors ?? "" }}
+                          </div>
+                        </td>
+                        <td
+                          class="table-cell max-w-[7rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces"
+                        >
+                          <div class="min-w-0" :title="offer.raters ?? '—'">
+                            <template v-if="offer.raters">
+                              <div
+                                v-for="(item, i) in commaBreakItems(
+                                  offer.raters,
+                                )"
+                                :key="i"
+                              >
+                                {{ item.text }}{{ item.comma }}
+                              </div>
+                            </template>
+                            <span v-else>—</span>
+                          </div>
+                        </td>
+
+                        <td
+                          class="table-cell max-w-[7.5rem] overflow-hidden px-4 py-2.5 text-sm"
+                        >
+                          <div
+                            class="min-w-0"
+                            :title="
+                              'CCP: ' +
+                              (offer.ccp ? 'Yes' : 'No') +
+                              '\nCORSIA: ' +
+                              (offer.corsia_phase_eligibility || 'No') +
+                              '\nCompliance: ' +
+                              (offer.compliance ? 'Yes' : 'No') +
+                              '\n' +
+                              formatOffsetType(offer.project_offset_type)
+                            "
+                          >
+                            <div>CCP: {{ offer.ccp ? "Yes" : "No" }}</div>
+                            <div class="text-wrap">
+                              CORSIA:
+                              {{ offer.corsia_phase_eligibility || "No" }}
+                            </div>
+                            <div class="min-w-0 truncate">
+                              Compliance: {{ offer.compliance ? "Yes" : "No" }}
+                            </div>
+                            <div class="min-w-0 truncate">
+                              {{ formatOffsetType(offer.project_offset_type) }}
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          class="table-cell max-w-[11rem] overflow-hidden px-4 py-2.5 text-sm !whitespace-break-spaces"
+                        >
+                          <div
+                            class="min-w-0"
+                            :title="offer.top_3_buyers ?? '—'"
+                          >
+                            <template v-if="offer.top_3_buyers">
+                              <div
+                                v-for="(item, i) in commaBreakItems(
+                                  offer.top_3_buyers,
+                                )"
+                                :key="i"
+                              >
+                                {{ item.text }}{{ item.comma }}
+                              </div>
+                            </template>
+                            <span v-else>—</span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <Transition name="fade">
+                  <div
+                    v-show="showSwipeIndicator"
+                    class="pointer-events-none absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/85 px-3 py-1.5 text-xs font-medium text-primary-700 shadow-sm ring-1 ring-primary-200/60 backdrop-blur-sm"
+                    aria-hidden="true"
+                  >
+                    Swipe →
+                  </div>
+                </Transition>
+              </div>
+            </section>
           </TabPanel>
           <TabPanel value="forward">
             <div class="card p-8 text-center text-slate-500">
@@ -260,15 +463,23 @@
       </Tabs>
     </section>
 
-    <Dialog v-model:visible="buyDialogVisible" modal header="Bidding" :style="{ width: '28rem' }"
-      :dismissable-mask="true" class="buy-dialog" @hide="resetBuyForm">
+    <Dialog
+      v-model:visible="buyDialogVisible"
+      modal
+      header="Bidding"
+      :style="{ width: '28rem' }"
+      :dismissable-mask="true"
+      class="buy-dialog"
+      @hide="resetBuyForm"
+    >
       <template v-if="selectedOffer">
         <p class="text-slate-700 mb-4">
           You are expressing an interest to buy
           <strong>{{ formatCredits(buyForm.credits) }} credits</strong>
           of {{ selectedOffer.projectName }} vintage
           {{ selectedOffer.vintage }} at
-          <strong>${{ formatPrice(buyForm.price) }}</strong>.
+          <strong>${{ formatPrice(buyForm.price) }}</strong
+          >.
         </p>
         <p class="text-slate-700 mb-4">
           Your indication of interest will be emailed to the party offering the
@@ -276,50 +487,103 @@
         </p>
         <div class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
-            <label for="buy-credits" class="text-sm font-medium text-slate-700">Credits</label>
-            <InputNumber id="buy-credits" v-model="buyForm.credits" :min="0" :max-fraction-digits="0" class="w-full" />
+            <label for="buy-credits" class="text-sm font-medium text-slate-700"
+              >Credits</label
+            >
+            <InputNumber
+              id="buy-credits"
+              v-model="buyForm.credits"
+              :min="0"
+              :max-fraction-digits="0"
+              class="w-full"
+            />
           </div>
           <div class="flex flex-col gap-2">
-            <label for="buy-price" class="text-sm font-medium text-slate-700">Price per credit ($)</label>
-            <InputNumber id="buy-price" v-model="buyForm.price" :min="0" :min-fraction-digits="2"
-              :max-fraction-digits="2" mode="currency" currency="USD" locale="en-US" class="w-full" />
+            <label for="buy-price" class="text-sm font-medium text-slate-700"
+              >Price per credit ($)</label
+            >
+            <InputNumber
+              id="buy-price"
+              v-model="buyForm.price"
+              :min="0"
+              :min-fraction-digits="2"
+              :max-fraction-digits="2"
+              mode="currency"
+              currency="USD"
+              locale="en-US"
+              class="w-full"
+            />
           </div>
           <div class="flex flex-col gap-2">
-            <label for="buy-email" class="text-sm font-medium text-slate-700">Email address</label>
-            <InputText id="buy-email" v-model="buyForm.email" type="email" placeholder="your.email@example.com"
-              class="w-full" />
+            <label for="buy-email" class="text-sm font-medium text-slate-700"
+              >Email address</label
+            >
+            <InputText
+              id="buy-email"
+              v-model="buyForm.email"
+              type="email"
+              placeholder="your.email@example.com"
+              class="w-full"
+            />
           </div>
           <div class="flex flex-col gap-2">
-            <label for="buy-phone" class="text-sm font-medium text-slate-700">Phone(optional)</label>
-            <InputText id="buy-phone" v-model="buyForm.phone" type="tel" placeholder="123-456-7890" class="w-full" />
+            <label for="buy-phone" class="text-sm font-medium text-slate-700"
+              >Phone(optional)</label
+            >
+            <InputText
+              id="buy-phone"
+              v-model="buyForm.phone"
+              type="tel"
+              placeholder="123-456-7890"
+              class="w-full"
+            />
           </div>
         </div>
       </template>
       <template #footer>
-        <Button label="Confirm" :loading="submitLoading" @click="handleBuyConfirm" />
+        <Button
+          label="Confirm"
+          :loading="submitLoading"
+          @click="handleBuyConfirm"
+        />
       </template>
     </Dialog>
 
-    <OffersFilterDialog v-model:visible="filterDialogVisible" v-model:criteria="filterCriteria" :offers="offers"
-      @applied="onFiltersApplied" />
+    <OffersFilterDialog
+      v-model:visible="filterDialogVisible"
+      v-model:criteria="filterCriteria"
+      :offers="offers"
+      @applied="onFiltersApplied"
+    />
 
     <div class="text-slate-600 mt-10">
-      <RouterLink to="/subscribe"><span class="underline cursor-pointer">Click here</span></RouterLink>
+      <RouterLink to="/subscribe"
+        ><span class="underline cursor-pointer">Click here</span></RouterLink
+      >
       if you would like email alerts for new prices/projects or periodic email
     </div>
     <div class="text-slate-600 mt-4">
-      <a href="mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Project Developer" target="_blank"><span
-          class="underline cursor-pointer">Click here</span></a>
+      <a
+        href="mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Project Developer"
+        target="_blank"
+        ><span class="underline cursor-pointer">Click here</span></a
+      >
       if you are a project developer and want to list credits on this site (plus
       other distribution channels including API, and emails)
     </div>
     <div class="text-slate-600 mt-4">
-      <a href="mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Other Credits" target="_blank"><span
-          class="underline cursor-pointer">Click here</span></a>
-      if you are interested in other credits and we will try to put you in touch with a potential broker or seller
+      <a
+        href="mailto:lars.kroijer@alliedoffsets.com?subject=Credits Buy - Other Credits"
+        target="_blank"
+        ><span class="underline cursor-pointer">Click here</span></a
+      >
+      if you are interested in other credits and we will try to put you in touch
+      with a potential broker or seller
     </div>
     <div class="text-slate-600 mt-4">
-      <router-link to="/api" target="_blank"><span class="underline cursor-pointer">Click here</span></router-link>
+      <router-link to="/api" target="_blank"
+        ><span class="underline cursor-pointer">Click here</span></router-link
+      >
       if you want access to data via API
     </div>
 
@@ -328,128 +592,245 @@
         <AccordionPanel value="terms">
           <AccordionHeader>T&Cs</AccordionHeader>
           <AccordionContent>
-            <div class="space-y-4 text-sm leading-relaxed max-h-[30rem] overflow-y-auto">
-              <h2 class="text-lg font-semibold">Website &amp; API Terms of Use</h2>
+            <div
+              class="space-y-4 text-sm leading-relaxed max-h-[30rem] overflow-y-auto"
+            >
+              <h2 class="text-lg font-semibold">
+                Website &amp; API Terms of Use
+              </h2>
               <p class="text-xs text-slate-500">Last updated: February 2026</p>
-              <p>By accessing this website or using the API, you confirm that you have read, understood, and agree to be
-                bound by these Terms of Use. If you do not agree, you must not access the website or use the API.</p>
-              <p>These Terms of Use ("Terms") govern your access to and use of this website (the "Website") and any
-                related
-                application programming interfaces ("API") made available by AlliedOffsets ("we", "us", or "our").</p>
+              <p>
+                By accessing this website or using the API, you confirm that you
+                have read, understood, and agree to be bound by these Terms of
+                Use. If you do not agree, you must not access the website or use
+                the API.
+              </p>
+              <p>
+                These Terms of Use ("Terms") govern your access to and use of
+                this website (the "Website") and any related application
+                programming interfaces ("API") made available by AlliedOffsets
+                ("we", "us", or "our").
+              </p>
 
               <h3 class="font-semibold">1. Definitions</h3>
-              <p>"Data" means all pricing information, live offers, project details, analytics, metadata, and any other
-                information made available via the Website or API.</p>
-              <p>"Live Offers" means indicative or live pricing, availability, or market information relating to
-                voluntary
-                carbon market projects or credits.</p>
-              <p>"User" means any individual or entity accessing the Website or API.</p>
-              <p>"Permitted Use" means internal business evaluation and analysis purposes only.</p>
+              <p>
+                "Data" means all pricing information, live offers, project
+                details, analytics, metadata, and any other information made
+                available via the Website or API.
+              </p>
+              <p>
+                "Live Offers" means indicative or live pricing, availability, or
+                market information relating to voluntary carbon market projects
+                or credits.
+              </p>
+              <p>
+                "User" means any individual or entity accessing the Website or
+                API.
+              </p>
+              <p>
+                "Permitted Use" means internal business evaluation and analysis
+                purposes only.
+              </p>
 
               <h3 class="font-semibold">2. Access and Licence</h3>
-              <p>We grant you a limited, non-exclusive, non-transferable, revocable licence to access and use the
-                Website,
-                API, and Data solely for the Permitted Use.</p>
-              <p>Nothing in these Terms transfers ownership of the Data or any intellectual property rights to you.</p>
+              <p>
+                We grant you a limited, non-exclusive, non-transferable,
+                revocable licence to access and use the Website, API, and Data
+                solely for the Permitted Use.
+              </p>
+              <p>
+                Nothing in these Terms transfers ownership of the Data or any
+                intellectual property rights to you.
+              </p>
 
-              <h3 class="font-semibold">3. Permitted Use and Use Restrictions</h3>
-              <p>Subject to these Terms, you may access and use the Website, API, and Data solely for your internal
-                business
-                evaluation, analysis, and decision-making purposes.</p>
-              <p>Except as expressly permitted above, you must not, directly or indirectly:</p>
+              <h3 class="font-semibold">
+                3. Permitted Use and Use Restrictions
+              </h3>
+              <p>
+                Subject to these Terms, you may access and use the Website, API,
+                and Data solely for your internal business evaluation, analysis,
+                and decision-making purposes.
+              </p>
+              <p>
+                Except as expressly permitted above, you must not, directly or
+                indirectly:
+              </p>
               <ul class="list-disc pl-5 space-y-1">
-                <li>share Data with clients, counterparties, or external advisors;</li>
-                <li>publish, display, distribute, or make Data available externally (including in reports,
-                  presentations, or
-                  marketing materials);</li>
-                <li>resell, sublicense, redistribute, or otherwise commercialise the Data;</li>
-                <li>use the Data to price, benchmark, or support transactions for third parties;</li>
-                <li>incorporate the Data into any product, service, database, or tool made available to others;</li>
-                <li>copy, scrape, harvest, extract, or download Data at scale;</li>
-                <li>cache or store Data beyond temporary technical storage required for the permitted use described
-                  above;
+                <li>
+                  share Data with clients, counterparties, or external advisors;
                 </li>
-                <li>use the Data to create or support a competing product or service;</li>
-                <li>circumvent access controls, rate limits, or security measures; or</li>
-                <li>use the Website, API, or Data in any unlawful, misleading, abusive, or unethical manner.</li>
+                <li>
+                  publish, display, distribute, or make Data available
+                  externally (including in reports, presentations, or marketing
+                  materials);
+                </li>
+                <li>
+                  resell, sublicense, redistribute, or otherwise commercialise
+                  the Data;
+                </li>
+                <li>
+                  use the Data to price, benchmark, or support transactions for
+                  third parties;
+                </li>
+                <li>
+                  incorporate the Data into any product, service, database, or
+                  tool made available to others;
+                </li>
+                <li>
+                  copy, scrape, harvest, extract, or download Data at scale;
+                </li>
+                <li>
+                  cache or store Data beyond temporary technical storage
+                  required for the permitted use described above;
+                </li>
+                <li>
+                  use the Data to create or support a competing product or
+                  service;
+                </li>
+                <li>
+                  circumvent access controls, rate limits, or security measures;
+                  or
+                </li>
+                <li>
+                  use the Website, API, or Data in any unlawful, misleading,
+                  abusive, or unethical manner.
+                </li>
               </ul>
-              <p>These restrictions apply regardless of whether Data is accessed via the Website or the API.</p>
-              <p>Any use outside the permitted use described above requires our prior written consent or a separate
-                written
-                licence agreement.</p>
+              <p>
+                These restrictions apply regardless of whether Data is accessed
+                via the Website or the API.
+              </p>
+              <p>
+                Any use outside the permitted use described above requires our
+                prior written consent or a separate written licence agreement.
+              </p>
 
               <h3 class="font-semibold">4. API Access and Use</h3>
-              <p>API access is provided at our sole discretion and may be subject to additional requirements, including
-                authentication keys, rate limits, or usage thresholds.</p>
+              <p>
+                API access is provided at our sole discretion and may be subject
+                to additional requirements, including authentication keys, rate
+                limits, or usage thresholds.
+              </p>
               <p>We reserve the right to:</p>
               <ul class="list-disc pl-5 space-y-1">
                 <li>Modify, suspend, or withdraw API access at any time</li>
-                <li>Change API functionality, endpoints, or response formats without notice</li>
+                <li>
+                  Change API functionality, endpoints, or response formats
+                  without notice
+                </li>
               </ul>
               <p>API credentials are personal to you and must not be shared.</p>
 
               <h3 class="font-semibold">5. Behaviour and Termination</h3>
-              <p>We may suspend or terminate your access to the Website, API, or Data immediately and without notice if:
+              <p>
+                We may suspend or terminate your access to the Website, API, or
+                Data immediately and without notice if:
               </p>
               <ul class="list-disc pl-5 space-y-1">
                 <li>You breach these Terms</li>
-                <li>We reasonably believe your use harms our business, data integrity, or partners</li>
+                <li>
+                  We reasonably believe your use harms our business, data
+                  integrity, or partners
+                </li>
                 <li>You misuse, misrepresent, or redistribute the Data</li>
-                <li>You engage in conduct we reasonably consider inappropriate, abusive, or unethical</li>
+                <li>
+                  You engage in conduct we reasonably consider inappropriate,
+                  abusive, or unethical
+                </li>
               </ul>
               <p>Termination may occur without liability to you.</p>
 
               <h3 class="font-semibold">6. Nature of the Data</h3>
-              <p>The Data and Live Offers are provided for informational purposes only.</p>
+              <p>
+                The Data and Live Offers are provided for informational purposes
+                only.
+              </p>
               <p>They:</p>
               <ul class="list-disc pl-5 space-y-1">
-                <li>Do not constitute binding offers, financial advice, or investment recommendations</li>
-                <li>May be indicative only and subject to change, withdrawal, or error</li>
+                <li>
+                  Do not constitute binding offers, financial advice, or
+                  investment recommendations
+                </li>
+                <li>
+                  May be indicative only and subject to change, withdrawal, or
+                  error
+                </li>
               </ul>
-              <p>We make no guarantees as to the accuracy, completeness, or availability of the Data.</p>
+              <p>
+                We make no guarantees as to the accuracy, completeness, or
+                availability of the Data.
+              </p>
 
               <h3 class="font-semibold">7. Changes to Services</h3>
-              <p>We reserve the right, at any time and without notice, to modify, suspend, or discontinue any aspect of
-                the
-                Website, API, Data, or related services, including content, functionality, availability, scope,
-                methodology,
-                or coverage.</p>
+              <p>
+                We reserve the right, at any time and without notice, to modify,
+                suspend, or discontinue any aspect of the Website, API, Data, or
+                related services, including content, functionality,
+                availability, scope, methodology, or coverage.
+              </p>
 
               <h3 class="font-semibold">8. Intellectual Property</h3>
-              <p>All intellectual property rights in the Website, API, and Data (including databases, content, and
-                underlying methodologies) are owned by us or our licensors.</p>
-              <p>You may not use our name, branding, or trademarks without prior written consent.</p>
+              <p>
+                All intellectual property rights in the Website, API, and Data
+                (including databases, content, and underlying methodologies) are
+                owned by us or our licensors.
+              </p>
+              <p>
+                You may not use our name, branding, or trademarks without prior
+                written consent.
+              </p>
 
               <h3 class="font-semibold">9. Disclaimer</h3>
-              <p>The Website, API, and Data are provided on an "as is" and "as available" basis.</p>
-              <p>To the maximum extent permitted by law, we disclaim all warranties, express or implied, including
-                fitness
-                for a particular purpose and non-infringement.</p>
+              <p>
+                The Website, API, and Data are provided on an "as is" and "as
+                available" basis.
+              </p>
+              <p>
+                To the maximum extent permitted by law, we disclaim all
+                warranties, express or implied, including fitness for a
+                particular purpose and non-infringement.
+              </p>
 
               <h3 class="font-semibold">10. Limitation of Liability</h3>
-              <p>To the maximum extent permitted by law, we shall have no liability to you arising out of or in
-                connection
-                with your use of the Website, API, or Data.</p>
-              <p>Without limiting the above, we shall not be liable for any loss or damage, whether direct or indirect,
-                including any loss of profits, revenue, business opportunity, data, or any decisions made or actions
-                taken
-                in reliance on the Data.</p>
-              <p>Nothing in these Terms limits or excludes liability for fraud, fraudulent misrepresentation, or any
-                liability that cannot be excluded under applicable law.</p>
+              <p>
+                To the maximum extent permitted by law, we shall have no
+                liability to you arising out of or in connection with your use
+                of the Website, API, or Data.
+              </p>
+              <p>
+                Without limiting the above, we shall not be liable for any loss
+                or damage, whether direct or indirect, including any loss of
+                profits, revenue, business opportunity, data, or any decisions
+                made or actions taken in reliance on the Data.
+              </p>
+              <p>
+                Nothing in these Terms limits or excludes liability for fraud,
+                fraudulent misrepresentation, or any liability that cannot be
+                excluded under applicable law.
+              </p>
 
               <h3 class="font-semibold">11. Changes to These Terms</h3>
-              <p>We may update these Terms from time to time. Continued use of the Website or API constitutes acceptance
-                of
-                the updated Terms.</p>
+              <p>
+                We may update these Terms from time to time. Continued use of
+                the Website or API constitutes acceptance of the updated Terms.
+              </p>
 
               <h3 class="font-semibold">12. Governing Law</h3>
-              <p>These Terms are governed by and construed in accordance with the laws of England and Wales, and the
-                courts
-                of England and Wales shall have exclusive jurisdiction.</p>
+              <p>
+                These Terms are governed by and construed in accordance with the
+                laws of England and Wales, and the courts of England and Wales
+                shall have exclusive jurisdiction.
+              </p>
 
               <h3 class="font-semibold">13. Contact</h3>
-              <p>For questions regarding these Terms, please contact: <a href="mailto:legal@alliedoffsets.com"
-                  class="text-primary underline">legal@alliedoffsets.com</a></p>
+              <p>
+                For questions regarding these Terms, please contact:
+                <a
+                  href="mailto:legal@alliedoffsets.com"
+                  class="text-primary underline"
+                  >legal@alliedoffsets.com</a
+                >
+              </p>
             </div>
           </AccordionContent>
         </AccordionPanel>
@@ -457,12 +838,11 @@
     </div>
     <div class="text-slate-600 text-xs mt-4">
       <p>
-        *an “indicative” offer means that the final agreement on price/quantity is subject to agreement with the seller
-        (we
-        put you in touch, but we are not involved with the negotiations). A “firm” offer means that a 3rd party has
-        reserved
-        the credits and unless the offer is modified then they are available at that price (subject to potential
-        transaction
+        *an “indicative” offer means that the final agreement on price/quantity
+        is subject to agreement with the seller (we put you in touch, but we are
+        not involved with the negotiations). A “firm” offer means that a 3rd
+        party has reserved the credits and unless the offer is modified then
+        they are available at that price (subject to potential transaction
         costs).
       </p>
     </div>
@@ -488,17 +868,21 @@ import Tab from "primevue/tab";
 import TabPanels from "primevue/tabpanels";
 import TabPanel from "primevue/tabpanel";
 import OffersFilterDialog from "../components/OffersFilterDialog.vue";
-import { defaultCriteria, filterOffers, hasActiveFilters as checkHasActiveFilters, splitByComma } from "../composables/offersFilter.js";
+import {
+  defaultCriteria,
+  filterOffers,
+  hasActiveFilters as checkHasActiveFilters,
+  splitByComma,
+} from "../composables/offersFilter.js";
 
 const toast = useToast();
 const offersStore = useOffersStore();
 const { offers } = storeToRefs(offersStore);
 
-const sortKey = ref('total');
+const sortKey = ref("total");
 const sortDirection = ref("desc");
 const filterDialogVisible = ref(false);
 const filterCriteria = ref(defaultCriteria());
-
 
 const sortedOffers = computed(() => {
   const list = offers.value;
@@ -574,10 +958,12 @@ const sortedOffers = computed(() => {
 });
 
 const filteredOffers = computed(() =>
-  filterOffers(sortedOffers.value, filterCriteria.value)
+  filterOffers(sortedOffers.value, filterCriteria.value),
 );
 
-const hasActiveFilters = computed(() => checkHasActiveFilters(filterCriteria.value));
+const hasActiveFilters = computed(() =>
+  checkHasActiveFilters(filterCriteria.value),
+);
 
 function onFiltersApplied() {
   toast.add({
@@ -631,8 +1017,6 @@ function updateSwipeIndicatorVisibility() {
     showSwipeIndicator.value = true;
   }
 }
-
-
 
 const buyDialogVisible = ref(false);
 const selectedOffer = ref(null);
@@ -774,5 +1158,57 @@ async function handleBuyConfirm() {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+:deep(.p-tabs) {
+  background: transparent !important;
+}
+
+:deep(.p-tablist) {
+  background: transparent !important;
+  border: none !important;
+}
+
+:deep(.p-tablist-content) {
+  background: transparent !important;
+}
+
+:deep(.p-tablist-tab-list) {
+  border: none !important;
+  background: transparent !important;
+  display: flex;
+  gap: 0.75rem;
+  padding: 2px !important;
+}
+
+:deep(.p-tablist-active-bar) {
+  display: none !important;
+}
+
+:deep(.p-tab) {
+  border: 2px solid var(--p-primary-500) !important;
+  border-radius: 9999px !important;
+  background: transparent !important;
+  color: var(--p-primary-500) !important;
+  padding: 0.5rem 1.25rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.2s !important;
+}
+
+:deep(.p-tab:hover) {
+  background: var(--p-primary-50) !important;
+}
+
+:deep(.p-tab-active),
+:deep(.p-tab[data-p-active="true"]) {
+  background: var(--p-primary-500) !important;
+  color: white !important;
+}
+
+:deep(.p-tabpanels) {
+  padding: 0 !important;
+  padding-top: 12px !important;
+  background: none !important;
 }
 </style>
