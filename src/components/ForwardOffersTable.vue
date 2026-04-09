@@ -217,13 +217,13 @@
                     </span>
                   </td>
                   <td class="table-cell overflow-hidden px-4 py-2.5 text-left">
-                    <a
+                    <button
                       v-if="offer.contactEmail"
-                      :href="`mailto:${offer.contactEmail}?subject=Interest in Forward Offer: ${offer.projectName}`"
+                      @click="openBuyDialog(offer)"
                       class="text-primary-700 bg-primary-50 px-3 py-1.5 rounded-3xl text-xs font-medium hover:bg-primary-100 transition-colors inline-block whitespace-nowrap"
                     >
                       Express interest
-                    </a>
+                    </button>
                   </td>
                   <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
                     <div class="min-w-0 truncate" :title="offer.country">
@@ -452,6 +452,92 @@
           </div>
         </template>
       </Dialog>
+
+      <!-- Express Interest Modal -->
+      <Dialog
+        v-model:visible="buyDialogVisible"
+        modal
+        header="Express Interest"
+        :style="{ width: '28rem' }"
+        :dismissable-mask="true"
+        class="buy-dialog"
+        @hide="resetBuyForm"
+      >
+        <template v-if="selectedOffer">
+          <p class="text-slate-700 mb-4">
+            You are expressing an interest to buy
+            <strong>{{ formatCredits(buyForm.credits) }} credits</strong>
+            of {{ selectedOffer.projectName }} vintage
+            {{ selectedOffer.vintages }} at
+            <strong>${{ formatPrice(buyForm.price) }}</strong>.
+          </p>
+          <p class="text-slate-700 mb-4">
+            Your indication of interest will be emailed to the party offering the
+            credits for sale and the administrator of this site.
+          </p>
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-2">
+              <label for="buy-credits" class="text-sm font-medium text-slate-700"
+                >Credits</label
+              >
+              <InputNumber
+                id="buy-credits"
+                v-model="buyForm.credits"
+                :min="0"
+                :max-fraction-digits="0"
+                class="w-full"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="buy-price" class="text-sm font-medium text-slate-700"
+                >Price per credit ($)</label
+              >
+              <InputNumber
+                id="buy-price"
+                v-model="buyForm.price"
+                :min="0"
+                :min-fraction-digits="2"
+                :max-fraction-digits="2"
+                mode="currency"
+                currency="USD"
+                locale="en-US"
+                class="w-full"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="buy-email" class="text-sm font-medium text-slate-700"
+                >Email address</label
+              >
+              <InputText
+                id="buy-email"
+                v-model="buyForm.email"
+                type="email"
+                placeholder="your.email@example.com"
+                class="w-full"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="buy-phone" class="text-sm font-medium text-slate-700"
+                >Phone(optional)</label
+              >
+              <InputText
+                id="buy-phone"
+                v-model="buyForm.phone"
+                type="tel"
+                placeholder="123-456-7890"
+                class="w-full"
+              />
+            </div>
+          </div>
+        </template>
+        <template #footer>
+          <Button
+            label="Confirm"
+            :loading="submitLoading"
+            @click="handleBuyConfirm"
+          />
+        </template>
+      </Dialog>
     </section>
     <ForwardOffersFilterDialog
       v-model:visible="filterDialogVisible"
@@ -467,6 +553,9 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
+import Button from "primevue/button";
+import InputNumber from "primevue/inputnumber";
+import InputText from "primevue/inputtext";
 import { useOffersStore } from "../stores/offers";
 import ForwardOffersFilterDialog from "./ForwardOffersFilterDialog.vue";
 import {
@@ -627,6 +716,139 @@ function showCreditsDetails(offer) {
 function sumCredits(rows, key) {
   if (!rows || !Array.isArray(rows)) return 0;
   return rows.reduce((sum, row) => sum + (Number(row[key]) || 0), 0);
+}
+
+const buyDialogVisible = ref(false);
+const selectedOffer = ref(null);
+const submitLoading = ref(false);
+const buyForm = ref({
+  credits: null,
+  price: null,
+  email: "",
+  phone: "",
+});
+
+function formatCredits(val) {
+  if (val == null) return "—";
+  return Number(val).toLocaleString();
+}
+
+function formatPrice(val) {
+  if (val == null) return "—";
+  return Number(val).toFixed(2);
+}
+
+function openBuyDialog(offer) {
+  selectedOffer.value = offer;
+  
+  // Extract max price from range or single value
+  let price = 0;
+  if (offer.pricePerCredit) {
+    const parts = String(offer.pricePerCredit).split("-").map(s => Number(s.trim())).filter(n => Number.isFinite(n));
+    if (parts.length > 0) {
+      price = Math.max(...parts);
+    }
+  }
+
+  // Extract credits
+  let credits = 0;
+  if (offer.creditsMode === 'estimated') {
+    const avail = Number(String(offer.estimatedAvailable).replace(/,/g, ''));
+    if (Number.isFinite(avail)) {
+      credits = avail;
+    }
+  } else if (offer.creditsRows && offer.creditsRows.length > 0) {
+    credits = sumCredits(offer.creditsRows, "available");
+  }
+
+  buyForm.value = {
+    credits: Number.isFinite(credits) && credits > 0 ? credits : null,
+    price: Number.isFinite(price) && price > 0 ? price : null,
+    email: "",
+    phone: "",
+  };
+  buyDialogVisible.value = true;
+}
+
+function resetBuyForm() {
+  selectedOffer.value = null;
+  submitLoading.value = false;
+  buyForm.value = { credits: null, price: null, email: "", phone: "" };
+}
+
+function isValidEmail(email) {
+  if (!email || typeof email !== "string") return false;
+  const s = email.trim();
+  return (
+    s.includes("@") && s.includes(".") && s.indexOf("@") < s.lastIndexOf(".")
+  );
+}
+
+function validateBuyForm() {
+  const errors = [];
+  const credits = Number(buyForm.value.credits);
+  const price = Number(buyForm.value.price);
+
+  if (!Number.isFinite(credits) || credits <= 0) {
+    errors.push("Credits must be greater than 0.");
+  }
+  
+  if (!Number.isFinite(price) || price <= 0) {
+    errors.push("Price must be greater than $0.");
+  }
+
+  if (!isValidEmail(buyForm.value.email)) {
+    errors.push("Please enter a valid email.");
+  }
+
+  return errors;
+}
+
+async function handleBuyConfirm() {
+  const errors = validateBuyForm();
+  if (errors.length) {
+    toast.add({
+      severity: "error",
+      summary: "Validation failed",
+      detail: errors.join(" "),
+      life: 5000,
+    });
+    return;
+  }
+
+  submitLoading.value = true;
+  try {
+    const total = Number(buyForm.value.credits) * Number(buyForm.value.price);
+    const payload = {
+      offerId: selectedOffer.value?.id,
+      uid: selectedOffer.value?.uid, 
+      vintages: selectedOffer.value?.vintages,
+      credits: buyForm.value.credits,
+      projectName: selectedOffer.value?.projectName,
+      pricePerCredit: buyForm.value.price,
+      total,
+      contactEmail: selectedOffer.value?.contactEmail,
+      email: buyForm.value.email.trim(),
+      phone: buyForm.value.phone.trim(),
+    };
+    await offersStore.sendForwardOfferBid(payload);
+    toast.add({
+      severity: "success",
+      summary: "Interest submitted",
+      detail: "Your interest has been submitted successfully.",
+      life: 5000,
+    });
+    buyDialogVisible.value = false;
+  } catch (err) {
+    toast.add({
+      severity: "error",
+      summary: "Submission failed",
+      detail: "Failed to submit your interest. Please try again later.",
+      life: 5000,
+    });
+  } finally {
+    submitLoading.value = false;
+  }
 }
 </script>
 

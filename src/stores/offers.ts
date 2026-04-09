@@ -64,8 +64,18 @@ export const useOffersStore = defineStore("offers", {
       try {
         const response = await axios.post(`${API_URL}/offers/bid`, bid);
         return response.data;
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error sending offer bid", err.response?.data || err);
+        throw err;
+      }
+    },
+    async sendForwardOfferBid(bid: any) {
+      try {
+        const response = await axios.post(`${API_URL}/forward-offers/bid`, bid);
+        return response.data;
+      } catch (err: any) {
+        console.error("Error sending forward offer bid", err.response?.data || err);
+        throw err;
       }
     },
   },
