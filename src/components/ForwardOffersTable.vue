@@ -310,8 +310,8 @@
       header="Credits Details"
       :style="{ width: '30rem' }"
     >
-      <div v-if="selectedCreditsOffer" class="p-4">
-        <h3 class="font-semibold text-lg mb-4">
+      <div v-if="selectedCreditsOffer" class="flex flex-col gap-4">
+        <h3 class="font-semibold text-lg">
           {{ selectedCreditsOffer.projectName }}
         </h3>
         <table class="w-full text-sm text-left">
@@ -334,6 +334,17 @@
           </tbody>
         </table>
       </div>
+      <template #footer>
+        <div class="flex justify-start pt-2">
+          <button
+            type="button"
+            class="button-outline text-sm px-4 py-2"
+            @click="detailsDialogVisible = false"
+          >
+            Close
+          </button>
+        </div>
+      </template>
     </Dialog>
   </section>
 </template>
