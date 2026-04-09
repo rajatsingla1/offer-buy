@@ -26,7 +26,7 @@
     </section>
 
     <section class="mt-10 space-y-4">
-      <Tabs value="spot">
+      <Tabs v-model:value="activeTab">
         <TabList>
           <Tab value="spot">Spot credits</Tab>
           <Tab value="forward">Forward credits</Tab>
@@ -850,7 +850,7 @@
 </template>
 <script setup>
 import { ref, onMounted, watch, nextTick, computed } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useOffersStore } from "../stores/offers";
 import { useToast } from "primevue/usetoast";
@@ -876,8 +876,18 @@ import {
 } from "../composables/offersFilter.js";
 
 const toast = useToast();
+const route = useRoute();
+const router = useRouter();
 const offersStore = useOffersStore();
 const { offers } = storeToRefs(offersStore);
+
+const activeTab = computed({
+  get: () => (route.path === "/forward" ? "forward" : "spot"),
+  set: (val) => {
+    if (val === "forward") router.push("/forward");
+    else router.push("/");
+  },
+});
 
 const sortKey = ref("total");
 const sortDirection = ref("desc");
