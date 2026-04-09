@@ -7,8 +7,11 @@ const API_URL = `${apiClient.root.defaults.baseURL}`;
 export const useOffersStore = defineStore("offers", {
   state: () => ({
     offers: [],
+    forwardOffers: [],
     loading: false,
+    forwardLoading: false,
     error: "",
+    forwardError: "",
   }),
   actions: {
     async fetchOffers() {
@@ -32,6 +35,29 @@ export const useOffersStore = defineStore("offers", {
         this.offers = [];
       } finally {
         this.loading = false;
+      }
+    },
+    async fetchForwardOffers() {
+      if (this.forwardLoading) return;
+
+      this.forwardLoading = true;
+      this.forwardError = "";
+
+      try {
+        const response = await axios.get(`${API_URL}/forward-offers/website`);
+
+        const payload = response.data;
+        const remoteOffers = payload ?? [];
+
+        this.forwardOffers = Array.isArray(remoteOffers) ? remoteOffers : [];
+      } catch (err) {
+        this.forwardError =
+          err instanceof Error
+            ? err.message
+            : "Unexpected error fetching forward offers.";
+        this.forwardOffers = [];
+      } finally {
+        this.forwardLoading = false;
       }
     },
     async sendOfferBid(bid: any) {

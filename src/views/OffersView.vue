@@ -455,9 +455,7 @@
             </section>
           </TabPanel>
           <TabPanel value="forward">
-            <div class="card p-8 text-center text-slate-500">
-              Forward credits view coming soon.
-            </div>
+            <ForwardOffersTable />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -868,6 +866,7 @@ import Tab from "primevue/tab";
 import TabPanels from "primevue/tabpanels";
 import TabPanel from "primevue/tabpanel";
 import OffersFilterDialog from "../components/OffersFilterDialog.vue";
+import ForwardOffersTable from "../components/ForwardOffersTable.vue";
 import {
   defaultCriteria,
   filterOffers,
