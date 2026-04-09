@@ -39,7 +39,7 @@
               <div class="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
-                  class="text-sm font-medium text-slate-700 hover:text-primary-700 underline underline-offset-4 decoration-slate-400 hover:decoration-primary-700 transition-colors"
+                  class="text-sm font-medium text-primary-700 bg-primary-50 px-3 py-1.5 rounded-full border border-primary-200 hover:bg-primary-100 hover:border-primary-300 transition-colors shadow-sm"
                   @click="filterDialogVisible = true"
                 >
                   <span class="inline-flex items-center gap-1.5">
