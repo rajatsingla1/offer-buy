@@ -21,8 +21,15 @@
     </section>
 
     <section class="mt-10 space-y-4">
-      <div class="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-        <div class="flex flex-wrap items-center gap-3">
+      <Tabs value="spot">
+        <TabList>
+          <Tab value="spot">Spot credits</Tab>
+          <Tab value="forward">Forward credits</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel value="spot">
+            <div class="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+              <div class="flex flex-wrap items-center gap-3">
           <button type="button" class="button-outline text-sm" @click="filterDialogVisible = true">
             Amend view for custom criteria
           </button>
@@ -243,6 +250,14 @@
           </Transition>
         </div>
       </section>
+          </TabPanel>
+          <TabPanel value="forward">
+            <div class="card p-8 text-center text-slate-500">
+              Forward credits view coming soon.
+            </div>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </section>
 
     <Dialog v-model:visible="buyDialogVisible" modal header="Bidding" :style="{ width: '28rem' }"
@@ -467,6 +482,11 @@ import Accordion from "primevue/accordion";
 import AccordionPanel from "primevue/accordionpanel";
 import AccordionHeader from "primevue/accordionheader";
 import AccordionContent from "primevue/accordioncontent";
+import Tabs from "primevue/tabs";
+import TabList from "primevue/tablist";
+import Tab from "primevue/tab";
+import TabPanels from "primevue/tabpanels";
+import TabPanel from "primevue/tabpanel";
 import OffersFilterDialog from "../components/OffersFilterDialog.vue";
 import { defaultCriteria, filterOffers, hasActiveFilters as checkHasActiveFilters, splitByComma } from "../composables/offersFilter.js";
 
