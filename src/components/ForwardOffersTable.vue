@@ -49,18 +49,18 @@
           class="max-h-[1000px] max-w-full overflow-x-auto transition-opacity"
           @scroll="onTableScroll"
         >
-          <table class="w-full min-w-max divide-y divide-primary-100">
+          <table class="table-fixed divide-y divide-primary-100">
             <thead class="sticky top-0 z-1 table-header">
               <tr>
                 <th
                   scope="col"
-                  class="max-w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   Project Name /<br />UID
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   <button
                     type="button"
@@ -78,7 +78,7 @@
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   <button
                     type="button"
@@ -96,55 +96,61 @@
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   Action
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   Country /<br />Methodology
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   Credits<br />(Available/Sold)
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   Rating /<br />Verifier
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   Registry /<br />Stage
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
-                  Delivery /<br />Risk
+                  Delivery risk notes
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   Eligible /<br />Type
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                >
+                  Evaluation <br />Other
+                </th>
+                <th
+                  scope="col"
+                  class="w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   Contract
                 </th>
                 <th
                   scope="col"
-                  class="max-w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
+                  class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
                   Links
                 </th>
@@ -152,7 +158,7 @@
             </thead>
             <tbody class="divide-y divide-primary-50 bg-white">
               <tr v-if="forwardLoading">
-                <td colspan="12" class="p-8 text-center text-slate-500">
+                <td colspan="13" class="p-8 text-center text-slate-500">
                   <div class="flex items-center justify-center gap-3">
                     <svg
                       class="h-5 w-5 animate-spin text-primary"
@@ -184,7 +190,9 @@
                   :key="offer.id || index"
                   class="hover:bg-primary-50/40"
                 >
-                  <td class="table-cell overflow-hidden px-4 py-2.5">
+                  <td
+                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5"
+                  >
                     <div
                       class="min-w-0 text-sm font-semibold text-ink line-clamp-2"
                       :title="offer.projectName"
@@ -198,17 +206,21 @@
                       {{ offer.uid || "" }}
                     </p>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
+                  <td
+                    class="table-cell max-w-[7rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
                     <span
-                      class="block min-w-0 truncate font-semibold text-ink"
+                      class="block min-w-0 line-clamp-2 font-semibold text-ink"
                       :title="offer.vintages"
                     >
                       {{ offer.vintages || "" }}
                     </span>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
+                  <td
+                    class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
                     <span
-                      class="block min-w-0 truncate font-semibold text-primary"
+                      class="block min-w-0 line-clamp-2 font-semibold text-primary"
                       :title="offer.pricePerCredit"
                     >
                       {{
@@ -216,7 +228,9 @@
                       }}
                     </span>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-left">
+                  <td
+                    class="table-cell max-w-[9rem] overflow-hidden px-4 py-2.5 text-left"
+                  >
                     <button
                       v-if="offer.contactEmail"
                       @click="openBuyDialog(offer)"
@@ -225,7 +239,9 @@
                       Express interest
                     </button>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
+                  <td
+                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
                     <div class="min-w-0 truncate" :title="offer.country">
                       {{ offer.country || "" }}
                     </div>
@@ -236,7 +252,9 @@
                       {{ offer.methodology || "" }}
                     </div>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
+                  <td
+                    class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
                     <template v-if="offer.creditsMode === 'estimated'">
                       <div
                         class="min-w-0 truncate"
@@ -279,7 +297,9 @@
                       </button>
                     </template>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
+                  <td
+                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
                     <div class="min-w-0 truncate" :title="formatRating(offer)">
                       {{ formatRating(offer) || "" }}
                     </div>
@@ -290,7 +310,9 @@
                       {{ offer.verifierVvb || "" }}
                     </div>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
+                  <td
+                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
                     <div class="min-w-0 truncate" :title="offer.registry">
                       {{ offer.registry || "" }}
                     </div>
@@ -301,14 +323,21 @@
                       {{ offer.registryStage || "" }}
                     </div>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
-                    <div class="min-w-0 truncate" :title="offer.deliveryRisk">
+                  <td
+                    class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
+                    <div
+                      class="min-w-0 line-clamp-2"
+                      :title="offer.deliveryRisk"
+                    >
                       {{ offer.deliveryRisk || "" }}
                     </div>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
+                  <td
+                    class="table-cell max-w-[9rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
                     <div
-                      class="min-w-0 truncate"
+                      class="min-w-0 line-clamp-2"
                       :title="formatEligibility(offer)"
                     >
                       {{ formatEligibility(offer) || "" }}
@@ -320,7 +349,19 @@
                       {{ offer.avoidanceRemoval || "" }}
                     </div>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
+                  <td
+                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
+                    <div
+                      class="min-w-0 line-clamp-2"
+                      :title="offer.evaluationOther"
+                    >
+                      {{ offer.evaluationOther || "" }}
+                    </div>
+                  </td>
+                  <td
+                    class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
                     <template v-if="offer.defaultContractMode === 'upload'">
                       <a
                         v-if="offer.defaultContractFileLink"
@@ -344,7 +385,9 @@
                       }}</span>
                     </template>
                   </td>
-                  <td class="table-cell overflow-hidden px-4 py-2.5 text-sm">
+                  <td
+                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
+                  >
                     <div class="flex flex-col gap-1 items-start">
                       <a
                         v-if="offer.websiteLink"
@@ -386,11 +429,27 @@
                         class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
                         >VVB Link</a
                       >
+                      <a
+                        v-if="offer.projectLocation"
+                        :href="offer.projectLocation"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
+                        >Location</a
+                      >
+                      <a
+                        v-if="offer.pitchDocumentLink"
+                        :href="offer.pitchDocumentLink"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
+                        >Pitch Doc</a
+                      >
                     </div>
                   </td>
                 </tr>
                 <tr v-if="filteredOffers.length === 0 && !forwardLoading">
-                  <td colspan="12" class="p-8 text-center text-slate-500">
+                  <td colspan="13" class="p-8 text-center text-slate-500">
                     No forward offers found.
                   </td>
                 </tr>
@@ -469,15 +528,18 @@
             <strong>{{ formatCredits(buyForm.credits) }} credits</strong>
             of {{ selectedOffer.projectName }} vintage
             {{ selectedOffer.vintages }} at
-            <strong>${{ formatPrice(buyForm.price) }}</strong>.
+            <strong>${{ formatPrice(buyForm.price) }}</strong
+            >.
           </p>
           <p class="text-slate-700 mb-4">
-            Your indication of interest will be emailed to the party offering the
-            credits for sale and the administrator of this site.
+            Your indication of interest will be emailed to the party offering
+            the credits for sale and the administrator of this site.
           </p>
           <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
-              <label for="buy-credits" class="text-sm font-medium text-slate-700"
+              <label
+                for="buy-credits"
+                class="text-sm font-medium text-slate-700"
                 >Credits</label
               >
               <InputNumber
@@ -740,11 +802,14 @@ function formatPrice(val) {
 
 function openBuyDialog(offer) {
   selectedOffer.value = offer;
-  
+
   // Extract max price from range or single value
   let price = 0;
   if (offer.pricePerCredit) {
-    const parts = String(offer.pricePerCredit).split("-").map(s => Number(s.trim())).filter(n => Number.isFinite(n));
+    const parts = String(offer.pricePerCredit)
+      .split("-")
+      .map((s) => Number(s.trim()))
+      .filter((n) => Number.isFinite(n));
     if (parts.length > 0) {
       price = Math.max(...parts);
     }
@@ -752,8 +817,8 @@ function openBuyDialog(offer) {
 
   // Extract credits
   let credits = 0;
-  if (offer.creditsMode === 'estimated') {
-    const avail = Number(String(offer.estimatedAvailable).replace(/,/g, ''));
+  if (offer.creditsMode === "estimated") {
+    const avail = Number(String(offer.estimatedAvailable).replace(/,/g, ""));
     if (Number.isFinite(avail)) {
       credits = avail;
     }
@@ -792,7 +857,7 @@ function validateBuyForm() {
   if (!Number.isFinite(credits) || credits <= 0) {
     errors.push("Credits must be greater than 0.");
   }
-  
+
   if (!Number.isFinite(price) || price <= 0) {
     errors.push("Price must be greater than $0.");
   }
@@ -821,7 +886,7 @@ async function handleBuyConfirm() {
     const total = Number(buyForm.value.credits) * Number(buyForm.value.price);
     const payload = {
       offerId: selectedOffer.value?.id,
-      uid: selectedOffer.value?.uid, 
+      uid: selectedOffer.value?.uid,
       vintages: selectedOffer.value?.vintages,
       credits: buyForm.value.credits,
       projectName: selectedOffer.value?.projectName,
