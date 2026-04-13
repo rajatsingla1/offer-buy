@@ -327,7 +327,7 @@
                     class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm"
                   >
                     <div
-                      class="min-w-0 line-clamp-2"
+                      class="min-w-0 line-clamp-2 whitespace-pre-line"
                       :title="offer.deliveryRisk"
                     >
                       {{ offer.deliveryRisk || "" }}
@@ -353,7 +353,7 @@
                     class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
                   >
                     <div
-                      class="min-w-0 line-clamp-2"
+                      class="min-w-0 line-clamp-2 whitespace-pre-line"
                       :title="offer.evaluationOther"
                     >
                       {{ offer.evaluationOther || "" }}
