@@ -122,7 +122,7 @@
                   scope="col"
                   class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
                 >
-                  Registry /<br />Stage
+                  Registry <br />Stage
                 </th>
                 <th
                   scope="col"
