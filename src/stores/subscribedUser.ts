@@ -29,6 +29,8 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
     subscribedProjectIds,
     autoSubscribeNewOffers,
     unsubscribedProjectIds,
+    subscribedForwardCreditIds,
+    unsubscribedForwardCreditIds,
   }: {
     email: string;
     name?: string;
@@ -37,6 +39,8 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
     subscribedProjectIds: string[];
     autoSubscribeNewOffers?: boolean;
     unsubscribedProjectIds?: string[];
+    subscribedForwardCreditIds?: string[];
+    unsubscribedForwardCreditIds?: string[];
   }) => {
     try {
       const body: Record<string, unknown> = {
@@ -51,6 +55,12 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       }
       if (unsubscribedProjectIds !== undefined) {
         body.unsubscribed_project_ids = unsubscribedProjectIds;
+      }
+      if (subscribedForwardCreditIds !== undefined) {
+        body.subscribed_forward_credit_ids = subscribedForwardCreditIds;
+      }
+      if (unsubscribedForwardCreditIds !== undefined) {
+        body.unsubscribed_forward_credit_ids = unsubscribedForwardCreditIds;
       }
       const response = await apiClient.root.post("/subscribed-users", body);
       return response.data;
@@ -73,6 +83,8 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       subscribedProjectIds,
       autoSubscribeNewOffers,
       unsubscribedProjectIds,
+      subscribedForwardCreditIds,
+      unsubscribedForwardCreditIds,
     }: {
       instantUpdates?: boolean;
       schedulePreference?: string;
@@ -80,6 +92,8 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       subscribedProjectIds?: string[];
       autoSubscribeNewOffers?: boolean;
       unsubscribedProjectIds?: string[];
+      subscribedForwardCreditIds?: string[];
+      unsubscribedForwardCreditIds?: string[];
     },
   ) => {
     try {
@@ -90,6 +104,8 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
       if (subscribedProjectIds !== undefined) body.subscribed_project_ids = subscribedProjectIds;
       if (autoSubscribeNewOffers != null) body.subscribe_new_projects = autoSubscribeNewOffers;
       if (unsubscribedProjectIds !== undefined) body.unsubscribed_project_ids = unsubscribedProjectIds;
+      if (subscribedForwardCreditIds !== undefined) body.subscribed_forward_credit_ids = subscribedForwardCreditIds;
+      if (unsubscribedForwardCreditIds !== undefined) body.unsubscribed_forward_credit_ids = unsubscribedForwardCreditIds;
 
       const response = await apiClient.root.patch(`/subscribed-users/${uuid}`, body);
       if (response.data) {
