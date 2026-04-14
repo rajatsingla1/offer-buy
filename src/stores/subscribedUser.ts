@@ -52,7 +52,6 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
         subscribed_forward_credit_ids: subscribedForwardCreditIds ?? [],
         unsubscribed_forward_credit_ids: unsubscribedForwardCreditIds ?? [],
       };
-      console.log(body);
       if (autoSubscribeNewOffers !== undefined) {
         body.subscribe_new_projects = autoSubscribeNewOffers;
       }
