@@ -49,18 +49,15 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
         instantUpdates,
         schedulePreference,
         subscribed_project_ids: subscribedProjectIds,
+        subscribed_forward_credit_ids: subscribedForwardCreditIds ?? [],
+        unsubscribed_forward_credit_ids: unsubscribedForwardCreditIds ?? [],
       };
+      console.log(body);
       if (autoSubscribeNewOffers !== undefined) {
         body.subscribe_new_projects = autoSubscribeNewOffers;
       }
       if (unsubscribedProjectIds !== undefined) {
         body.unsubscribed_project_ids = unsubscribedProjectIds;
-      }
-      if (subscribedForwardCreditIds !== undefined) {
-        body.subscribed_forward_credit_ids = subscribedForwardCreditIds;
-      }
-      if (unsubscribedForwardCreditIds !== undefined) {
-        body.unsubscribed_forward_credit_ids = unsubscribedForwardCreditIds;
       }
       const response = await apiClient.root.post("/subscribed-users", body);
       return response.data;
@@ -99,15 +96,24 @@ export const useSubscribedUserStore = defineStore("subscribedUser", () => {
     try {
       const body: Record<string, unknown> = {};
       if (instantUpdates != null) body.instant_updates = instantUpdates;
-      if (schedulePreference != null) body.schedule_preference = schedulePreference;
+      if (schedulePreference != null)
+        body.schedule_preference = schedulePreference;
       if (active != null) body.active = active;
-      if (subscribedProjectIds !== undefined) body.subscribed_project_ids = subscribedProjectIds;
-      if (autoSubscribeNewOffers != null) body.subscribe_new_projects = autoSubscribeNewOffers;
-      if (unsubscribedProjectIds !== undefined) body.unsubscribed_project_ids = unsubscribedProjectIds;
-      if (subscribedForwardCreditIds !== undefined) body.subscribed_forward_credit_ids = subscribedForwardCreditIds;
-      if (unsubscribedForwardCreditIds !== undefined) body.unsubscribed_forward_credit_ids = unsubscribedForwardCreditIds;
+      if (subscribedProjectIds !== undefined)
+        body.subscribed_project_ids = subscribedProjectIds;
+      if (autoSubscribeNewOffers != null)
+        body.subscribe_new_projects = autoSubscribeNewOffers;
+      if (unsubscribedProjectIds !== undefined)
+        body.unsubscribed_project_ids = unsubscribedProjectIds;
+      if (subscribedForwardCreditIds !== undefined)
+        body.subscribed_forward_credit_ids = subscribedForwardCreditIds;
+      if (unsubscribedForwardCreditIds !== undefined)
+        body.unsubscribed_forward_credit_ids = unsubscribedForwardCreditIds;
 
-      const response = await apiClient.root.patch(`/subscribed-users/${uuid}`, body);
+      const response = await apiClient.root.patch(
+        `/subscribed-users/${uuid}`,
+        body,
+      );
       if (response.data) {
         subscribedUser.value = response.data;
       }

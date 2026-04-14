@@ -194,7 +194,7 @@
 
         <!-- Forward Credits -->
         <div class="space-y-3">
-          <h4 class="text-base font-semibold text-ink">Forward credits</h4>
+          <h4 class="text-base mt-3 font-semibold text-ink">Forward credits</h4>
           <div class="flex flex-wrap items-center gap-3">
             <button
               type="button"
