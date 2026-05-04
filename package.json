@@ -12,6 +12,7 @@
     "@headlessui/vue": "^1.7.23",
     "@primeuix/themes": "^2.0.3",
     "axios": "^1.7.7",
+    "js-cookie": "^3.0.5",
     "pinia": "^2.2.4",
     "primevue": "^4.5.4",
     "vue": "^3.4.21",

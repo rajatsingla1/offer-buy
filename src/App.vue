@@ -1,17 +1,21 @@
 <script setup>
 import { RouterLink, RouterView, useRoute } from "vue-router";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import Toast from "primevue/toast";
 import { useOffersStore } from "@/stores/offers";
+import Cookies from "js-cookie";
 
 const offersStore = useOffersStore();
 const route = useRoute();
 const activeRouteName = computed(() => route.name);
 const { fetchOffers, fetchForwardOffers } = offersStore;
 
+const isLoggedIn = ref(false);
+
 onMounted(() => {
   fetchOffers();
   fetchForwardOffers();
+  isLoggedIn.value = Cookies.get("__s") !== undefined;
 });
 </script>
 
@@ -59,7 +63,11 @@ onMounted(() => {
             </button>
           </RouterLink>
 
-          <a href="https://developer.alliedcredits.com/login" target="_blank" rel="noopener noreferrer"
+          <a v-if="isLoggedIn" href="https://developer.alliedcredits.com" rel="noopener noreferrer"
+            class="rounded-full px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-primary-50 hover:text-primary border border-primary-200 hover:border-primary-300">
+            My Account
+          </a>
+          <a v-else href="https://developer.alliedcredits.com/login" rel="noopener noreferrer"
             class="rounded-full px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-primary-50 hover:text-primary border border-primary-200 hover:border-primary-300">
             Participant Login
           </a>
