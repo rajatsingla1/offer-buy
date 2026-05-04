@@ -1,42 +1,22 @@
 <template>
   <div>
-    <div
-      class="mb-3 mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2"
-    >
+    <div class="mb-3 mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
       <div class="flex flex-wrap items-center gap-3">
-        <button
-          type="button"
+        <button type="button"
           class="text-sm font-medium text-primary-700 bg-primary-50 px-3 py-1.5 rounded-full border border-primary-200 hover:bg-primary-100 hover:border-primary-300 transition-colors shadow-sm"
-          @click="filterDialogVisible = true"
-        >
+          @click="filterDialogVisible = true">
           <span class="inline-flex items-center gap-1.5">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polygon
-                points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
-              ></polygon>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg>
             Amend view for custom criteria
           </span>
         </button>
         <template v-if="hasActiveFilters">
-          <span class="text-sm text-slate-600"
-            >{{ filteredOffers.length }} results</span
-          >
-          <button
-            type="button"
-            class="text-sm text-primary-600 hover:text-primary-700 hover:underline font-medium"
-            @click="resetFilters"
-          >
+          <span class="text-sm text-slate-600">{{ filteredOffers.length }} results</span>
+          <button type="button" class="text-sm text-primary-600 hover:text-primary-700 hover:underline font-medium"
+            @click="resetFilters">
             Reset
           </button>
         </template>
@@ -44,114 +24,58 @@
     </div>
     <section class="card overflow-hidden">
       <div class="relative">
-        <div
-          ref="tableScrollRef"
-          class="max-h-[1000px] max-w-full overflow-x-auto transition-opacity"
-          @scroll="onTableScroll"
-        >
+        <div ref="tableScrollRef" class="max-h-[1000px] max-w-full overflow-x-auto transition-opacity"
+          @scroll="onTableScroll">
           <table class="table-fixed divide-y divide-primary-100">
             <thead class="sticky top-0 z-1 table-header">
               <tr>
-                <th
-                  scope="col"
-                  class="w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Project Name /<br />UID
                 </th>
-                <th
-                  scope="col"
-                  class="w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
-                  <button
-                    type="button"
-                    class="inline-flex items-center gap-1"
-                    @click="toggleSort('vintage')"
-                  >
+                <th scope="col" class="w-[7rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <button type="button" class="inline-flex items-center gap-1" @click="toggleSort('vintage')">
                     <span>Vintages</span>
-                    <span
-                      v-if="sortKey === 'vintage'"
-                      class="text-[0.7rem] text-slate-500"
-                    >
+                    <span v-if="sortKey === 'vintage'" class="text-[0.7rem] text-slate-500">
                       {{ sortDirection === "asc" ? "↑" : "↓" }}
                     </span>
                   </button>
                 </th>
-                <th
-                  scope="col"
-                  class="w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
-                  <button
-                    type="button"
-                    class="inline-flex items-center gap-1"
-                    @click="toggleSort('price')"
-                  >
+                <th scope="col" class="w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
+                  <button type="button" class="inline-flex items-center gap-1" @click="toggleSort('price')">
                     <span>Offer<br />Price</span>
-                    <span
-                      v-if="sortKey === 'price'"
-                      class="text-[0.7rem] text-slate-500"
-                    >
+                    <span v-if="sortKey === 'price'" class="text-[0.7rem] text-slate-500">
                       {{ sortDirection === "asc" ? "↑" : "↓" }}
                     </span>
                   </button>
                 </th>
-                <th
-                  scope="col"
-                  class="w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Action
                 </th>
-                <th
-                  scope="col"
-                  class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Country /<br />Methodology
                 </th>
-                <th
-                  scope="col"
-                  class="w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Credits<br />(Available/Sold)
                 </th>
-                <th
-                  scope="col"
-                  class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Rating /<br />Verifier
                 </th>
-                <th
-                  scope="col"
-                  class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Registry <br />Stage
                 </th>
-                <th
-                  scope="col"
-                  class="w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Delivery risk notes
                 </th>
-                <th
-                  scope="col"
-                  class="w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[9rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Eligible /<br />Type
                 </th>
-                <th
-                  scope="col"
-                  class="w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[11rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Evaluation <br />Other
                 </th>
-                <th
-                  scope="col"
-                  class="w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[8rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Contract
                 </th>
-                <th
-                  scope="col"
-                  class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm"
-                >
+                <th scope="col" class="w-[10rem] whitespace-nowrap px-4 py-2.5 text-left text-sm">
                   Links
                 </th>
               </tr>
@@ -160,224 +84,122 @@
               <tr v-if="forwardLoading">
                 <td colspan="13" class="p-8 text-center text-slate-500">
                   <div class="flex items-center justify-center gap-3">
-                    <svg
-                      class="h-5 w-5 animate-spin text-primary"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        class="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        stroke-width="4"
-                      ></circle>
-                      <path
-                        class="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
+                    <svg class="h-5 w-5 animate-spin text-primary" xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                      </path>
                     </svg>
                     <span class="font-medium">Loading forward offers...</span>
                   </div>
                 </td>
               </tr>
               <template v-else>
-                <tr
-                  v-for="(offer, index) in filteredOffers"
-                  :key="offer.id || index"
-                  class="hover:bg-primary-50/40"
-                >
-                  <td
-                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5"
-                  >
-                    <div
-                      class="min-w-0 text-sm font-semibold text-ink line-clamp-2"
-                      :title="offer.projectName"
-                    >
+                <tr v-for="(offer, index) in filteredOffers" :key="offer.id || index" class="hover:bg-primary-50/40">
+                  <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5">
+                    <div class="min-w-0 text-sm font-semibold text-ink line-clamp-2" :title="offer.projectName">
                       {{ offer.projectName || "" }}
                     </div>
-                    <p
-                      class="mt-0.5 min-w-0 truncate text-xs text-slate-600"
-                      :title="offer.uid"
-                    >
+                    <p class="mt-0.5 min-w-0 truncate text-xs text-slate-600" :title="offer.uid">
                       {{ offer.uid || "" }}
                     </p>
                   </td>
-                  <td
-                    class="table-cell max-w-[7rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <span
-                      class="block min-w-0 line-clamp-2 font-semibold text-ink"
-                      :title="offer.vintages"
-                    >
+                  <td class="table-cell max-w-[7rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 line-clamp-2 font-semibold text-ink" :title="offer.vintages">
                       {{ offer.vintages || "" }}
                     </span>
                   </td>
-                  <td
-                    class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <span
-                      class="block min-w-0 line-clamp-2 font-semibold text-primary"
-                      :title="offer.pricePerCredit"
-                    >
+                  <td class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <span class="block min-w-0 line-clamp-2 font-semibold text-primary" :title="offer.pricePerCredit">
                       {{
                         offer.pricePerCredit ? "$" + offer.pricePerCredit : ""
                       }}
                     </span>
                   </td>
-                  <td
-                    class="table-cell max-w-[9rem] overflow-hidden px-4 py-2.5 text-left"
-                  >
-                    <button
-                      v-if="offer.contactEmail"
-                      @click="openBuyDialog(offer)"
-                      class="text-primary-700 bg-primary-50 px-3 py-1.5 rounded-3xl text-xs font-medium hover:bg-primary-100 transition-colors inline-block whitespace-nowrap"
-                    >
+                  <td class="table-cell max-w-[9rem] overflow-hidden px-4 py-2.5 text-left">
+                    <button v-if="offer.contactEmail" @click="openBuyDialog(offer)"
+                      class="text-primary-700 bg-primary-50 px-3 py-1.5 rounded-3xl text-xs font-medium hover:bg-primary-100 transition-colors inline-block whitespace-nowrap">
                       Express interest
                     </button>
                   </td>
-                  <td
-                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
+                  <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm">
                     <div class="min-w-0 truncate" :title="offer.country">
                       {{ offer.country || "" }}
                     </div>
-                    <div
-                      class="min-w-0 truncate text-slate-600"
-                      :title="offer.methodology"
-                    >
+                    <div class="min-w-0 truncate text-slate-600" :title="offer.methodology">
                       {{ offer.methodology || "" }}
                     </div>
                   </td>
-                  <td
-                    class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
+                  <td class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm">
                     <template v-if="offer.creditsMode === 'estimated'">
-                      <div
-                        class="min-w-0 truncate"
-                        :title="offer.estimatedAvailable"
-                      >
-                        <template v-if="offer.estimatedAvailable"
-                          >Available: {{ offer.estimatedAvailable }}</template
-                        >
+                      <div class="min-w-0 truncate" :title="offer.estimatedAvailable">
+                        <template v-if="offer.estimatedAvailable">Available: {{ offer.estimatedAvailable }}</template>
                       </div>
-                      <div
-                        class="min-w-0 truncate text-slate-600"
-                        :title="offer.estimatedSold"
-                      >
-                        <template v-if="offer.estimatedSold"
-                          >Sold: {{ offer.estimatedSold }}</template
-                        >
+                      <div class="min-w-0 truncate text-slate-600" :title="offer.estimatedSold">
+                        <template v-if="offer.estimatedSold">Sold: {{ offer.estimatedSold }}</template>
                       </div>
                     </template>
-                    <template
-                      v-else-if="
-                        offer.creditsRows && offer.creditsRows.length > 0
-                      "
-                    >
+                    <template v-else-if="
+                      offer.creditsRows && offer.creditsRows.length > 0
+                    ">
                       <div class="min-w-0 truncate" title="Total Available">
                         Available:
                         {{ sumCredits(offer.creditsRows, "available") }}
                       </div>
-                      <div
-                        class="min-w-0 truncate text-slate-600"
-                        title="Total Sold"
-                      >
+                      <div class="min-w-0 truncate text-slate-600" title="Total Sold">
                         Sold: {{ sumCredits(offer.creditsRows, "sold") }}
                       </div>
-                      <button
-                        type="button"
-                        @click="showCreditsDetails(offer)"
-                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs mt-1"
-                      >
+                      <button type="button" @click="showCreditsDetails(offer)"
+                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs mt-1">
                         Details
                       </button>
                     </template>
                   </td>
-                  <td
-                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
+                  <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm">
                     <div class="min-w-0 truncate" :title="formatRating(offer)">
                       {{ formatRating(offer) || "" }}
                     </div>
-                    <div
-                      class="min-w-0 truncate text-slate-600"
-                      :title="offer.verifierVvb"
-                    >
+                    <div class="min-w-0 truncate text-slate-600" :title="offer.verifierVvb">
                       {{ offer.verifierVvb || "" }}
                     </div>
                   </td>
-                  <td
-                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
+                  <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm">
                     <div class="min-w-0 truncate" :title="offer.registry">
                       {{ offer.registry || "" }}
                     </div>
-                    <div
-                      class="min-w-0 truncate text-slate-600"
-                      :title="offer.registryStage"
-                    >
+                    <div class="min-w-0 truncate text-slate-600" :title="offer.registryStage">
                       {{ offer.registryStage || "" }}
                     </div>
                   </td>
-                  <td
-                    class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <div
-                      class="min-w-0 line-clamp-2 whitespace-pre-line"
-                      :title="offer.deliveryRisk"
-                    >
+                  <td class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <div class="min-w-0 line-clamp-2 whitespace-pre-line" :title="offer.deliveryRisk">
                       {{ offer.deliveryRisk || "" }}
                     </div>
                   </td>
-                  <td
-                    class="table-cell max-w-[9rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <div
-                      class="min-w-0 line-clamp-2"
-                      :title="formatEligibility(offer)"
-                    >
+                  <td class="table-cell max-w-[9rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <div class="min-w-0 line-clamp-2" :title="formatEligibility(offer)">
                       {{ formatEligibility(offer) || "" }}
                     </div>
-                    <div
-                      class="min-w-0 truncate text-slate-600"
-                      :title="offer.avoidanceRemoval"
-                    >
+                    <div class="min-w-0 truncate text-slate-600" :title="offer.avoidanceRemoval">
                       {{ offer.avoidanceRemoval || "" }}
                     </div>
                   </td>
-                  <td
-                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
-                    <div
-                      class="min-w-0 line-clamp-2 whitespace-pre-line"
-                      :title="offer.evaluationOther"
-                    >
+                  <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm">
+                    <div class="min-w-0 line-clamp-2 whitespace-pre-line" :title="offer.evaluationOther">
                       {{ offer.evaluationOther || "" }}
                     </div>
                   </td>
-                  <td
-                    class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
+                  <td class="table-cell max-w-[8rem] overflow-hidden px-4 py-2.5 text-sm">
                     <template v-if="offer.defaultContractMode === 'upload'">
-                      <a
-                        v-if="offer.defaultContractFileLink"
-                        :href="ensureHttps(offer.defaultContractFileLink)"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="text-primary-600 hover:text-primary-700 hover:underline"
-                        >Contract File</a
-                      >
+                      <a v-if="offer.defaultContractFileLink" :href="ensureHttps(offer.defaultContractFileLink)"
+                        target="_blank" rel="noopener noreferrer"
+                        class="text-primary-600 hover:text-primary-700 hover:underline">Contract File</a>
                     </template>
-                    <template
-                      v-else-if="offer.defaultContractMode === 'template'"
-                    >
+                    <template v-else-if="offer.defaultContractMode === 'template'">
                       <span v-if="offer.defaultContractTemplate === 'other'">{{
                         offer.defaultContractTemplateOther || ""
-                      }}</span>
+                        }}</span>
                       <span v-else class="capitalize">{{
                         offer.defaultContractTemplate
                           ? offer.defaultContractTemplate.replace("-", " ")
@@ -385,66 +207,32 @@
                       }}</span>
                     </template>
                   </td>
-                  <td
-                    class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm"
-                  >
+                  <td class="table-cell max-w-[10rem] overflow-hidden px-4 py-2.5 text-sm">
                     <div class="flex flex-col gap-1 items-start">
-                      <a
-                        v-if="offer.websiteLink"
-                        :href="ensureHttps(offer.websiteLink)"
-                        target="_blank"
+                      <a v-if="offer.websiteLink" :href="ensureHttps(offer.websiteLink)" target="_blank"
                         rel="noopener noreferrer"
-                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
-                        >Website</a
-                      >
-                      <a
-                        v-if="offer.projectPdfLink"
-                        :href="ensureHttps(offer.projectPdfLink)"
-                        target="_blank"
+                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs">Website</a>
+                      <a v-if="offer.projectPdfLink" :href="ensureHttps(offer.projectPdfLink)" target="_blank"
                         rel="noopener noreferrer"
-                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
-                        >Project PDF</a
-                      >
-                      <a
-                        v-if="offer.dueDiligenceSite"
-                        :href="ensureHttps(offer.dueDiligenceSite)"
-                        target="_blank"
+                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs">Project
+                        PDF</a>
+                      <a v-if="offer.dueDiligenceSite" :href="ensureHttps(offer.dueDiligenceSite)" target="_blank"
                         rel="noopener noreferrer"
-                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
-                        >Due Diligence</a
-                      >
-                      <a
-                        v-if="offer.vvbLink"
-                        :href="ensureHttps(offer.vvbLink)"
-                        target="_blank"
+                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs">Due
+                        Diligence</a>
+                      <a v-if="offer.vvbLink" :href="ensureHttps(offer.vvbLink)" target="_blank"
                         rel="noopener noreferrer"
-                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
-                        >VVB Link</a
-                      >
-                      <a
-                        v-else-if="offer.verifierVvbLink"
-                        :href="ensureHttps(offer.verifierVvbLink)"
-                        target="_blank"
+                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs">VVB Link</a>
+                      <a v-else-if="offer.verifierVvbLink" :href="ensureHttps(offer.verifierVvbLink)" target="_blank"
                         rel="noopener noreferrer"
-                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
-                        >VVB Link</a
-                      >
-                      <a
-                        v-if="offer.projectLocation"
-                        :href="ensureHttps(offer.projectLocation)"
-                        target="_blank"
+                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs">VVB Link</a>
+                      <a v-if="offer.projectLocation" :href="ensureHttps(offer.projectLocation)" target="_blank"
                         rel="noopener noreferrer"
-                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
-                        >Location</a
-                      >
-                      <a
-                        v-if="offer.pitchDocumentLink"
-                        :href="ensureHttps(offer.pitchDocumentLink)"
-                        target="_blank"
+                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs">Location</a>
+                      <a v-if="offer.pitchDocumentLink" :href="ensureHttps(offer.pitchDocumentLink)" target="_blank"
                         rel="noopener noreferrer"
-                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
-                        >Pitch Doc</a
-                      >
+                        class="text-primary-600 hover:text-primary-700 hover:underline text-xs">Pitch
+                        Doc</a>
                     </div>
                   </td>
                 </tr>
@@ -458,23 +246,16 @@
           </table>
         </div>
         <Transition name="fade">
-          <div
-            v-show="showSwipeIndicator"
+          <div v-show="showSwipeIndicator"
             class="pointer-events-none absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/85 px-3 py-1.5 text-xs font-medium text-primary-700 shadow-sm ring-1 ring-primary-200/60 backdrop-blur-sm"
-            aria-hidden="true"
-          >
+            aria-hidden="true">
             Swipe →
           </div>
         </Transition>
       </div>
 
       <!-- Credits Details Modal -->
-      <Dialog
-        v-model:visible="detailsDialogVisible"
-        modal
-        header="Credits Details"
-        :style="{ width: '30rem' }"
-      >
+      <Dialog v-model:visible="detailsDialogVisible" modal header="Credits Details" :style="{ width: '30rem' }">
         <div v-if="selectedCreditsOffer" class="flex flex-col gap-4">
           <h3 class="font-semibold text-lg">
             {{ selectedCreditsOffer.projectName }}
@@ -488,10 +269,7 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
-              <tr
-                v-for="(row, idx) in selectedCreditsOffer.creditsRows"
-                :key="idx"
-              >
+              <tr v-for="(row, idx) in selectedCreditsOffer.creditsRows" :key="idx">
                 <td class="px-3 py-2">{{ row.vintage || "—" }}</td>
                 <td class="px-3 py-2">{{ row.available || "—" }}</td>
                 <td class="px-3 py-2">{{ row.sold || "—" }}</td>
@@ -501,11 +279,7 @@
         </div>
         <template #footer>
           <div class="flex justify-start pt-2">
-            <button
-              type="button"
-              class="button-outline text-sm px-4 py-2"
-              @click="detailsDialogVisible = false"
-            >
+            <button type="button" class="button-outline text-sm px-4 py-2" @click="detailsDialogVisible = false">
               Close
             </button>
           </div>
@@ -513,23 +287,15 @@
       </Dialog>
 
       <!-- Express Interest Modal -->
-      <Dialog
-        v-model:visible="buyDialogVisible"
-        modal
-        header="Express Interest"
-        :style="{ width: '28rem' }"
-        :dismissable-mask="true"
-        class="buy-dialog"
-        @hide="resetBuyForm"
-      >
+      <Dialog v-model:visible="buyDialogVisible" modal header="Express Interest" :style="{ width: '28rem' }"
+        :dismissable-mask="true" class="buy-dialog" @hide="resetBuyForm">
         <template v-if="selectedOffer">
           <p class="text-slate-700 mb-4">
             You are expressing an interest to buy
             <strong>{{ formatCredits(buyForm.credits) }} credits</strong>
             of {{ selectedOffer.projectName }} vintage
             {{ selectedOffer.vintages }} at
-            <strong>${{ formatPrice(buyForm.price) }}</strong
-            >.
+            <strong>${{ formatPrice(buyForm.price) }}</strong>.
           </p>
           <p class="text-slate-700 mb-4">
             Your indication of interest will be emailed to the party offering
@@ -537,76 +303,33 @@
           </p>
           <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
-              <label
-                for="buy-credits"
-                class="text-sm font-medium text-slate-700"
-                >Credits</label
-              >
-              <InputNumber
-                id="buy-credits"
-                v-model="buyForm.credits"
-                :min="0"
-                :max-fraction-digits="0"
-                class="w-full"
-              />
+              <label for="buy-credits" class="text-sm font-medium text-slate-700">Credits</label>
+              <InputNumber id="buy-credits" v-model="buyForm.credits" :min="0" :max-fraction-digits="0"
+                class="w-full" />
             </div>
             <div class="flex flex-col gap-2">
-              <label for="buy-price" class="text-sm font-medium text-slate-700"
-                >Price per credit ($)</label
-              >
-              <InputNumber
-                id="buy-price"
-                v-model="buyForm.price"
-                :min="0"
-                :min-fraction-digits="2"
-                :max-fraction-digits="2"
-                mode="currency"
-                currency="USD"
-                locale="en-US"
-                class="w-full"
-              />
+              <label for="buy-price" class="text-sm font-medium text-slate-700">Price per credit ($)</label>
+              <InputNumber id="buy-price" v-model="buyForm.price" :min="0" :min-fraction-digits="2"
+                :max-fraction-digits="2" mode="currency" currency="USD" locale="en-US" class="w-full" />
             </div>
             <div class="flex flex-col gap-2">
-              <label for="buy-email" class="text-sm font-medium text-slate-700"
-                >Email address</label
-              >
-              <InputText
-                id="buy-email"
-                v-model="buyForm.email"
-                type="email"
-                placeholder="your.email@example.com"
-                class="w-full"
-              />
+              <label for="buy-email" class="text-sm font-medium text-slate-700">Email address</label>
+              <InputText id="buy-email" v-model="buyForm.email" type="email" placeholder="your.email@example.com"
+                class="w-full" />
             </div>
             <div class="flex flex-col gap-2">
-              <label for="buy-phone" class="text-sm font-medium text-slate-700"
-                >Phone(optional)</label
-              >
-              <InputText
-                id="buy-phone"
-                v-model="buyForm.phone"
-                type="tel"
-                placeholder="123-456-7890"
-                class="w-full"
-              />
+              <label for="buy-phone" class="text-sm font-medium text-slate-700">Phone(optional)</label>
+              <InputText id="buy-phone" v-model="buyForm.phone" type="tel" placeholder="123-456-7890" class="w-full" />
             </div>
           </div>
         </template>
         <template #footer>
-          <Button
-            label="Confirm"
-            :loading="submitLoading"
-            @click="handleBuyConfirm"
-          />
+          <Button label="Confirm" :loading="submitLoading" @click="handleBuyConfirm" />
         </template>
       </Dialog>
     </section>
-    <ForwardOffersFilterDialog
-      v-model:visible="filterDialogVisible"
-      v-model:criteria="filterCriteria"
-      :offers="forwardOffers"
-      @applied="onFiltersApplied"
-    />
+    <ForwardOffersFilterDialog v-model:visible="filterDialogVisible" v-model:criteria="filterCriteria"
+      :offers="forwardOffers" @applied="onFiltersApplied" />
   </div>
 </template>
 
