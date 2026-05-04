@@ -365,7 +365,7 @@
                     <template v-if="offer.defaultContractMode === 'upload'">
                       <a
                         v-if="offer.defaultContractFileLink"
-                        :href="offer.defaultContractFileLink"
+                        :href="ensureHttps(offer.defaultContractFileLink)"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-primary-600 hover:text-primary-700 hover:underline"
@@ -391,7 +391,7 @@
                     <div class="flex flex-col gap-1 items-start">
                       <a
                         v-if="offer.websiteLink"
-                        :href="offer.websiteLink"
+                        :href="ensureHttps(offer.websiteLink)"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
@@ -399,7 +399,7 @@
                       >
                       <a
                         v-if="offer.projectPdfLink"
-                        :href="offer.projectPdfLink"
+                        :href="ensureHttps(offer.projectPdfLink)"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
@@ -407,7 +407,7 @@
                       >
                       <a
                         v-if="offer.dueDiligenceSite"
-                        :href="offer.dueDiligenceSite"
+                        :href="ensureHttps(offer.dueDiligenceSite)"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
@@ -415,7 +415,7 @@
                       >
                       <a
                         v-if="offer.vvbLink"
-                        :href="offer.vvbLink"
+                        :href="ensureHttps(offer.vvbLink)"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
@@ -423,7 +423,7 @@
                       >
                       <a
                         v-else-if="offer.verifierVvbLink"
-                        :href="offer.verifierVvbLink"
+                        :href="ensureHttps(offer.verifierVvbLink)"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
@@ -431,7 +431,7 @@
                       >
                       <a
                         v-if="offer.projectLocation"
-                        :href="offer.projectLocation"
+                        :href="ensureHttps(offer.projectLocation)"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
@@ -439,7 +439,7 @@
                       >
                       <a
                         v-if="offer.pitchDocumentLink"
-                        :href="offer.pitchDocumentLink"
+                        :href="ensureHttps(offer.pitchDocumentLink)"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="text-primary-600 hover:text-primary-700 hover:underline text-xs"
@@ -612,6 +612,12 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
+
+function ensureHttps(url) {
+  if (!url) return url;
+  if (/^https?:\/\//i.test(url)) return url;
+  return "https://" + url;
+}
 import { storeToRefs } from "pinia";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";

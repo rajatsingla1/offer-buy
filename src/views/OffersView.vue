@@ -254,10 +254,10 @@
                         class="hover:bg-primary-50/40"
                       >
                         <td
-                          class="table-cell max-w-[13rem] overflow-hidden px-4 py-2.5"
+                          class="table-cell w-[13rem] max-w-[13rem] overflow-hidden px-4 py-2.5"
                         >
                           <div
-                            class="min-w-0 truncate text-sm font-semibold text-ink"
+                            class="min-w-0 text-sm font-semibold text-ink line-clamp-3 whitespace-normal break-words"
                             :title="
                               [offer.projectName, offer.projectId]
                                 .filter(Boolean)
