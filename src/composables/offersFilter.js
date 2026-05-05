@@ -25,6 +25,8 @@ export function defaultCriteria() {
     ccpEligible: null,
     corsiaValues: [],
     complianceEligible: null,
+    uids: [],
+    registries: [],
   };
 }
 
@@ -33,7 +35,7 @@ export function hasActiveFilters(criteria) {
   const f = criteria || d;
   if (f.priceMin != null || f.priceMax != null || f.totalMin != null || f.totalMax != null) return true;
   if (f.vintageMin != null || f.vintageMax != null || f.vintageExact?.length) return true;
-  if (f.countries?.length || f.sectors?.length || f.raters?.length) return true;
+  if (f.countries?.length || f.sectors?.length || f.raters?.length || f.uids?.length || f.registries?.length) return true;
   if (!f.indicative || !f.firm) return true;
   if (!f.avoidance || !f.removal) return true;
   if (f.ccpEligible != null || f.corsiaValues?.length || f.complianceEligible != null) return true;
@@ -76,6 +78,25 @@ export function getUniqueVintages(offers) {
   const set = new Set();
   offers.forEach((o) => {
     if (o.vintage != null && String(o.vintage).trim()) set.add(String(o.vintage).trim());
+  });
+  return [...set].sort();
+}
+
+export function getUniqueRegistries(offers) {
+  if (!offers || !Array.isArray(offers)) return [];
+  const set = new Set();
+  offers.forEach((o) => {
+    if (o.registry && String(o.registry).trim()) set.add(String(o.registry).trim());
+  });
+  return [...set].sort();
+}
+
+export function getUniqueUids(offers) {
+  if (!offers || !Array.isArray(offers)) return [];
+  const set = new Set();
+  offers.forEach((o) => {
+    const uid = o.projectId;
+    if (uid && String(uid).trim()) set.add(String(uid).trim());
   });
   return [...set].sort();
 }
@@ -133,6 +154,15 @@ export function filterOffers(offers, criteria) {
     if (f.raters?.length) {
       const offerRaters = splitByComma(offer.raters);
       if (!f.raters.some((r) => offerRaters.includes(r))) return false;
+    }
+
+    if (f.uids?.length) {
+      const offerUid = String(offer.projectId || "").trim();
+      if (!f.uids.includes(offerUid)) return false;
+    }
+
+    if (f.registries?.length) {
+      if (!f.registries.includes(String(offer.registry || "").trim())) return false;
     }
 
     // Only filter by offset type when not both selected (both = show all)
