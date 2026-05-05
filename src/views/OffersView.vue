@@ -259,12 +259,12 @@
                           <div
                             class="min-w-0 text-sm font-semibold text-ink line-clamp-3 whitespace-normal break-words"
                             :title="
-                              [offer.projectName, offer.projectId]
+                              [offer.project_name, offer.projectId]
                                 .filter(Boolean)
                                 .join('\n')
                             "
                           >
-                            {{ offer.projectName }}
+                            {{ offer.project_name }}
                           </div>
                           <p
                             class="mt-0.5 min-w-0 truncate text-xs text-slate-600"
@@ -474,7 +474,7 @@
         <p class="text-slate-700 mb-4">
           You are expressing an interest to buy
           <strong>{{ formatCredits(buyForm.credits) }} credits</strong>
-          of {{ selectedOffer.projectName }} vintage
+          of {{ selectedOffer.project_name }} vintage
           {{ selectedOffer.vintage }} at
           <strong>${{ formatPrice(buyForm.price) }}</strong
           >.
@@ -918,8 +918,8 @@ const sortedOffers = computed(() => {
     let numeric = false;
     switch (key) {
       case "name":
-        av = (a.projectName || "").toString().toLowerCase();
-        bv = (b.projectName || "").toString().toLowerCase();
+        av = (a.project_name || "").toString().toLowerCase();
+        bv = (b.project_name || "").toString().toLowerCase();
         break;
       case "uid":
         av = (a.projectId || "").toString().toLowerCase();
@@ -960,7 +960,7 @@ const sortedOffers = computed(() => {
       if (cmp !== 0) return cmp * dir;
     }
     // Tie-breaker: keep order stable by comparing name then id
-    const nameCmp = (a.projectName || "").localeCompare(b.projectName || "");
+    const nameCmp = (a.project_name || "").localeCompare(b.project_name || "");
     if (nameCmp !== 0) return nameCmp * dir;
     return (a.projectId || "").localeCompare(b.projectId || "") * dir;
   });
@@ -999,7 +999,7 @@ function offerRowKey(offer, index) {
   if (offer.orderId != null) return String(offer.orderId);
   if (offer.id != null) return String(offer.id);
   if (offer.serial != null) return String(offer.serial);
-  return `row-${offer.projectId ?? ""}-${offer.projectName ?? ""}-${offer.vintage ?? ""}-${index}`;
+  return `row-${offer.projectId ?? ""}-${offer.project_name ?? ""}-${offer.vintage ?? ""}-${index}`;
 }
 
 const tableScrollRef = ref(null);
@@ -1138,7 +1138,7 @@ async function handleBuyConfirm() {
       serial: selectedOffer.value?.serial,
       vintage: selectedOffer.value?.vintage,
       credits: buyForm.value.credits,
-      projectName: selectedOffer.value?.projectName,
+      projectName: selectedOffer.value?.project_name,
       pricePerCredit: buyForm.value.price,
       total,
       projectDeveloperEmail: selectedOffer.value?.email,
