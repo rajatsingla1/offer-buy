@@ -8,8 +8,8 @@
       <div class="inline-flex flex-wrap gap-1 rounded-full bg-primary-50/70 p-1.5 ring-1 ring-primary-100">
         <button v-for="(section, index) in sections" :key="section.title" type="button"
           class="relative rounded-full px-4 py-2 text-sm font-medium transition-colors" :class="activeIndex === index
-              ? 'text-ink'
-              : 'text-slate-600 hover:text-ink'
+            ? 'text-ink'
+            : 'text-slate-600 hover:text-ink'
             " @click="setActive(index)">
           {{ section.title }}
           <span v-if="activeIndex === index"
