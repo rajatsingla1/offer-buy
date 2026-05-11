@@ -844,6 +844,8 @@
         costs).
       </p>
     </div>
+
+    <FAQs />
   </div>
 </template>
 <script setup>
@@ -867,6 +869,7 @@ import TabPanels from "primevue/tabpanels";
 import TabPanel from "primevue/tabpanel";
 import OffersFilterDialog from "../components/OffersFilterDialog.vue";
 import ForwardOffersTable from "../components/ForwardOffersTable.vue";
+import FAQs from "../components/FAQs.vue";
 import {
   defaultCriteria,
   filterOffers,

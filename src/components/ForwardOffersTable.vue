@@ -273,6 +273,16 @@
                         >
                       </div>
                     </template>
+                    <template v-else-if="offer.creditsMode === 'projectSize'">
+                      <div
+                        class="min-w-0 truncate"
+                        :title="offer.projectSize"
+                      >
+                        <template v-if="offer.projectSize"
+                          >Size: {{ offer.projectSize }}</template
+                        >
+                      </div>
+                    </template>
                     <template
                       v-else-if="
                         offer.creditsRows && offer.creditsRows.length > 0
