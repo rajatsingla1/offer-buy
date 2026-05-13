@@ -12,17 +12,20 @@
         project.
         <br /><br />
 
-        The “firm” credits offered for sale by the project developers are
+        The "firm" credits offered for sale by the project developers are
         reserved/blocked by a 3rd party such that the person making the offer is
         committed to selling the credits at that price, unless the offer is
         amended or cancelled.
       </p>
+      <p class="mt-6">
+        <RouterLink to="/faqs" class="text-primary underline hover:text-primary-700 font-medium">
+          View our Frequently Asked Questions
+        </RouterLink>
+      </p>
     </div>
-
-    <FAQs />
   </div>
 </template>
 
 <script setup>
-import FAQs from "../components/FAQs.vue";
+import { RouterLink } from "vue-router";
 </script>

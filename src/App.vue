@@ -54,6 +54,15 @@ onMounted(() => {
             </button>
           </RouterLink>
 
+          <RouterLink to="/faqs" custom v-slot="{ navigate }">
+            <button type="button" class="rounded-full px-4 py-2 transition hover:bg-primary-50 hover:text-primary"
+              :class="{
+                'bg-primary-50 text-primary': activeRouteName === 'faqs',
+              }" @click="navigate">
+              FAQs
+            </button>
+          </RouterLink>
+
           <RouterLink to="/api" custom v-slot="{ navigate }">
             <button type="button" class="rounded-full px-4 py-2 transition hover:bg-primary-50 hover:text-primary"
               :class="{

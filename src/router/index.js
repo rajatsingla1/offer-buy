@@ -4,6 +4,7 @@ import AboutView from "../views/AboutView.vue";
 import SubscribeView from "../views/SubscribeView.vue";
 import SubscribeEditView from "../views/SubscribeEditView.vue";
 import ApiView from "../views/ApiView.vue";
+import FAQView from "../views/FAQView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -13,6 +14,7 @@ const router = createRouter({
     { path: "/subscribe", name: "subscribe", component: SubscribeView },
     { path: "/subscribe/:uuid", name: "subscribe-edit", component: SubscribeEditView },
     { path: "/about", name: "about", component: AboutView },
+    { path: "/faqs", name: "faqs", component: FAQView },
     { path: "/api", name: "api", component: ApiView },
   ],
 });

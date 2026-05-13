@@ -71,6 +71,10 @@ export const faqSections = [
         q: "Does AlliedCredits provide market intelligence, pricing insights, or custom sourcing support?",
         a: "Absolutely. We consider ourselves the premier provider of this kind of data through AlliedOffsets. To request a demo, please write to info@alliedoffsets.com.",
       },
+      {
+        q: "How do we use your data?",
+        a: "AlliedOffsets may use data collected on offer and bid prices to train our pricing model or for other internal market analysis. We will never display or sell identifying information, such as buyers who have bid on a particular credit.",
+      }
     ],
   },
   {
